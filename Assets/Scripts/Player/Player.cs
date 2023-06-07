@@ -4,32 +4,38 @@ using UnityEngine;
 
 public class Player : SingletonMonobehaviour<Player>
 {
-    [SerializeField] BoxCollider2D collider;
+    [SerializeField] GameObject snailObject;
 
-    LineRenderer snail;
+    LineRenderer snailLine;
     Rigidbody2D rigidbody;
+    BoxCollider2D snailCollider;
 
+
+    public float maxSnailLength;
 
     [SerializeField] float snailMultiplyer; //ToSettingsLater
     float snailLength;
     float colliderLength;
-    public bool isSticked;
 
     Coroutine elongateCoroutine;
     Coroutine shortenCoroutine;
 
+    [HideInInspector] public bool isSticked;
+    [HideInInspector] public bool isElongating;
 
     protected override void Awake()
     {
         base.Awake();
 
-        snail = GetComponentInChildren<LineRenderer>();
+        snailLine = snailObject.GetComponent<LineRenderer>();
+        snailCollider = snailObject.GetComponent<BoxCollider2D>();
         rigidbody = GetComponent<Rigidbody2D>();
+
+        snailCollider.enabled = false;
     }
 
     void Start()
     {
-        snail.SetPosition(0, new Vector3(0, 0f, 0f));
     }
 
     void Update()
@@ -50,63 +56,85 @@ public class Player : SingletonMonobehaviour<Player>
 
                 if (touch.phase == TouchPhase.Began)
                 {
-                    if (shortenCoroutine != null)
-                    {
-                        StopCoroutine(shortenCoroutine);
-                    }
-                    elongateCoroutine = StartCoroutine(ElongateSnail());
-
+                    Elongate();
                 }
                 else if (touch.phase == TouchPhase.Ended || touch.phase == TouchPhase.Canceled)
                 {
-                    if (elongateCoroutine != null)
-                    {
-                        StopCoroutine(elongateCoroutine);
-                    }
-                    shortenCoroutine = StartCoroutine(ShortenSnail());
-
-
+                    Shorten();
                 }
             }
         }
+
+
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            Elongate();
+        }
+        else if (Input.GetKeyUp(KeyCode.Space))
+        {
+            Shorten();
+        }
+
+    }
+
+    void Elongate()
+    {
+        if (shortenCoroutine != null)
+        {
+            StopCoroutine(shortenCoroutine);
+        }
+
+        isElongating = true;
+        snailCollider.enabled = true;
+
+        elongateCoroutine = StartCoroutine(ElongateSnail());
     }
     IEnumerator ElongateSnail()
     {
-        
-        while (snailLength < 6 && !isSticked)
+        while (snailLength < maxSnailLength && !isSticked)
         {
             Vector2 forceDirection = transform.TransformDirection(Vector2.right);
             rigidbody.AddForce(forceDirection * 0.1f, ForceMode2D.Impulse);
-            snail.SetPosition(0, new Vector3(snailLength, 0f, 0f));
+
+            snailLine.SetPosition(0, new Vector3(snailLength, 0f ,0f));
+            snailCollider.offset = new Vector2(snailLength /2, 0f);
+            snailCollider.size = new Vector2(snailLength, 0.01f);
 
             snailLength += snailMultiplyer * Time.deltaTime;
-            collider.offset= new Vector2(snailLength, 0f);
-            collider.size = new Vector2(snailLength /2, 0.14f);
             yield return null;
         }
-
     }
 
+
+    void Shorten()
+    {
+        if (elongateCoroutine != null)
+        {
+            StopCoroutine(elongateCoroutine);
+        }
+        if (isSticked)
+        {
+            Snail.Instance.UnStick();
+        }
+
+        isElongating = false;
+        snailCollider.enabled = false;
+
+        shortenCoroutine = StartCoroutine(ShortenSnail());
+    }
     IEnumerator ShortenSnail()
     {
-        isSticked = false;
-
-        while (snailLength > 0)
+        while (snailLength > -0.1)
         {
-            snail.SetPosition(0, new Vector3(snailLength, 0f, 0f));
+            snailLine.SetPosition(0, new Vector3(snailLength, 0f, 0f));
 
             snailLength -= (snailMultiplyer + snailMultiplyer / 3) * Time.deltaTime;
-            collider.offset = new Vector2(snailLength, 0f);
-            collider.size = new Vector2(snailLength / 2, 0.14f);
             yield return null;
         }
 
     }
 
+
+
     
-
-    public void OnSticked()
-    {
-
-    }
 }

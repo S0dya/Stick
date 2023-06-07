@@ -4,25 +4,36 @@ using UnityEngine;
 
 public class Snail : SingletonMonobehaviour<Snail>
 {
+    [SerializeField] GameObject stickedPartObject;
+    TargetJoint2D joint;
 
-    
 
-    
+
+
     protected override void Awake()
     {
         base.Awake();
 
+        joint = stickedPartObject.GetComponent<TargetJoint2D>();
+        joint.enabled = false;
 
     }
 
     void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.CompareTag("Obstacle"))
+        if (collision.gameObject.CompareTag("Obstacle") && Player.Instance.isElongating)
         {
-            Debug.Log("DAS");
             Player.Instance.isSticked = true;
 
-            Player.Instance.OnSticked();
+            joint.transform.position = collision.contacts[0].point;
+            joint.enabled = true;
         }
+    }
+
+
+    public void UnStick()
+    {
+        Player.Instance.isSticked = false;
+        joint.enabled = false;
     }
 }
