@@ -23,7 +23,7 @@ public class Player : SingletonMonobehaviour<Player>
     Vector2 mousePos;
 
     [HideInInspector] public bool isSticked;
-    [HideInInspector] public bool isPushing;
+    [HideInInspector] public bool isOnTrigger;
     [HideInInspector] public bool isElongating;
 
     protected override void Awake()
@@ -100,7 +100,7 @@ public class Player : SingletonMonobehaviour<Player>
         float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
         transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
 
-        while (snailLength < maxSnailLength && !isSticked)
+        while (!isOnTrigger && !isSticked)
         {
             tongueLine.SetPosition(0, new Vector3(snailLength, 0f ,0f));
             tongueCollider.offset = new Vector2(snailLength /2 -0.01f, 0f);
@@ -123,9 +123,8 @@ public class Player : SingletonMonobehaviour<Player>
             StopCoroutine(elongateCoroutine);
         }
 
-
+        isOnTrigger = false;
         isSticked = false;
-        isPushing = false;
         isElongating = false;
 
         tongueCollider.enabled = false;

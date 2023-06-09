@@ -2,7 +2,8 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
-namespace Pathfinding {
+namespace Pathfinding 
+{
 	using Pathfinding.RVO;
 	using Pathfinding.Util;
 
@@ -128,44 +129,48 @@ namespace Pathfinding {
 		/// </summary>
 		public CloseToDestinationMode whenCloseToDestination = CloseToDestinationMode.Stop;
 
-		/// <summary>
-		/// Ensure that the character is always on the traversable surface of the navmesh.
-		/// When this option is enabled a <see cref="AstarPath.GetNearest"/> query will be done every frame to find the closest node that the agent can walk on
-		/// and if the agent is not inside that node, then the agent will be moved to it.
-		///
-		/// This is especially useful together with local avoidance in order to avoid agents pushing each other into walls.
-		/// See: local-avoidance (view in online documentation for working links) for more info about this.
-		///
-		/// This option also integrates with local avoidance so that if the agent is say forced into a wall by other agents the local avoidance
-		/// system will be informed about that wall and can take that into account.
-		///
-		/// Enabling this has some performance impact depending on the graph type (pretty fast for grid graphs, slightly slower for navmesh/recast graphs).
-		/// If you are using a navmesh/recast graph you may want to switch to the <see cref="Pathfinding.RichAI"/> movement script which is specifically written for navmesh/recast graphs and
-		/// does this kind of clamping out of the box. In many cases it can also follow the path more smoothly around sharp bends in the path.
-		///
-		/// It is not recommended that you use this option together with the funnel modifier on grid graphs because the funnel modifier will make the path
-		/// go very close to the border of the graph and this script has a tendency to try to cut corners a bit. This may cause it to try to go slightly outside the
-		/// traversable surface near corners and that will look bad if this option is enabled.
-		///
-		/// Warning: This option makes no sense to use on point graphs because point graphs do not have a surface.
-		/// Enabling this option when using a point graph will lead to the agent being snapped to the closest node every frame which is likely not what you want.
-		///
-		/// Below you can see an image where several agents using local avoidance were ordered to go to the same point in a corner.
-		/// When not constraining the agents to the graph they are easily pushed inside obstacles.
-		/// [Open online documentation to see images]
-		/// </summary>
-		public bool constrainInsideGraph = false;
+        /// <summary>
+        /// Ensure that the character is always on the traversable surface of the navmesh.
+        /// When this option is enabled a <see cref="AstarPath.GetNearest"/> query will be done every frame to find the closest node that the agent can walk on
+        /// and if the agent is not inside that node, then the agent will be moved to it.
+        ///
+        /// This is especially useful together with local avoidance in order to avoid agents pushing each other into walls.
+        /// See: local-avoidance (view in online documentation for working links) for more info about this.
+        ///
+        /// This option also integrates with local avoidance so that if the agent is say forced into a wall by other agents the local avoidance
+        /// system will be informed about that wall and can take that into account.
+        ///
+        /// Enabling this has some performance impact depending on the graph type (pretty fast for grid graphs, slightly slower for navmesh/recast graphs).
+        /// If you are using a navmesh/recast graph you may want to switch to the <see cref="Pathfinding.RichAI"/> movement script which is specifically written for navmesh/recast graphs and
+        /// does this kind of clamping out of the box. In many cases it can also follow the path more smoothly around sharp bends in the path.
+        ///
+        /// It is not recommended that you use this option together with the funnel modifier on grid graphs because the funnel modifier will make the path
+        /// go very close to the border of the graph and this script has a tendency to try to cut corners a bit. This may cause it to try to go slightly outside the
+        /// traversable surface near corners and that will look bad if this option is enabled.
+        ///
+        /// Warning: This option makes no sense to use on point graphs because point graphs do not have a surface.
+        /// Enabling this option when using a point graph will lead to the agent being snapped to the closest node every frame which is likely not what you want.
+        ///
+        /// Below you can see an image where several agents using local avoidance were ordered to go to the same point in a corner.
+        /// When not constraining the agents to the graph they are easily pushed inside obstacles.
+        /// [Open online documentation to see images]
+        /// 
+        /// </summary>
+       
+        public bool constrainInsideGraph = false;
 
-		/// <summary>Current path which is followed</summary>
-		protected Path path;
+        /// <summary>Current path which is followed</summary>
+        protected Path path;
 
 		/// <summary>Helper which calculates points along the current path</summary>
 		protected PathInterpolator interpolator = new PathInterpolator();
 
-		#region IAstarAI implementation
 
-		/// <summary>\copydoc Pathfinding::IAstarAI::Teleport</summary>
-		public override void Teleport (Vector3 newPosition, bool clearPath = true) {
+
+        #region IAstarAI implementation
+
+        /// <summary>\copydoc Pathfinding::IAstarAI::Teleport</summary>
+        public override void Teleport (Vector3 newPosition, bool clearPath = true) {
 			reachedEndOfPath = false;
 			base.Teleport(newPosition, clearPath);
 		}
@@ -237,6 +242,9 @@ namespace Pathfinding {
 
 		#endregion
 
+
+	
+
 		/// <summary>\copydoc Pathfinding::IAstarAI::GetRemainingPath</summary>
 		public void GetRemainingPath (List<Vector3> buffer, out bool stale) {
 			buffer.Clear();
@@ -268,7 +276,10 @@ namespace Pathfinding {
 		/// This method will be called again if a new path is calculated as the destination may have changed.
 		/// So when the agent is close to the destination this method will typically be called every <see cref="repathRate"/> seconds.
 		/// </summary>
-		public virtual void OnTargetReached () {
+		public virtual void OnTargetReached () 
+		{
+			SendMessage("OnEndReached");            
+
 		}
 
 		/// <summary>

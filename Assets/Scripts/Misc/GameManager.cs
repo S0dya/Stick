@@ -10,7 +10,14 @@ public class GameManager : SingletonMonobehaviour<GameManager>
     {
         base.Awake();
 
+        Settings.Initialize();
+    }
 
+    void Start()
+    {
+
+
+        AstarPath.active.Scan();
     }
 
     public IEnumerator Timer(float duration)

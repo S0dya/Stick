@@ -21,10 +21,13 @@ public class Tongue : SingletonMonobehaviour<Tongue>
     {
         if (collision.CompareTag("Food"))
         {
-            Debug.Log("f");
-            Player.Instance.isSticked = true;
+            player.isSticked = true;
 
             collision.transform.SetParent(StickingPart.transform);
+        }
+        else if (collision.CompareTag("Edge"))
+        {
+            player.isOnTrigger = true;
         }
     }
 
