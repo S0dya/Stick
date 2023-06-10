@@ -7,68 +7,83 @@ using Pathfinding;
 public class EnemyAI : AIPath
 {
     SettingsAI settingsAI;
+    AIDestinationSetter destinationSetter;
 
+    float randomX;
+    float randomY;
 
-
-    float minX;
-    float minY;
-    float maxX;
-    float maxY;
-
+    Coroutine changingSpeedCoroutine;
 
     void Start()
     {
         settingsAI = GetComponent<SettingsAI>();
-        settingsAI.point.transform.position = GetRandomPosition();
+        destinationSetter = GetComponent<AIDestinationSetter>();
 
-
+        GetRandomPosition();
+        destinationSetter.target = settingsAI.point.transform;
     }
 
     public void OnEndReached()
     {
         settingsAI.amountOfPointsToVisit--;
 
-        settingsAI.point.transform.position = GetRandomPosition();
+        GetRandomPosition();
     }
 
-    Vector2 GetRandomPosition()
+    void GetRandomPosition()
     {
         if (settingsAI.amountOfPointsToVisit > 0)
         {
-            minX = -Settings.ScreenWidth / 2f;
-            maxX = Settings.ScreenWidth / 2f;
-            maxY = Settings.ScreenHeight / 2f;
+            randomX = Random.Range(Settings.minX, Settings.maxX);
+            randomY = Random.Range(Settings.minY, Settings.maxY);
         }
         else
         {
-            minX = -Settings.ScreenWidth;
-            maxX = Settings.ScreenWidth;
-            maxY = Settings.ScreenHeight;
+            randomX = Random.Range(-Settings.ScreenWidth, Settings.ScreenWidth);
+            randomY = Random.Range(Settings.minY, Settings.ScreenHeight);
         }
-        minY = -Settings.ScreenHeight / 3f;
 
-        float randomX = Random.Range(minX, maxX);
-        float randomY = Random.Range(minY, maxY);
-
-        return new Vector2(randomX, randomY);
+        settingsAI.point.transform.position = new Vector2(randomX, randomY);
     }
 
     void OnDrawGizmos()//Test
     {
         Gizmos.color = Color.red;
-        Vector3 minPoint = new Vector3(minX, minY, transform.position.z);
-        Vector3 maxPoint = new Vector3(maxX, maxY, transform.position.z);
-        Gizmos.DrawLine(minPoint, new Vector3(minX, maxY, transform.position.z));
-        Gizmos.DrawLine(minPoint, new Vector3(maxX, minY, transform.position.z));
-        Gizmos.DrawLine(maxPoint, new Vector3(minX, maxY, transform.position.z));
-        Gizmos.DrawLine(maxPoint, new Vector3(maxX, minY, transform.position.z));
+        Vector3 minPoint = new Vector3(Settings.minX, Settings.minY, transform.position.z);
+        Vector3 maxPoint = new Vector3(Settings.maxX, Settings.maxY, transform.position.z);
+        Gizmos.DrawLine(minPoint, new Vector3(Settings.minX, Settings.maxY, transform.position.z));
+        Gizmos.DrawLine(minPoint, new Vector3(Settings.maxX, Settings.minY, transform.position.z));
+        Gizmos.DrawLine(maxPoint, new Vector3(Settings.minX, Settings.maxY, transform.position.z));
+        Gizmos.DrawLine(maxPoint, new Vector3(Settings.maxX, Settings.minY, transform.position.z));
     }
 
     void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.CompareTag("Edge"))
+        if (collision.CompareTag("NearTongue"))
+        {
+
+            if (changingSpeedCoroutine != null)
+            {
+                StopCoroutine(changingSpeedCoroutine);
+            }
+            changingSpeedCoroutine = StartCoroutine(ChangeSpeed());
+        }
+    }
+    IEnumerator ChangeSpeed()
+    {
+        maxSpeed = 6; //change Later
+
+        yield return GameManager.Instance.StartCoroutine(GameManager.Instance.Timer(4f));
+
+        maxSpeed = 3f;
+    }
+
+    void OnTriggerExit2D(Collider2D collision)
+    {
+        if (collision.CompareTag("Edges"))
         {
             Destroy(gameObject);
         }
     }
+
 }

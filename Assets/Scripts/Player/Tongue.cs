@@ -25,15 +25,8 @@ public class Tongue : SingletonMonobehaviour<Tongue>
 
             collision.transform.SetParent(StickingPart.transform);
         }
-        else if (collision.CompareTag("Edge"))
-        {
-            player.isOnTrigger = true;
-        }
+        
     }
+    
 
-
-    public void UnStick()
-    {
-        player.isSticked = false;
-    }
 }

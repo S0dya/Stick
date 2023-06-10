@@ -4,11 +4,11 @@ using UnityEngine;
 
 public class Player : SingletonMonobehaviour<Player>
 {
-    [SerializeField] GameObject snailObject;
-
-    [HideInInspector] public LineRenderer tongueLine;
+    LineRenderer tongueLine;
     Rigidbody2D rigidbody;
     BoxCollider2D tongueCollider;
+    BoxCollider2D nearTongueCollider;
+    GameObject tongueObject;
 
     public float maxSnailLength;
 
@@ -23,22 +23,27 @@ public class Player : SingletonMonobehaviour<Player>
     Vector2 mousePos;
 
     [HideInInspector] public bool isSticked;
-    [HideInInspector] public bool isOnTrigger;
+    [HideInInspector] public bool isOutOfTrigger;
     [HideInInspector] public bool isElongating;
+    bool canElongate;
 
     protected override void Awake()
     {
         base.Awake();
 
-        tongueLine = snailObject.GetComponent<LineRenderer>();
-        tongueCollider = snailObject.GetComponent<BoxCollider2D>();
+        nearTongueCollider = GameObject.FindGameObjectWithTag("NearTongue").GetComponent<BoxCollider2D>();
+        tongueObject = GameObject.FindGameObjectWithTag("Tongue");
+        tongueLine = tongueObject.GetComponent<LineRenderer>();
+        tongueCollider = tongueObject.GetComponent<BoxCollider2D>();
         rigidbody = GetComponent<Rigidbody2D>();
+
 
         tongueCollider.enabled = false;
     }
 
     void Start()
     {
+
     }
 
     void Update()
@@ -82,14 +87,16 @@ public class Player : SingletonMonobehaviour<Player>
 
     void Elongate()
     {
-        if (shortenCoroutine != null)
+        if (!canElongate)
         {
-            StopCoroutine(shortenCoroutine);
+            return;
         }
 
         mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        canElongate = false;
         isElongating = true;
         tongueCollider.enabled = true;
+        nearTongueCollider.enabled = true;
 
         elongateCoroutine = StartCoroutine(ElongateTongue());
     }
@@ -100,11 +107,14 @@ public class Player : SingletonMonobehaviour<Player>
         float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
         transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
 
-        while (!isOnTrigger && !isSticked)
+        while (!isOutOfTrigger && !isSticked)
         {
-            tongueLine.SetPosition(0, new Vector3(snailLength, 0f ,0f));
+            tongueLine.SetPosition(0, new Vector3(snailLength, 0f, 0f));
+
             tongueCollider.offset = new Vector2(snailLength /2 -0.01f, 0f);
             tongueCollider.size = new Vector2(snailLength - 0.01f, 0.14f);
+            nearTongueCollider.offset = new Vector2(snailLength /2 -0.01f, 0f);
+            nearTongueCollider.size = new Vector2(snailLength -0.01f, 0.14f);
 
             Tongue.Instance.StickingPart.transform.position = transform.TransformPoint(tongueLine.GetPosition(0));
 
@@ -123,11 +133,12 @@ public class Player : SingletonMonobehaviour<Player>
             StopCoroutine(elongateCoroutine);
         }
 
-        isOnTrigger = false;
+        isOutOfTrigger = false;
         isSticked = false;
         isElongating = false;
 
         tongueCollider.enabled = false;
+        nearTongueCollider.enabled = false;
 
         shortenCoroutine = StartCoroutine(ShortenTongue());
     }
@@ -143,14 +154,13 @@ public class Player : SingletonMonobehaviour<Player>
             yield return null;
         }
 
+        canElongate = true;
     }
 
     void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.CompareTag("Food"))
         {
-
-
             GameObject.Destroy(collision.gameObject);
         }
     }
