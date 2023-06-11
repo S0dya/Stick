@@ -161,6 +161,7 @@ public class Player : SingletonMonobehaviour<Player>
     {
         if (collision.CompareTag("Food"))
         {
+            GameManager.Instance.ChangeHunger(10f);
             GameObject.Destroy(collision.gameObject);
         }
     }

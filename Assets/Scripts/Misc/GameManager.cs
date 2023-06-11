@@ -26,7 +26,11 @@ public class GameManager : SingletonMonobehaviour<GameManager>
 
     bool isMenuOpen;
 
-    
+    //Logic
+    [HideInInspector] public float hungerLength;
+    [HideInInspector] public float multiplyer;
+    Coroutine hungerCoroutine;
+    Coroutine multiplyerCoroutine;
 
     protected override void Awake()
     {
@@ -46,23 +50,26 @@ public class GameManager : SingletonMonobehaviour<GameManager>
 
         for (int i = 0; i < 15; i++)
         {
-            Spawn();
+            Invoke("Spawn", Random.Range(0f, 3f));
         }
 
+        hungerLength = Settings.maxLengthOfHunger;
+        multiplyer = 0.5f;
 
+        multiplyerCoroutine = StartCoroutine(MultiplyerCoroutine());
+        hungerCoroutine = StartCoroutine(HungerCoroutine());
     }
 
     void DefineEdgesOfScreen()
     {
         edgesCollider.size = new Vector2(Settings.ScreenWidth * 1.6f, Settings.ScreenHeight * 1.6f);
     }
-    
 
     public void Spawn()
     {
 
 
-        float randomX = Random.Range(0, 2) == 0 ? -Settings.ScreenWidth *0.7f : Settings.ScreenWidth *0.7f;
+        float randomX = Random.Range(0, 2) == 0 ? -Settings.ScreenWidth * 0.7f : Settings.ScreenWidth * 0.7f;
         float randomY = Random.Range(0f, Settings.maxY);
 
         Vector3 spawnPosition = new Vector3(randomX, randomY, 1f);
@@ -75,6 +82,44 @@ public class GameManager : SingletonMonobehaviour<GameManager>
         settingsAI.amountOfPointsToVisit = Random.Range(5, 10);
     }
 
+    public void ChangeHunger(float amount)
+    {
+        hungerLength = Mathf.Min(Settings.maxLengthOfHunger, hungerLength + amount);
+    }
+
+    IEnumerator HungerCoroutine()
+    {
+        while (hungerLength > 0)
+        {
+            if (isMenuOpen)
+            {
+                yield return null; ;
+            }
+
+            if (hungerLength > Settings.maxLengthOfHunger / 3f)
+            {
+                hungerLength -= multiplyer * Time.deltaTime;
+            }
+            else
+            { 
+                hungerLength -= multiplyer /2 * Time.deltaTime;
+            }
+
+            HungerBar.Instance.SetValue(hungerLength);
+
+            yield return null;
+        }
+
+        Debug.Log("gameOver");
+    }
+    IEnumerator MultiplyerCoroutine()
+    {
+        while (hungerLength > 0)
+        {
+            yield return StartCoroutine(Timer(10f));
+
+        }
+    }
 
     public IEnumerator Timer(float duration)
     {

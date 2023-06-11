@@ -1,18 +1,35 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
-public class HungerBar : MonoBehaviour
+public class HungerBar : SingletonMonobehaviour<HungerBar>
 {
-    // Start is called before the first frame update
-    void Start()
+    CanvasGroup canvasGroup;
+    [SerializeField] Image mask;
+    [HideInInspector] public float originalSize;
+    float alpha;
+
+
+    protected override void Awake()
     {
-        
+        base.Awake ();
+
+        originalSize = mask.rectTransform.rect.width;
     }
 
-    // Update is called once per frame
-    void Update()
+    void Start()
     {
-        
+        canvasGroup = GetComponent<CanvasGroup>();
+    }
+
+    public void Toggle(bool toggle)
+    {
+        gameObject.SetActive(toggle);
+    }
+
+    public void SetValue(float value)
+    {
+        mask.rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, originalSize * value);
     }
 }
