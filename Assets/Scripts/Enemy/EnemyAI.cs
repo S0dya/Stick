@@ -14,10 +14,15 @@ public class EnemyAI : AIPath
 
     Coroutine changingSpeedCoroutine;
 
-    void Start()
+    void Awake()
     {
         settingsAI = GetComponent<SettingsAI>();
         destinationSetter = GetComponent<AIDestinationSetter>();
+    }
+
+    void Start()
+    {
+        maxSpeed = settingsAI.defaultSpeed;
 
         GetRandomPosition();
         destinationSetter.target = settingsAI.point.transform;
@@ -26,6 +31,13 @@ public class EnemyAI : AIPath
     public void OnEndReached()
     {
         settingsAI.amountOfPointsToVisit--;
+
+        StartCoroutine(TakeAnotherPoint());
+
+    }
+    IEnumerator TakeAnotherPoint()
+    {
+        yield return GameManager.Instance.StartCoroutine(GameManager.Instance.Timer(settingsAI.timeForTakingAnotherPoint));
 
         GetRandomPosition();
     }
@@ -46,7 +58,7 @@ public class EnemyAI : AIPath
         settingsAI.point.transform.position = new Vector2(randomX, randomY);
     }
 
-    void OnDrawGizmos()//Test
+    void OnDrawGizmos()//Test del later
     {
         Gizmos.color = Color.red;
         Vector3 minPoint = new Vector3(Settings.minX, Settings.minY, transform.position.z);
@@ -56,6 +68,20 @@ public class EnemyAI : AIPath
         Gizmos.DrawLine(maxPoint, new Vector3(Settings.minX, Settings.maxY, transform.position.z));
         Gizmos.DrawLine(maxPoint, new Vector3(Settings.maxX, Settings.minY, transform.position.z));
     }
+
+    public void Die()
+    {
+        GameManager.Instance.StartCoroutine(GameManager.Instance.Spawn());
+        GameObject.Destroy(this);
+    }
+
+
+
+
+
+
+
+
 
     void OnTriggerEnter2D(Collider2D collision)
     {
@@ -71,11 +97,11 @@ public class EnemyAI : AIPath
     }
     IEnumerator ChangeSpeed()
     {
-        maxSpeed = 6; //change Later
+        maxSpeed = settingsAI.speedOnNearTheTongue; //change Later
 
-        yield return GameManager.Instance.StartCoroutine(GameManager.Instance.Timer(4f));
+        yield return GameManager.Instance.StartCoroutine(GameManager.Instance.Timer(settingsAI.timeForChangingSpeed));
 
-        maxSpeed = 3f;
+        maxSpeed = settingsAI.defaultSpeed;
     }
 
     void OnTriggerExit2D(Collider2D collision)

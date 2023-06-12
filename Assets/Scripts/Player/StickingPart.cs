@@ -6,11 +6,6 @@ public class StickingPart : MonoBehaviour
 {
 
 
-
-
-
-
-
     void OnTriggerExit2D(Collider2D collision)
     {
         if (collision.CompareTag("Edges"))

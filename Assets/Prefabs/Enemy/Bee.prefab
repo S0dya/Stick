@@ -18,8 +18,8 @@ GameObject:
   - component: {fileID: 804656531701492224}
   - component: {fileID: 804656531701492230}
   m_Layer: 12
-  m_Name: Fly
-  m_TagString: Food
+  m_Name: Bee
+  m_TagString: Damage
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -80,7 +80,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 089b3af64b63fa54b8b72ad994791e98, type: 3}
+  m_Sprite: {fileID: 21300000, guid: ee02523c2bdbcf649bd6d9efab3b2e32, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -105,10 +105,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   point: {fileID: 0}
   amountOfPointsToVisit: 20
-  timeForTakingAnotherPoint: 0
-  timeForChangingSpeed: 4
-  defaultSpeed: 3
-  speedOnNearTheTongue: 6
+  timeForTakingAnotherPoint: 1
+  timeForChangingSpeed: 2
+  defaultSpeed: 2
+  speedOnNearTheTongue: 4
 --- !u!114 &804656531701492236
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -125,7 +125,7 @@ MonoBehaviour:
   radius: 0.5
   height: 2
   canMove: 1
-  maxSpeed: 3
+  maxSpeed: 2
   gravity: {x: NaN, y: NaN, z: NaN}
   groundMask:
     serializedVersion: 2
@@ -166,7 +166,7 @@ CircleCollider2D:
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
-  m_Radius: 0.15
+  m_Radius: 0.1
 --- !u!50 &804656531701492238
 Rigidbody2D:
   serializedVersion: 4

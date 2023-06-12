@@ -13,7 +13,7 @@ public static class Settings
     public static float  maxX { get; private set; }
     public static float  maxY { get; private set; }
 
-    public static float maxLengthOfHunger { get; private set; }
+    public static int maxHealth = 2;
 
     public static void Initialize()
     {
@@ -24,7 +24,5 @@ public static class Settings
         maxX = Settings.ScreenWidth / 2f;
         maxY = Settings.ScreenHeight / 2f;
         minY = -Settings.ScreenHeight / 3f;
-
-        maxLengthOfHunger = HungerBar.Instance.originalSize;
     }
 }

@@ -27,6 +27,8 @@ public class Player : SingletonMonobehaviour<Player>
     [HideInInspector] public bool isElongating;
     bool canElongate;
 
+    int health;
+
     protected override void Awake()
     {
         base.Awake();
@@ -43,7 +45,7 @@ public class Player : SingletonMonobehaviour<Player>
 
     void Start()
     {
-
+        health = 2;
     }
 
     void Update()
@@ -72,7 +74,6 @@ public class Player : SingletonMonobehaviour<Player>
                 }
             }
         }
-
 
         if (Input.GetKeyDown(KeyCode.Mouse0))
         {
@@ -157,11 +158,37 @@ public class Player : SingletonMonobehaviour<Player>
         canElongate = true;
     }
 
+    public void MinusHp(bool minus)
+    {
+        if (minus)
+        {
+            //check if < 0 if needed 
+            HPBar.Instance.SetHPImage(health, false);
+
+            health--;
+
+            if (health < 0)
+            {
+                GameManager.Instance.GameOver();
+            }
+        }
+        else
+        {
+            if (health < Settings.maxHealth)
+            {
+                health++;
+
+                HPBar.Instance.SetHPImage(health, true);
+            }
+        }
+    }
+
+
+
     void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.CompareTag("Food"))
         {
-            GameManager.Instance.ChangeHunger(10f);
             GameObject.Destroy(collision.gameObject);
         }
     }
