@@ -14,6 +14,9 @@ public class SettingsAI : MonoBehaviour
     public float timeForTakingAnotherPoint;
     public float timeForChangingSpeed;
 
+    //UI
+    public float score;
+
     //ai
     public float defaultSpeed;
     public float speedOnNearTheTongue;
@@ -21,6 +24,10 @@ public class SettingsAI : MonoBehaviour
     //temp
     float currentSpeed;
 
+    void Awake()
+    {
+        enemyAi = GetComponent<EnemyAI>();
+    }
 
     public void DisableMovement()
     {
@@ -30,5 +37,11 @@ public class SettingsAI : MonoBehaviour
     public void EnableMovement()
     {
         enemyAi.maxSpeed = currentSpeed;
+    }
+
+    public void Die()
+    {
+        GameManager.Instance.StartCoroutine(GameManager.Instance.Spawn());
+        Destroy(gameObject);
     }
 }

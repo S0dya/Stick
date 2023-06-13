@@ -107,6 +107,7 @@ MonoBehaviour:
   amountOfPointsToVisit: 20
   timeForTakingAnotherPoint: 0
   timeForChangingSpeed: 4
+  score: 10
   defaultSpeed: 3
   speedOnNearTheTongue: 6
 --- !u!114 &804656531701492236

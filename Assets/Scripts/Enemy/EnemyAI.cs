@@ -51,8 +51,8 @@ public class EnemyAI : AIPath
         }
         else
         {
-            randomX = Random.Range(-Settings.ScreenWidth, Settings.ScreenWidth);
-            randomY = Random.Range(Settings.minY, Settings.ScreenHeight);
+            randomX = Random.Range(-Settings.ScreenWidth * 1.5f, Settings.ScreenWidth * 1.5f);
+            randomY = Random.Range(Settings.minY, Settings.ScreenHeight * 1.5f);
         }
 
         settingsAI.point.transform.position = new Vector2(randomX, randomY);
@@ -68,13 +68,6 @@ public class EnemyAI : AIPath
         Gizmos.DrawLine(maxPoint, new Vector3(Settings.minX, Settings.maxY, transform.position.z));
         Gizmos.DrawLine(maxPoint, new Vector3(Settings.maxX, Settings.minY, transform.position.z));
     }
-
-    public void Die()
-    {
-        GameManager.Instance.StartCoroutine(GameManager.Instance.Spawn());
-        GameObject.Destroy(this);
-    }
-
 
 
 
@@ -108,7 +101,7 @@ public class EnemyAI : AIPath
     {
         if (collision.CompareTag("Edges"))
         {
-            Destroy(gameObject);
+            settingsAI.Die();
         }
     }
 

@@ -9,25 +9,21 @@ public class Player : SingletonMonobehaviour<Player>
     BoxCollider2D tongueCollider;
     BoxCollider2D nearTongueCollider;
     GameObject tongueObject;
-
-    public float maxSnailLength;
-
-    [SerializeField] float snailMultiplyer; //ToSettingsLater
-    //[HideInInspector]
-    public float snailLength;
-    float colliderLength;
+    Vector2 mousePos;
 
     Coroutine elongateCoroutine;
     Coroutine shortenCoroutine;
-
-    Vector2 mousePos;
+    Coroutine scoreMultiplayerCoroutine;
 
     [HideInInspector] public bool isSticked;
     [HideInInspector] public bool isOutOfTrigger;
     [HideInInspector] public bool isElongating;
-    bool canElongate;
-
+    [HideInInspector] public bool isScoreMultiplaying;
+    
+    [HideInInspector] public float tongueLength;
     int health;
+    bool canElongate;
+    float curMultiplayer;
 
     protected override void Awake()
     {
@@ -46,6 +42,7 @@ public class Player : SingletonMonobehaviour<Player>
     void Start()
     {
         health = 2;
+        curMultiplayer = 1f;
     }
 
     void Update()
@@ -110,16 +107,16 @@ public class Player : SingletonMonobehaviour<Player>
 
         while (!isOutOfTrigger && !isSticked)
         {
-            tongueLine.SetPosition(0, new Vector3(snailLength, 0f, 0f));
+            tongueLine.SetPosition(0, new Vector3(tongueLength, 0f, 0f));
 
-            tongueCollider.offset = new Vector2(snailLength /2 -0.01f, 0f);
-            tongueCollider.size = new Vector2(snailLength - 0.01f, 0.14f);
-            nearTongueCollider.offset = new Vector2(snailLength /2 -0.01f, 0f);
-            nearTongueCollider.size = new Vector2(snailLength -0.01f, 0.14f);
+            tongueCollider.offset = new Vector2(tongueLength /2 -0.01f, 0f);
+            tongueCollider.size = new Vector2(tongueLength - 0.01f, 0.14f);
+            nearTongueCollider.offset = new Vector2(tongueLength /2 -0.01f, 0f);
+            nearTongueCollider.size = new Vector2(tongueLength -0.01f, 0.14f);
 
             Tongue.Instance.StickingPart.transform.position = transform.TransformPoint(tongueLine.GetPosition(0));
 
-            snailLength += snailMultiplyer * Time.deltaTime;
+            tongueLength += Settings.tongueMultiplyer * Time.deltaTime;
             yield return null;
         }
 
@@ -145,13 +142,13 @@ public class Player : SingletonMonobehaviour<Player>
     }
     IEnumerator ShortenTongue()
     {
-        while (snailLength > -0.1)
+        while (tongueLength > -0.1)
         {
-            tongueLine.SetPosition(0, new Vector3(snailLength, 0f, 0f));
+            tongueLine.SetPosition(0, new Vector3(tongueLength, 0f, 0f));
 
             Tongue.Instance.StickingPart.transform.position = transform.TransformPoint(tongueLine.GetPosition(0));
 
-            snailLength -= (snailMultiplyer + snailMultiplyer / 3) * Time.deltaTime;
+            tongueLength -= (Settings.tongueMultiplyer * 1.3f) * Time.deltaTime;
             yield return null;
         }
 
@@ -183,14 +180,28 @@ public class Player : SingletonMonobehaviour<Player>
         }
     }
 
-
-
     void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.CompareTag("Food"))
         {
-            GameObject.Destroy(collision.gameObject);
+            if (scoreMultiplayerCoroutine != null)
+            {
+                curMultiplayer += Settings.scoreMultiplyer;
+                StopCoroutine(scoreMultiplayerCoroutine);
+            }
+            scoreMultiplayerCoroutine = StartCoroutine(ScoreMultiplayer());
+            SettingsAI settingsAi = collision.gameObject.GetComponent<SettingsAI>();
+            GameMenu.Instance.ChangeScore(settingsAi.score * curMultiplayer);
+            settingsAi.Die();
+            isScoreMultiplaying = true;
         }
+    }
+    IEnumerator ScoreMultiplayer()
+    {
+        yield return GameManager.Instance.StartCoroutine(GameManager.Instance.Timer(Settings.timeWhileScoreMultiplying));
+
+        curMultiplayer = 1f;
+        isScoreMultiplaying = false;
     }
 
 }

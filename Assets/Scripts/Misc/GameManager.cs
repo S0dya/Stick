@@ -5,6 +5,7 @@ using UnityEngine;
 public class GameManager : SingletonMonobehaviour<GameManager>
 {
     BoxCollider2D edgesCollider;
+    BoxCollider2D edgesColliderForTongue;
 
     //Gameplay
     Transform enemyParent;
@@ -37,6 +38,7 @@ public class GameManager : SingletonMonobehaviour<GameManager>
         pointParent = GameObject.FindGameObjectWithTag("PointParentTransform").transform;
 
         edgesCollider = GameObject.FindGameObjectWithTag("Edges").GetComponent<BoxCollider2D>();
+        edgesColliderForTongue = GameObject.FindGameObjectWithTag("EdgesForTongue").GetComponent<BoxCollider2D>();
     }
 
     void Start()
@@ -53,6 +55,7 @@ public class GameManager : SingletonMonobehaviour<GameManager>
     void DefineEdgesOfScreen()
     {
         edgesCollider.size = new Vector2(Settings.ScreenWidth * 1.6f, Settings.ScreenHeight * 1.6f);
+        edgesColliderForTongue.size = new Vector2(Settings.ScreenWidth * 1.1f, Settings.ScreenHeight * 1.1f);
     }
 
     public IEnumerator Spawn()
@@ -89,6 +92,7 @@ public class GameManager : SingletonMonobehaviour<GameManager>
     public void GameOver()
     {
         Debug.Log("GameOver");
+        GameMenu.Instance.Stop();
     }
 
     public void OpenMenu()
