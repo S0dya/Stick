@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class Tongue : SingletonMonobehaviour<Tongue>
 {
-
     Player player;
     public GameObject StickingPart;
+
 
     protected override void Awake()
     {

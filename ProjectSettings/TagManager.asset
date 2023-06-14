@@ -17,6 +17,8 @@ TagManager:
   - Damage
   - EdgesForTongue
   - Score
+  - GameOverBar
+  - ButtonsBar
   layers:
   - Default
   - TransparentFX

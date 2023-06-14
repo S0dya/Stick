@@ -22,34 +22,44 @@ public class GameManager : SingletonMonobehaviour<GameManager>
     [SerializeField] float maxBees;
     [SerializeField] float maxButterflies;
 
-    SettingsAI[] enemySettingsAIArray;
+    public SettingsAI[] enemySettingsAIArray;
 
-    bool isMenuOpen;
+    [HideInInspector] public bool isMenuOpen;
 
     //Logic
 
     protected override void Awake()
     {
         base.Awake();
-        Settings.Initialize();
-        AstarPath.active.Scan();
 
         enemyParent = GameObject.FindGameObjectWithTag("EnemyParentTransform").transform;
         pointParent = GameObject.FindGameObjectWithTag("PointParentTransform").transform;
-
         edgesCollider = GameObject.FindGameObjectWithTag("Edges").GetComponent<BoxCollider2D>();
         edgesColliderForTongue = GameObject.FindGameObjectWithTag("EdgesForTongue").GetComponent<BoxCollider2D>();
     }
 
     void Start()
     {
+        StartGame();//DelLater
+
+    }
+
+    void Update()//delLtaer
+    {
+
+    }
+
+    public void StartGame()
+    {
+        Settings.Initialize();
+        AstarPath.active.Scan();
+
         DefineEdgesOfScreen();
 
         for (int i = 0; i < 15; i++)
         {
             StartCoroutine(Spawn());
         }
-
     }
 
     void DefineEdgesOfScreen()
@@ -80,7 +90,7 @@ public class GameManager : SingletonMonobehaviour<GameManager>
                 settingsAI = beeGameObject.GetComponent<SettingsAI>();
                 break;
             default:
-                Debug.Log("switch");
+                Debug.Log("switch at gm");
                 break;
         }
 
@@ -89,14 +99,9 @@ public class GameManager : SingletonMonobehaviour<GameManager>
     }
 
 
-    public void GameOver()
-    {
-        Debug.Log("GameOver");
-        GameMenu.Instance.Stop();
-    }
-
     public void OpenMenu()
     {
+        isMenuOpen = true;
         enemySettingsAIArray = GameObject.FindObjectsOfType<SettingsAI>();
 
         foreach (SettingsAI ai in enemySettingsAIArray)
@@ -106,11 +111,27 @@ public class GameManager : SingletonMonobehaviour<GameManager>
     }
     public void CloseMenu()
     {
+        isMenuOpen = false;
         foreach (SettingsAI ai in enemySettingsAIArray)
         {
             ai.EnableMovement();
         }
     }
+
+    public void ClearGame()
+    {
+        StopAllCoroutines();
+        if (enemySettingsAIArray == null)
+            return;
+
+        foreach (SettingsAI ai in enemySettingsAIArray)
+        {
+            ai.Clear();
+        }
+
+        enemySettingsAIArray = null;
+    }
+
 
     public IEnumerator Timer(float duration)
     {
@@ -129,4 +150,6 @@ public class GameManager : SingletonMonobehaviour<GameManager>
             }
         }
     }   
+
+
 }

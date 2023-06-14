@@ -23,6 +23,7 @@ public class SettingsAI : MonoBehaviour
 
     //temp
     float currentSpeed;
+    Coroutine SpawnCoroutine;
 
     void Awake()
     {
@@ -32,16 +33,21 @@ public class SettingsAI : MonoBehaviour
     public void DisableMovement()
     {
         currentSpeed = enemyAi.maxSpeed;
-        enemyAi.maxSpeed = 0;
+        enemyAi.canMove= false;
     }
     public void EnableMovement()
     {
-        enemyAi.maxSpeed = currentSpeed;
+        enemyAi.canMove = true;
     }
 
     public void Die()
     {
-        GameManager.Instance.StartCoroutine(GameManager.Instance.Spawn());
+        SpawnCoroutine = GameManager.Instance.StartCoroutine(GameManager.Instance.Spawn());
+        Destroy(gameObject);
+    }
+
+    public void Clear()
+    {
         Destroy(gameObject);
     }
 }

@@ -16,4 +16,12 @@ public class HPBar : SingletonMonobehaviour<HPBar>
     {
         hpImages[index].enabled = val;
     }
+
+    public void ResetHPImages()
+    {
+        foreach (Image i in hpImages)
+        {
+            i.enabled = true;
+        }
+    }
 }

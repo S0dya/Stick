@@ -89,7 +89,7 @@ public class EnemyAI : AIPath
         }
     }
     IEnumerator ChangeSpeed()
-    {
+    { 
         maxSpeed = settingsAI.speedOnNearTheTongue; //change Later
 
         yield return GameManager.Instance.StartCoroutine(GameManager.Instance.Timer(settingsAI.timeForChangingSpeed));

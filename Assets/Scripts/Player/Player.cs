@@ -10,20 +10,18 @@ public class Player : SingletonMonobehaviour<Player>
     BoxCollider2D nearTongueCollider;
     GameObject tongueObject;
     Vector2 mousePos;
+    Camera camera;
 
     Coroutine elongateCoroutine;
     Coroutine shortenCoroutine;
-    Coroutine scoreMultiplayerCoroutine;
 
     [HideInInspector] public bool isSticked;
     [HideInInspector] public bool isOutOfTrigger;
     [HideInInspector] public bool isElongating;
-    [HideInInspector] public bool isScoreMultiplaying;
-    
-    [HideInInspector] public float tongueLength;
-    int health;
     bool canElongate;
-    float curMultiplayer;
+
+    [HideInInspector] public float tongueLength;
+    [HideInInspector] public int health;
 
     protected override void Awake()
     {
@@ -34,23 +32,18 @@ public class Player : SingletonMonobehaviour<Player>
         tongueLine = tongueObject.GetComponent<LineRenderer>();
         tongueCollider = tongueObject.GetComponent<BoxCollider2D>();
         rigidbody = GetComponent<Rigidbody2D>();
-
+        camera = Camera.main;
 
         tongueCollider.enabled = false;
     }
 
     void Start()
     {
-        health = 2;
-        curMultiplayer = 1f;
     }
 
     void Update()
     {
-
         TouchInput();
-
-
     }
 
     void TouchInput()
@@ -63,6 +56,14 @@ public class Player : SingletonMonobehaviour<Player>
 
                 if (touch.phase == TouchPhase.Began)
                 {
+                    mousePos = camera.ScreenToWorldPoint(Input.mousePosition);
+                    float touchYPercent = touch.position.y / Screen.height;
+
+                    float targetYPercent = 0.3f;
+                    if (touchYPercent <= targetYPercent)
+                    {
+                        Debug.Log("Touch within target Y percentage" + touchYPercent + " asdasd " + targetYPercent);
+                    }
                     Elongate();
                 }
                 else if (touch.phase == TouchPhase.Ended || touch.phase == TouchPhase.Canceled)
@@ -74,7 +75,11 @@ public class Player : SingletonMonobehaviour<Player>
 
         if (Input.GetKeyDown(KeyCode.Mouse0))
         {
-            Elongate();
+            mousePos = camera.ScreenToWorldPoint(Input.mousePosition);
+            if (Input.mousePosition.y / Settings.heightForInput > Settings.blindZoneOfY)
+            {
+                Elongate();
+            }
         }
         else if (Input.GetKeyUp(KeyCode.Mouse0))
         {
@@ -90,7 +95,6 @@ public class Player : SingletonMonobehaviour<Player>
             return;
         }
 
-        mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         canElongate = false;
         isElongating = true;
         tongueCollider.enabled = true;
@@ -107,6 +111,10 @@ public class Player : SingletonMonobehaviour<Player>
 
         while (!isOutOfTrigger && !isSticked)
         {
+            if (GameManager.Instance.isMenuOpen)
+            {
+                yield return null;
+            }
             tongueLine.SetPosition(0, new Vector3(tongueLength, 0f, 0f));
 
             tongueCollider.offset = new Vector2(tongueLength /2 -0.01f, 0f);
@@ -126,6 +134,7 @@ public class Player : SingletonMonobehaviour<Player>
 
     void Shorten()
     {
+        tongueCollider.enabled = false;
         if (elongateCoroutine != null)
         {
             StopCoroutine(elongateCoroutine);
@@ -135,7 +144,6 @@ public class Player : SingletonMonobehaviour<Player>
         isSticked = false;
         isElongating = false;
 
-        tongueCollider.enabled = false;
         nearTongueCollider.enabled = false;
 
         shortenCoroutine = StartCoroutine(ShortenTongue());
@@ -159,14 +167,16 @@ public class Player : SingletonMonobehaviour<Player>
     {
         if (minus)
         {
-            //check if < 0 if needed 
-            HPBar.Instance.SetHPImage(health, false);
-
-            health--;
-
-            if (health < 0)
+            if (health >= 0)
             {
-                GameManager.Instance.GameOver();
+                HPBar.Instance.SetHPImage(health, false);
+
+                health--;
+
+                if (health < 0)
+                {
+                    GameMenu.Instance.GameOver();
+                }
             }
         }
         else
@@ -180,28 +190,17 @@ public class Player : SingletonMonobehaviour<Player>
         }
     }
 
-    void OnTriggerEnter2D(Collider2D collision)
+    void OnEnable()
     {
-        if (collision.CompareTag("Food"))
-        {
-            if (scoreMultiplayerCoroutine != null)
-            {
-                curMultiplayer += Settings.scoreMultiplyer;
-                StopCoroutine(scoreMultiplayerCoroutine);
-            }
-            scoreMultiplayerCoroutine = StartCoroutine(ScoreMultiplayer());
-            SettingsAI settingsAi = collision.gameObject.GetComponent<SettingsAI>();
-            GameMenu.Instance.ChangeScore(settingsAi.score * curMultiplayer);
-            settingsAi.Die();
-            isScoreMultiplaying = true;
-        }
+        transform.rotation = Quaternion.AngleAxis(90f, Vector3.forward);
+        tongueLine.SetPosition(0, new Vector3(tongueLength, 0f, 0f));
+        tongueCollider.offset = new Vector2(tongueLength / 2 - 0.01f, 0f);
+        tongueCollider.size = new Vector2(tongueLength - 0.01f, 0.14f);
+        nearTongueCollider.offset = new Vector2(tongueLength / 2 - 0.01f, 0f);
+        nearTongueCollider.size = new Vector2(tongueLength - 0.01f, 0.14f);
     }
-    IEnumerator ScoreMultiplayer()
+    void OnDisable()
     {
-        yield return GameManager.Instance.StartCoroutine(GameManager.Instance.Timer(Settings.timeWhileScoreMultiplying));
-
-        curMultiplayer = 1f;
-        isScoreMultiplaying = false;
+        StopAllCoroutines();
     }
-
 }
