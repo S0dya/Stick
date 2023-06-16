@@ -7,6 +7,9 @@ public static class Settings
     //Game 
 
     public static float Money;
+    public static bool IsMusicEnabled;
+    public static int GekoSkinIndex;
+    public static int SetGekoSkinIndex;
 
     //Screen
     public static float ScreenWidth { get; private set; }
@@ -51,5 +54,8 @@ public static class Settings
         tongueMultiplyer = 30f;
         scoreMultiplyer = 0.2f;
         timeWhileScoreMultiplying = 1f;
+
+        GekoSkinIndex = 0;//DelLater
+        SetGekoSkinIndex = 0;//DelLater
     }
 }

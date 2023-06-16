@@ -13,7 +13,9 @@ public class GameMenu : SingletonMonobehaviour<GameMenu>
     Image backgroundImage;
     Camera camera;
     GameObject menuObject;
+    
     Coroutine moveCamDownCoroutine;
+
 
     int currentScore;
 
@@ -65,7 +67,7 @@ public class GameMenu : SingletonMonobehaviour<GameMenu>
 
     public void Music()
     {
-
+        Menu.Instance.EnableMusic(!Settings.IsMusicEnabled);
     }
 
     public void Home()

@@ -60,7 +60,7 @@ public class GameManager : SingletonMonobehaviour<GameManager>
     void DefineEdgesOfScreen()
     {
         edgesCollider.size = new Vector2(Settings.ScreenWidth * 1.6f, Settings.ScreenHeight * 1.6f);
-        edgesColliderForTongue.size = new Vector2(Settings.ScreenWidth * 1.1f, Settings.ScreenHeight * 1.1f);
+        edgesColliderForTongue.size = new Vector2(Settings.ScreenWidth * 1.2f, Settings.ScreenHeight * 1.2f);
     }
 
     public IEnumerator Spawn()

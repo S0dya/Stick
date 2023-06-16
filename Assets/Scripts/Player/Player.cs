@@ -17,7 +17,6 @@ public class Player : SingletonMonobehaviour<Player>
 
     [HideInInspector] public bool isSticked;
     [HideInInspector] public bool isOutOfTrigger;
-    [HideInInspector] public bool isElongating;
     bool canElongate = true;
 
     [HideInInspector] public float tongueLength;
@@ -39,10 +38,12 @@ public class Player : SingletonMonobehaviour<Player>
 
     void Start()
     {
+        Shorten();
     }
 
     void Update()
     {
+
         TouchInput();
     }
 
@@ -82,10 +83,6 @@ public class Player : SingletonMonobehaviour<Player>
                 Elongate();
             }
         }
-        else if (Input.GetKeyUp(KeyCode.Mouse0))
-        {
-            Shorten();
-        }
 
     }
 
@@ -97,7 +94,6 @@ public class Player : SingletonMonobehaviour<Player>
         }
 
         canElongate = false;
-        isElongating = true;
         tongueCollider.enabled = true;
         nearTongueCollider.enabled = true;
 
@@ -110,7 +106,7 @@ public class Player : SingletonMonobehaviour<Player>
         float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
         transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
 
-        while (!isOutOfTrigger && !isSticked)
+        while (!isOutOfTrigger && !isSticked && !Input.GetKeyUp(KeyCode.Mouse0))
         {
             if (GameManager.Instance.isMenuOpen)
             {
@@ -141,9 +137,6 @@ public class Player : SingletonMonobehaviour<Player>
             StopCoroutine(elongateCoroutine);
         }
 
-        isOutOfTrigger = false;
-        isSticked = false;
-        isElongating = false;
 
         nearTongueCollider.enabled = false;
 
@@ -161,6 +154,8 @@ public class Player : SingletonMonobehaviour<Player>
             yield return null;
         }
 
+        isOutOfTrigger = false;
+        isSticked = false;
         canElongate = true;
     }
 

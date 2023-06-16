@@ -23,6 +23,9 @@ TagManager:
   - GameMenu
   - MenuBottomButtonsBar
   - GameOverAndPause
+  - CancelledMusicObject
+  - BlockedSkin
+  - SetSkinImage
   layers:
   - Default
   - TransparentFX
