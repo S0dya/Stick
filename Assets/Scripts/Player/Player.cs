@@ -18,7 +18,7 @@ public class Player : SingletonMonobehaviour<Player>
     [HideInInspector] public bool isSticked;
     [HideInInspector] public bool isOutOfTrigger;
     [HideInInspector] public bool isElongating;
-    bool canElongate;
+    bool canElongate = true;
 
     [HideInInspector] public float tongueLength;
     [HideInInspector] public int health;
@@ -72,6 +72,7 @@ public class Player : SingletonMonobehaviour<Player>
                 }
             }
         }
+
 
         if (Input.GetKeyDown(KeyCode.Mouse0))
         {

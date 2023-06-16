@@ -24,10 +24,16 @@ public class SettingsAI : MonoBehaviour
     //temp
     float currentSpeed;
     Coroutine SpawnCoroutine;
+    [HideInInspector] public bool isDestroying;
 
     void Awake()
     {
         enemyAi = GetComponent<EnemyAI>();
+    }
+
+    void Start()
+    {
+        GameManager.Instance.enemySettingsAIList.Add(this);
     }
 
     public void DisableMovement()
@@ -43,11 +49,14 @@ public class SettingsAI : MonoBehaviour
     public void Die()
     {
         SpawnCoroutine = GameManager.Instance.StartCoroutine(GameManager.Instance.Spawn());
+        GameManager.Instance.enemySettingsAIList.Remove(this);
         Destroy(gameObject);
     }
 
     public void Clear()
     {
+        isDestroying = true;
+        GameManager.Instance.enemySettingsAIList.Remove(this);
         Destroy(gameObject);
     }
 }

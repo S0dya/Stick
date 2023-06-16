@@ -13,4 +13,11 @@ public class StickingPart : MonoBehaviour
             Player.Instance.isOutOfTrigger = true;
         }
     }
+    void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.CompareTag("EdgesForTongue"))
+        {
+            Player.Instance.isOutOfTrigger = false;
+        }
+    }
 }

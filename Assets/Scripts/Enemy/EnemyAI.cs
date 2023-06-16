@@ -99,7 +99,7 @@ public class EnemyAI : AIPath
 
     void OnTriggerExit2D(Collider2D collision)
     {
-        if (collision.CompareTag("Edges"))
+        if (collision.CompareTag("Edges") && !settingsAI.isDestroying)
         {
             settingsAI.Die();
         }

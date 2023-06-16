@@ -38,6 +38,17 @@ public class PlayerTrigger : SingletonMonobehaviour<PlayerTrigger>
             settingsAi.Die();
             isScoreMultiplaying = true;
         }
+        if (collision.CompareTag("Damage"))
+        {
+            if (scoreMultiplayerCoroutine != null)
+            {
+                StopCoroutine(scoreMultiplayerCoroutine);
+            }
+            SettingsAI settingsAi = collision.gameObject.GetComponent<SettingsAI>();
+            GameMenu.Instance.ChangeScore(settingsAi.score * curMultiplayer);
+            settingsAi.Die();
+            player.MinusHp(true);
+        }
     }
     IEnumerator ScoreMultiplayer()
     {

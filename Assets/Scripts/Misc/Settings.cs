@@ -4,6 +4,10 @@ using UnityEngine;
 
 public static class Settings
 {
+    //Game 
+
+    public static float Money;
+
     //Screen
     public static float ScreenWidth { get; private set; }
     public static float ScreenHeight { get; private set; }
@@ -17,6 +21,8 @@ public static class Settings
 
     public static float blindZoneOfY { get; private set; }
 
+    public static float posYForCamDown { get; private set; }
+    public static float posYForCamUp { get; private set; }
 
     //Player
     public static int maxHealth { get; private set; }
@@ -37,6 +43,9 @@ public static class Settings
         minY = -ScreenHeight / 3f;
 
         blindZoneOfY = 0.1f;
+
+        posYForCamDown = -4.7f;
+        posYForCamUp = 0.7f;
 
         maxHealth = 2;
         tongueMultiplyer = 30f;

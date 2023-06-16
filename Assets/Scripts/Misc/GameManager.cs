@@ -22,7 +22,7 @@ public class GameManager : SingletonMonobehaviour<GameManager>
     [SerializeField] float maxBees;
     [SerializeField] float maxButterflies;
 
-    public SettingsAI[] enemySettingsAIArray;
+    public List<SettingsAI> enemySettingsAIList = new List<SettingsAI>();
 
     [HideInInspector] public bool isMenuOpen;
 
@@ -38,12 +38,6 @@ public class GameManager : SingletonMonobehaviour<GameManager>
         edgesColliderForTongue = GameObject.FindGameObjectWithTag("EdgesForTongue").GetComponent<BoxCollider2D>();
     }
 
-    void Start()
-    {
-        StartGame();//DelLater
-
-    }
-
     void Update()//delLtaer
     {
 
@@ -55,6 +49,7 @@ public class GameManager : SingletonMonobehaviour<GameManager>
         AstarPath.active.Scan();
 
         DefineEdgesOfScreen();
+        enemySettingsAIList = new List<SettingsAI>();
 
         for (int i = 0; i < 15; i++)
         {
@@ -102,9 +97,8 @@ public class GameManager : SingletonMonobehaviour<GameManager>
     public void OpenMenu()
     {
         isMenuOpen = true;
-        enemySettingsAIArray = GameObject.FindObjectsOfType<SettingsAI>();
 
-        foreach (SettingsAI ai in enemySettingsAIArray)
+        foreach (SettingsAI ai in enemySettingsAIList)
         {
             ai.DisableMovement();
         }
@@ -112,7 +106,7 @@ public class GameManager : SingletonMonobehaviour<GameManager>
     public void CloseMenu()
     {
         isMenuOpen = false;
-        foreach (SettingsAI ai in enemySettingsAIArray)
+        foreach (SettingsAI ai in enemySettingsAIList)
         {
             ai.EnableMovement();
         }
@@ -121,31 +115,24 @@ public class GameManager : SingletonMonobehaviour<GameManager>
     public void ClearGame()
     {
         StopAllCoroutines();
-        if (enemySettingsAIArray == null)
-            return;
-
-        foreach (SettingsAI ai in enemySettingsAIArray)
+        while (enemySettingsAIList.Count > 0)
         {
-            ai.Clear();
+            enemySettingsAIList[0].Clear();
         }
-
-        enemySettingsAIArray = null;
     }
 
 
     public IEnumerator Timer(float duration)
     {
-        float elapsedTime = 0f;
-
-        while (elapsedTime < duration)
+        while (duration > 0)
         {
             if (isMenuOpen)
             {
-                yield return null; // Skip frame update if menu is open
+                yield return null;
             }
             else
             {
-                elapsedTime += Time.deltaTime;
+                duration -= Time.deltaTime;
                 yield return null;
             }
         }

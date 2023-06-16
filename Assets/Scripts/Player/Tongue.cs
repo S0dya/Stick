@@ -19,19 +19,15 @@ public class Tongue : SingletonMonobehaviour<Tongue>
 
     void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.CompareTag("Damage"))
+        if (collision.CompareTag("Damage") || collision.CompareTag("Food"))
         {
             player.isSticked = true;
 
-            player.MinusHp(true);
-        }
-        else if (collision.CompareTag("Food"))
-        {
-            player.isSticked = true;
+            EnemyAI enemyAi = collision.gameObject.GetComponent<EnemyAI>();
+            enemyAi.canMove = false;
 
             collision.transform.SetParent(StickingPart.transform);
         }
-        
     }
     
 

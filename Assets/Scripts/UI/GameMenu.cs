@@ -11,6 +11,9 @@ public class GameMenu : SingletonMonobehaviour<GameMenu>
     GameObject buttonsBarObject;
     GameObject gameOverBarObject;
     Image backgroundImage;
+    Camera camera;
+    GameObject menuObject;
+    Coroutine moveCamDownCoroutine;
 
     int currentScore;
 
@@ -23,13 +26,25 @@ public class GameMenu : SingletonMonobehaviour<GameMenu>
         scoreText = GameObject.FindGameObjectWithTag("Score").GetComponent<TextMeshProUGUI>();
         buttonsBarObject = GameObject.FindGameObjectWithTag("ButtonsBar");
         gameOverBarObject = GameObject.FindGameObjectWithTag("GameOverBar");
-        backgroundImage = GetComponent<Image>();
+        backgroundImage = GameObject.FindGameObjectWithTag("GameOverAndPause").GetComponent<Image>();
+        camera = Camera.main;
+        menuObject = GameObject.FindGameObjectWithTag("Menu");
     }
 
     void Start()
     {
-        ClearGame();
     }
+
+    void OnEnable()
+    {
+        player.enabled = true;
+    }
+    void OnDisable()
+    {
+        player.enabled = false;
+    }
+
+
 
     //buttonsMethods
     public void Stop()
@@ -55,14 +70,15 @@ public class GameMenu : SingletonMonobehaviour<GameMenu>
 
     public void Home()
     {
+        ClearGame();
+        moveCamDownCoroutine = StartCoroutine(MoveCamDown());//Del Coroueine Later
 
     }
 
     public void Restart()
     {
         ClearGame();
-        GameManager.Instance.isMenuOpen = false;
-
+        GameManager.Instance.StartGame();
         player.enabled = true;
     }
 
@@ -71,10 +87,12 @@ public class GameMenu : SingletonMonobehaviour<GameMenu>
 
     }
 
-    //methods
+    //gameMethods
     public void GameOver()
     {
         ToggleGameOverBar(true);
+
+        Menu.Instance.CountMoney(currentScore);
 
         player.enabled = false;
         GameManager.Instance.OpenMenu();
@@ -97,23 +115,41 @@ public class GameMenu : SingletonMonobehaviour<GameMenu>
     }
 
 
-    
+    IEnumerator MoveCamDown()
+    {
+        float curY = camera.transform.position.y;
+        while (camera.transform.position.y > Settings.posYForCamDown + 0.7f)
+        {
+            float y = Mathf.Lerp(camera.transform.position.y, Settings.posYForCamDown, 0.05f);
 
+            camera.transform.position = new Vector2(camera.transform.position.x, y);
+            yield return null;
+        }
+
+        menuObject.SetActive(true);
+        gameObject.SetActive(false);
+        yield return null;
+    }
+
+    //inGameMethods
     public void ChangeScore(float value)
     {
         int endValue = Mathf.FloorToInt(value);
         currentScore += endValue;
+        currentScore = Mathf.Max(currentScore, 0);
         scoreText.text = currentScore.ToString();
     }
 
     public void ToggleGameOverBar(bool val)
     {
+        GameManager.Instance.isMenuOpen = val;
         backgroundImage.enabled = val;
         gameOverBarObject.SetActive(val);
     }
 
     public void ToggleButtonsBar(bool val)
     {
+        GameManager.Instance.isMenuOpen = val;
         backgroundImage.enabled = val;
         buttonsBarObject.SetActive(val);
     }
