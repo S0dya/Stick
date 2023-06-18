@@ -10,21 +10,29 @@ public class Menu : SingletonMonobehaviour<Menu>
     [SerializeField] Sprite[] GekoSkins;
     [SerializeField] int[] skinsPrices;
 
+    [SerializeField] Sprite[] backgrounds;
+    [SerializeField] int[] backgroundPrices;
+
     Camera camera;
     GameObject menuBottomButtonsBarObject;
     GameObject gameMenuObject;
     GameObject[] cancelledMusicObjects;
     List<Image> cancelledMusicImages = new List<Image>();
     Image blockedSkin;
-    Image setButtonGameImage;
+    Image setSkinImage;
+    GameObject menuObject;
+    Image blockedBackground;
+    Image backgroundImage;
+    Image setBackgroundImage;
 
+    SpriteRenderer background;
     SpriteRenderer playerSkin;
 
     Coroutine moveCamUpCoroutine;
 
 
     void Awake()
-    {
+    {   
         base.Awake();
 
         camera = Camera.main;
@@ -35,12 +43,28 @@ public class Menu : SingletonMonobehaviour<Menu>
             cancelledMusicImages.Add(go.GetComponent<Image>());
         playerSkin = GameObject.FindGameObjectWithTag("Player").GetComponent<SpriteRenderer>();
         blockedSkin = GameObject.FindGameObjectWithTag("BlockedSkin").GetComponent<Image>();
-        setButtonGameImage = GameObject.FindGameObjectWithTag("SetSkinImage").GetComponent<Image>();
+        setSkinImage = GameObject.FindGameObjectWithTag("SetSkinImage").GetComponent<Image>();
+        menuObject = GameObject.FindGameObjectWithTag("Menu");
+        blockedBackground = GameObject.FindGameObjectWithTag("BlockedBackground").GetComponent<Image>();
+        setBackgroundImage = GameObject.FindGameObjectWithTag("SetBackgroundImage").GetComponent<Image>();
+        backgroundImage = GameObject.FindGameObjectWithTag("BackgroundImage").GetComponent<Image>();
+        background = GameObject.FindGameObjectWithTag("Background").GetComponent<SpriteRenderer>();
+
     }
 
     void Start()
     {
+        OpenMenu();
+        
+    }
+
+    public void OpenMenu()
+    {
+        menuObject.SetActive(true);
         gameMenuObject.SetActive(false);
+        LockSkin(false);
+        Settings.GekoSkinIndex = Settings.SetGekoSkinIndex;
+        SetSkin(Settings.GekoSkinIndex);
     }
 
     //ButtonsMethods
@@ -64,19 +88,55 @@ public class Menu : SingletonMonobehaviour<Menu>
         }
     }
 
-    public void SetButton()
+    public void LeftSlideBackground()
+    {
+        if (Settings.BackgroundIndex > 0)
+        {
+            Settings.BackgroundIndex--;
+            TestBackground(Settings.BackgroundIndex);
+            LockBackground(backgroundPrices[Settings.BackgroundIndex] > 0);
+        }
+    }
+
+    public void RightSlideBackground()
+    {
+        if (Settings.BackgroundIndex < backgrounds.Length - 1)
+        {
+            Settings.BackgroundIndex++;
+            TestBackground(Settings.BackgroundIndex);
+            LockBackground(backgroundPrices[Settings.BackgroundIndex] > 0);
+        }
+    }
+
+    public void SetSkinButton()
     {
         Settings.SetGekoSkinIndex = Settings.GekoSkinIndex;
         SetSkin(Settings.SetGekoSkinIndex);
     }
 
-    public void BuyButton()
+    public void BuySkinButton()
     {
         if (Settings.Money >= skinsPrices[Settings.GekoSkinIndex])
         {
             Settings.Money -= skinsPrices[Settings.GekoSkinIndex];
             skinsPrices[Settings.GekoSkinIndex] = 0;
             LockSkin(false);
+        }
+    }
+
+    public void SetBackgroundButton()
+    {
+        Settings.SetBackgroundIndex = Settings.BackgroundIndex;
+        SetBackground(Settings.SetBackgroundIndex);
+    }
+
+    public void BuyBackgroundButton()
+    {
+        if (Settings.Money >= backgroundPrices[Settings.BackgroundIndex])
+        {
+            Settings.Money -= backgroundPrices[Settings.BackgroundIndex];
+            backgroundPrices[Settings.BackgroundIndex] = 0;
+            LockBackground(false);
         }
     }
 
@@ -99,13 +159,31 @@ public class Menu : SingletonMonobehaviour<Menu>
     public void LockSkin(bool val)
     {
         blockedSkin.enabled = val;
-        setButtonGameImage.enabled = !val;
+        setSkinImage.enabled = !val;
+    }
+    public void LockBackground(bool val)
+    {
+        blockedBackground.enabled = val;
+        setBackgroundImage.enabled = !val;
     }
 
-     public void SetSkin(int i)
+    public void SetSkin(int i)
     {
         playerSkin.sprite = GekoSkins[i];
     }
+    public void TestBackground(int i)
+    {
+        backgroundImage.sprite = backgrounds[i];
+    }
+    public void SetBackground(int i)
+    {
+        background.sprite = backgrounds[i];
+    }
+
+
+
+
+
 
     public void CountMoney(float score)
     {
@@ -119,6 +197,7 @@ public class Menu : SingletonMonobehaviour<Menu>
     }
     IEnumerator MoveCamUp()
     {
+        CloseMenu();
         float curY = camera.transform.position.y;
         while (camera.transform.position.y < Settings.posYForCamUp - 0.7f)
         {
@@ -128,14 +207,19 @@ public class Menu : SingletonMonobehaviour<Menu>
             yield return null;
         }
 
+        
         StartGame();
         yield return null;
+    }
+
+    void CloseMenu()
+    {
+        menuObject.SetActive(false);
     }
 
     void StartGame()
     {
         gameMenuObject.SetActive(true);
-        gameObject.SetActive(false);
         GameMenu.Instance.ClearGame();
         GameManager.Instance.StartGame();
     }

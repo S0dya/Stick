@@ -6,13 +6,13 @@ using TMPro;
 
 public class GameMenu : SingletonMonobehaviour<GameMenu>
 {
+    GameObject playerObject;
     Player player;
     TextMeshProUGUI scoreText;
     GameObject buttonsBarObject;
     GameObject gameOverBarObject;
     Image backgroundImage;
     Camera camera;
-    GameObject menuObject;
     
     Coroutine moveCamDownCoroutine;
 
@@ -24,13 +24,13 @@ public class GameMenu : SingletonMonobehaviour<GameMenu>
     {
         base.Awake();
 
-        player = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
+        playerObject = GameObject.FindGameObjectWithTag("Player");
+        player = playerObject.GetComponent<Player>();
         scoreText = GameObject.FindGameObjectWithTag("Score").GetComponent<TextMeshProUGUI>();
         buttonsBarObject = GameObject.FindGameObjectWithTag("ButtonsBar");
         gameOverBarObject = GameObject.FindGameObjectWithTag("GameOverBar");
         backgroundImage = GameObject.FindGameObjectWithTag("GameOverAndPause").GetComponent<Image>();
         camera = Camera.main;
-        menuObject = GameObject.FindGameObjectWithTag("Menu");
     }
 
     void Start()
@@ -73,13 +73,14 @@ public class GameMenu : SingletonMonobehaviour<GameMenu>
     public void Home()
     {
         ClearGame();
+        SetPlayer();
         moveCamDownCoroutine = StartCoroutine(MoveCamDown());//Del Coroueine Later
-
     }
 
     public void Restart()
     {
         ClearGame();
+        SetPlayer();
         GameManager.Instance.StartGame();
         player.enabled = true;
     }
@@ -93,8 +94,6 @@ public class GameMenu : SingletonMonobehaviour<GameMenu>
     public void GameOver()
     {
         ToggleGameOverBar(true);
-
-        Menu.Instance.CountMoney(currentScore);
 
         player.enabled = false;
         GameManager.Instance.OpenMenu();
@@ -112,6 +111,7 @@ public class GameMenu : SingletonMonobehaviour<GameMenu>
 
         GameManager.Instance.ClearGame();
 
+        Menu.Instance.CountMoney(currentScore);
         currentScore = 0;
         ChangeScore(0);
     }
@@ -128,8 +128,7 @@ public class GameMenu : SingletonMonobehaviour<GameMenu>
             yield return null;
         }
 
-        menuObject.SetActive(true);
-        gameObject.SetActive(false);
+        Menu.Instance.OpenMenu();
         yield return null;
     }
 
@@ -154,5 +153,18 @@ public class GameMenu : SingletonMonobehaviour<GameMenu>
         GameManager.Instance.isMenuOpen = val;
         backgroundImage.enabled = val;
         buttonsBarObject.SetActive(val);
+    }
+
+    public void SetPlayer()
+    {
+        playerObject.transform.rotation = Quaternion.AngleAxis(90f, Vector3.forward);
+        player.tongueLine.SetPosition(0, new Vector3(player.tongueLength, 0f, 0f));
+        player.tongueCollider.offset = new Vector2(player.tongueLength / 2 - 0.01f, 0f);
+        player.tongueCollider.size = new Vector2(player.tongueLength - 0.01f, 0.14f);
+        player.nearTongueCollider.offset = new Vector2(player.tongueLength / 2 - 0.01f, 0f);
+        player.nearTongueCollider.size = new Vector2(player.tongueLength - 0.01f, 0.14f);
+        player.canElongate = true;
+        player.isOutOfTrigger = false;
+        player.isSticked = false;
     }
 }

@@ -8,8 +8,12 @@ public static class Settings
 
     public static float Money;
     public static bool IsMusicEnabled;
+
     public static int GekoSkinIndex;
     public static int SetGekoSkinIndex;
+
+    public static int BackgroundIndex;
+    public static int SetBackgroundIndex;
 
     //Screen
     public static float ScreenWidth { get; private set; }
@@ -57,5 +61,7 @@ public static class Settings
 
         GekoSkinIndex = 0;//DelLater
         SetGekoSkinIndex = 0;//DelLater
+        BackgroundIndex = 0;
+        SetBackgroundIndex = 0;
     }
 }

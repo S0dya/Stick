@@ -4,10 +4,10 @@ using UnityEngine;
 
 public class Player : SingletonMonobehaviour<Player>
 {
-    LineRenderer tongueLine;
+    [HideInInspector] public LineRenderer tongueLine;
     Rigidbody2D rigidbody;
-    BoxCollider2D tongueCollider;
-    BoxCollider2D nearTongueCollider;
+    [HideInInspector] public BoxCollider2D tongueCollider;
+    [HideInInspector] public BoxCollider2D nearTongueCollider;
     GameObject tongueObject;
     Vector2 mousePos;
     Camera camera;
@@ -17,7 +17,7 @@ public class Player : SingletonMonobehaviour<Player>
 
     [HideInInspector] public bool isSticked;
     [HideInInspector] public bool isOutOfTrigger;
-    bool canElongate = true;
+    [HideInInspector] public bool canElongate = true;
 
     [HideInInspector] public float tongueLength;
     [HideInInspector] public int health;
@@ -43,7 +43,6 @@ public class Player : SingletonMonobehaviour<Player>
 
     void Update()
     {
-
         TouchInput();
     }
 
@@ -186,15 +185,6 @@ public class Player : SingletonMonobehaviour<Player>
         }
     }
 
-    void OnEnable()
-    {
-        transform.rotation = Quaternion.AngleAxis(90f, Vector3.forward);
-        tongueLine.SetPosition(0, new Vector3(tongueLength, 0f, 0f));
-        tongueCollider.offset = new Vector2(tongueLength / 2 - 0.01f, 0f);
-        tongueCollider.size = new Vector2(tongueLength - 0.01f, 0.14f);
-        nearTongueCollider.offset = new Vector2(tongueLength / 2 - 0.01f, 0f);
-        nearTongueCollider.size = new Vector2(tongueLength - 0.01f, 0.14f);
-    }
     void OnDisable()
     {
         StopAllCoroutines();
