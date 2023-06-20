@@ -24,7 +24,6 @@ public class Shop : SingletonMonobehaviour<Shop>
     TextMeshProUGUI skinName;
     TextMeshProUGUI backgroundName;
 
-
     SpriteRenderer background;
     SpriteRenderer playerSkin;
 

@@ -51,8 +51,8 @@ public class EnemyAI : AIPath
         }
         else
         {
-            randomX = Random.Range(-Settings.ScreenWidth * 1.5f, Settings.ScreenWidth * 1.5f);
-            randomY = Random.Range(Settings.minY, Settings.ScreenHeight * 1.5f);
+            randomX = Random.Range(0, 2) == 0 ? -Settings.ScreenWidth: Settings.ScreenWidth;
+            randomY = Random.Range(Settings.minY * 1.2f, Settings.ScreenHeight * 1.5f);
         }
 
         settingsAI.point.transform.position = new Vector2(randomX, randomY);

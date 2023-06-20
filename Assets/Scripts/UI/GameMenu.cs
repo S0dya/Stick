@@ -14,7 +14,7 @@ public class GameMenu : SingletonMonobehaviour<GameMenu>
     Image backgroundImage;
     Camera camera;
     
-    Coroutine moveCamDownCoroutine;
+    //Coroutine moveCamDownCoroutine;
 
 
     int currentScore;
@@ -74,7 +74,8 @@ public class GameMenu : SingletonMonobehaviour<GameMenu>
     {
         ClearGame();
         SetPlayer();
-        moveCamDownCoroutine = StartCoroutine(MoveCamDown());//Del Coroueine Later
+        Menu.Instance.OpenMenu();
+        //moveCamDownCoroutine = StartCoroutine(MoveCamDown());
     }
 
     public void Restart()
@@ -117,6 +118,7 @@ public class GameMenu : SingletonMonobehaviour<GameMenu>
     }
 
 
+    /*
     IEnumerator MoveCamDown()
     {
         float curY = camera.transform.position.y;
@@ -128,9 +130,9 @@ public class GameMenu : SingletonMonobehaviour<GameMenu>
             yield return null;
         }
 
-        Menu.Instance.OpenMenu();
         yield return null;
     }
+    */
 
     //inGameMethods
     public void ChangeScore(float value)

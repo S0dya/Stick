@@ -13,8 +13,9 @@ public class Menu : SingletonMonobehaviour<Menu>
     GameObject menuObject;
     GameObject shop;
     Image[] cancelledMusicImages;
+    TextMeshProUGUI moneyAmount;
 
-    Coroutine moveCamUpCoroutine;
+    //Coroutine moveCamUpCoroutine;
 
 
     void Awake()
@@ -25,7 +26,8 @@ public class Menu : SingletonMonobehaviour<Menu>
         menuBottomButtonsBarObject = GameObject.FindGameObjectWithTag("MenuBottomButtonsBar");
         gameMenuObject = GameObject.FindGameObjectWithTag("GameMenu");
         menuObject = GameObject.FindGameObjectWithTag("Menu");
-        
+        moneyAmount = GameObject.FindGameObjectWithTag("MoneyAmount").GetComponent<TextMeshProUGUI>();
+
         GameObject[] cancelledMusicObjects = GameObject.FindGameObjectsWithTag("CancelledMusicObject");
         cancelledMusicImages = new Image[cancelledMusicObjects.Length];
         for (int i = 0; i < cancelledMusicImages.Length; i++)
@@ -50,7 +52,9 @@ public class Menu : SingletonMonobehaviour<Menu>
     //ButtonsMethods
     public void Play()
     {
-        moveCamUpCoroutine = StartCoroutine(MoveCamUp());
+        //moveCamUpCoroutine = StartCoroutine(MoveCamUp());
+        CloseMenu();
+        StartGame();
         Shop.Instance.SetSkin(Settings.SetGekoSkinIndex);
     }
 
@@ -83,13 +87,13 @@ public class Menu : SingletonMonobehaviour<Menu>
 
     public void CountMoney(float score)
     {
-        Settings.Money += score / 5f;
+        Settings.Money += Mathf.FloorToInt(score / 5f);
+        moneyAmount.text = Settings.Money.ToString();
     }
 
-    
+    /*
     IEnumerator MoveCamUp()
     {
-        CloseMenu();
         float curY = camera.transform.position.y;
         while (camera.transform.position.y < Settings.posYForCamUp - 0.7f)
         {
@@ -100,9 +104,9 @@ public class Menu : SingletonMonobehaviour<Menu>
         }
 
         
-        StartGame();
         yield return null;
     }
+    */
 
     void CloseMenu()
     {

@@ -18,10 +18,8 @@ public class GameManager : SingletonMonobehaviour<GameManager>
 
     [SerializeField] GameObject pointPrefab;
 
-    [SerializeField] float maxEnemies;
-    [SerializeField] float maxFlies;
-    [SerializeField] float maxBees;
-    [SerializeField] float maxButterflies;
+    [SerializeField] int[] maxEnemies;
+     public int[] curEnemies;
 
     public List<SettingsAI> enemySettingsAIList = new List<SettingsAI>();
 
@@ -39,6 +37,8 @@ public class GameManager : SingletonMonobehaviour<GameManager>
         edgesColliderForTongue = GameObject.FindGameObjectWithTag("EdgesForTongue").GetComponent<BoxCollider2D>();
         background = GameObject.FindGameObjectWithTag("Background");
 
+        curEnemies = new int[maxEnemies.Length];
+
         Settings.Initialize();
         background.transform.localScale = new Vector3(Settings.ScreenWidth, Settings.ScreenHeight * 0.8f, 0);
     }
@@ -47,9 +47,8 @@ public class GameManager : SingletonMonobehaviour<GameManager>
     {
         if (Input.GetKeyDown(KeyCode.R))
         {
-            Settings.Money += 5;
+            Menu.Instance.CountMoney(20);
         }
-        Debug.Log(Settings.Money);
     }
 
     public void StartGame()
@@ -67,7 +66,7 @@ public class GameManager : SingletonMonobehaviour<GameManager>
 
     void DefineEdgesOfScreen()
     {
-        edgesCollider.size = new Vector2(Settings.ScreenWidth * 1.6f, Settings.ScreenHeight * 1.6f);
+        edgesCollider.size = new Vector2(Settings.ScreenWidth * 1.6f, Settings.ScreenHeight * 1.2f);
         edgesColliderForTongue.size = new Vector2(Settings.ScreenWidth * 1.2f, Settings.ScreenHeight * 1.3f);
     }
 
@@ -81,8 +80,26 @@ public class GameManager : SingletonMonobehaviour<GameManager>
         GameObject pointGameObject = Instantiate(pointPrefab, spawnPosition, Quaternion.identity, pointParent);
         SettingsAI settingsAI = new SettingsAI();
 
-        int randomVal = Random.Range(0, 2);
-        switch (randomVal)
+        int val = -1;
+        if (enemySettingsAIList.Count < 15)
+        {
+            if (curEnemies[0] < maxEnemies[0] && curEnemies[1] < maxEnemies[1])
+            {
+                val = Random.Range(0, 2);
+            }
+            if (curEnemies[0] < maxEnemies[0])
+            {
+                val = 0;
+            }
+            else if (curEnemies[1] < maxEnemies[1])
+            {
+                val = 1;
+            }
+        }
+        
+
+        curEnemies[val]++;
+        switch (val)
         {
             case 0:
                 GameObject flyGameObject = Instantiate(flyPrefab, spawnPosition, Quaternion.identity, enemyParent);

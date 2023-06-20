@@ -18,6 +18,7 @@ public class SettingsAI : MonoBehaviour
     public float score;
 
     //ai
+    public int enemyType;
     public float defaultSpeed;
     public float speedOnNearTheTongue;
 
@@ -48,6 +49,7 @@ public class SettingsAI : MonoBehaviour
 
     public void Die()
     {
+        GameManager.Instance.curEnemies[enemyType]--;
         SpawnCoroutine = GameManager.Instance.StartCoroutine(GameManager.Instance.Spawn());
         GameManager.Instance.enemySettingsAIList.Remove(this);
         Destroy(gameObject);
@@ -55,8 +57,11 @@ public class SettingsAI : MonoBehaviour
 
     public void Clear()
     {
+        GameManager.Instance.curEnemies[enemyType]--;
         isDestroying = true;
         GameManager.Instance.enemySettingsAIList.Remove(this);
         Destroy(gameObject);
     }
+
+    
 }

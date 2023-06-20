@@ -6,7 +6,7 @@ public static class Settings
 {
     //Game 
 
-    public static float Money;
+    public static int Money;
     public static bool IsMusicEnabled;
 
     public static int GekoSkinIndex;
@@ -47,7 +47,7 @@ public static class Settings
         minX = -ScreenWidth / 2f;
         maxX = ScreenWidth / 2f;
         maxY = ScreenHeight / 2f;
-        minY = -ScreenHeight / 3f;
+        minY = -ScreenHeight / 5f;
 
         blindZoneOfY = 0.1f;
 
