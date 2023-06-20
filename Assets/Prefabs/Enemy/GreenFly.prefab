@@ -109,8 +109,9 @@ MonoBehaviour:
   timeForTakingAnotherPoint: 0
   timeForChangingSpeed: 4
   score: 10
-  defaultSpeed: 5
-  speedOnNearTheTongue: 8
+  enemyType: 0
+  defaultSpeed: 4
+  speedOnNearTheTongue: 6
   isDestroying: 0
 --- !u!114 &804656531701492236
 MonoBehaviour:

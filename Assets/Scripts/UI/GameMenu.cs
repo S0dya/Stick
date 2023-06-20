@@ -17,7 +17,7 @@ public class GameMenu : SingletonMonobehaviour<GameMenu>
     //Coroutine moveCamDownCoroutine;
 
 
-    int currentScore;
+    [HideInInspector] public int score;
 
 
     protected override void Awake()
@@ -112,8 +112,8 @@ public class GameMenu : SingletonMonobehaviour<GameMenu>
 
         GameManager.Instance.ClearGame();
 
-        Menu.Instance.CountMoney(currentScore);
-        currentScore = 0;
+        Menu.Instance.CountMoney(score);
+        score = 0;
         ChangeScore(0);
     }
 
@@ -138,21 +138,21 @@ public class GameMenu : SingletonMonobehaviour<GameMenu>
     public void ChangeScore(float value)
     {
         int endValue = Mathf.FloorToInt(value);
-        currentScore += endValue;
-        currentScore = Mathf.Max(currentScore, 0);
-        scoreText.text = currentScore.ToString();
+        score += endValue;
+        score = Mathf.Max(score, 0);
+        scoreText.text = score.ToString();
     }
 
     public void ToggleGameOverBar(bool val)
     {
-        GameManager.Instance.isMenuOpen = val;
+        GameManager.Instance.isGameMenuOpen = val;
         backgroundImage.enabled = val;
         gameOverBarObject.SetActive(val);
     }
 
     public void ToggleButtonsBar(bool val)
     {
-        GameManager.Instance.isMenuOpen = val;
+        GameManager.Instance.isGameMenuOpen = val;
         backgroundImage.enabled = val;
         buttonsBarObject.SetActive(val);
     }

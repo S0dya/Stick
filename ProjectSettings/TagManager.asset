@@ -37,6 +37,7 @@ TagManager:
   - DonateText
   - Donate
   - MoneyAmount
+  - RewardedAdText
   layers:
   - Default
   - TransparentFX

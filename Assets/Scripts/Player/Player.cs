@@ -57,14 +57,10 @@ public class Player : SingletonMonobehaviour<Player>
                 if (touch.phase == TouchPhase.Began)
                 {
                     mousePos = camera.ScreenToWorldPoint(Input.mousePosition);
-                    float touchYPercent = touch.position.y / Screen.height;
-
-                    float targetYPercent = 0.3f;
-                    if (touchYPercent <= targetYPercent)
+                    if (touch.position.y / Settings.heightForInput > Settings.blindZoneOfY)
                     {
-                        Debug.Log("Touch within target Y percentage" + touchYPercent + " asdasd " + targetYPercent);
+                        Elongate();
                     }
-                    Elongate();
                 }
                 else if (touch.phase == TouchPhase.Ended || touch.phase == TouchPhase.Canceled)
                 {
@@ -82,7 +78,6 @@ public class Player : SingletonMonobehaviour<Player>
                 Elongate();
             }
         }
-
     }
 
     void Elongate()
@@ -107,7 +102,7 @@ public class Player : SingletonMonobehaviour<Player>
 
         while (!isOutOfTrigger && !isSticked && !Input.GetKeyUp(KeyCode.Mouse0))
         {
-            if (GameManager.Instance.isMenuOpen)
+            if (GameManager.Instance.isGameMenuOpen)
             {
                 yield return null;
             }

@@ -27,13 +27,15 @@ public class PlayerTrigger : SingletonMonobehaviour<PlayerTrigger>
     {
         if (collision.CompareTag("Food"))
         {
+            SettingsAI settingsAi = collision.gameObject.GetComponent<SettingsAI>();
+            if (settingsAi.isDestroying)
+                return;
             if (scoreMultiplayerCoroutine != null)
             {
                 curMultiplayer += Settings.scoreMultiplyer;
                 StopCoroutine(scoreMultiplayerCoroutine);
             }
             scoreMultiplayerCoroutine = StartCoroutine(ScoreMultiplayer());
-            SettingsAI settingsAi = collision.gameObject.GetComponent<SettingsAI>();
             GameMenu.Instance.ChangeScore(settingsAi.score * curMultiplayer);
             settingsAi.Die();
             isScoreMultiplaying = true;

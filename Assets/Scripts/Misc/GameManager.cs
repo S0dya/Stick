@@ -23,7 +23,7 @@ public class GameManager : SingletonMonobehaviour<GameManager>
 
     public List<SettingsAI> enemySettingsAIList = new List<SettingsAI>();
 
-    [HideInInspector] public bool isMenuOpen;
+    [HideInInspector] public bool isGameMenuOpen;
 
     //Logic
 
@@ -45,6 +45,7 @@ public class GameManager : SingletonMonobehaviour<GameManager>
 
     void Update()//delLtaer
     {
+        Debug.Log(isGameMenuOpen);
         if (Input.GetKeyDown(KeyCode.R))
         {
             Menu.Instance.CountMoney(20);
@@ -66,7 +67,7 @@ public class GameManager : SingletonMonobehaviour<GameManager>
 
     void DefineEdgesOfScreen()
     {
-        edgesCollider.size = new Vector2(Settings.ScreenWidth * 1.6f, Settings.ScreenHeight * 1.2f);
+        edgesCollider.size = new Vector2(Settings.ScreenWidth * 1.6f, Settings.ScreenHeight * 1.6f);
         edgesColliderForTongue.size = new Vector2(Settings.ScreenWidth * 1.2f, Settings.ScreenHeight * 1.3f);
     }
 
@@ -121,7 +122,7 @@ public class GameManager : SingletonMonobehaviour<GameManager>
 
     public void OpenMenu()
     {
-        isMenuOpen = true;
+        isGameMenuOpen = true;
 
         foreach (SettingsAI ai in enemySettingsAIList)
         {
@@ -130,7 +131,7 @@ public class GameManager : SingletonMonobehaviour<GameManager>
     }
     public void CloseMenu()
     {
-        isMenuOpen = false;
+        isGameMenuOpen = false;
         foreach (SettingsAI ai in enemySettingsAIList)
         {
             ai.EnableMovement();
@@ -147,11 +148,23 @@ public class GameManager : SingletonMonobehaviour<GameManager>
     }
 
 
+    public void RewardPlayer()
+    {
+        if (isGameMenuOpen)
+        {
+            GameMenu.Instance.score *= 2;
+        }
+        else
+        {
+            Menu.Instance.CountMoney(100);
+        }
+    }
+
     public IEnumerator Timer(float duration)
     {
         while (duration > 0)
         {
-            if (isMenuOpen)
+            if (isGameMenuOpen)
             {
                 yield return null;
             }

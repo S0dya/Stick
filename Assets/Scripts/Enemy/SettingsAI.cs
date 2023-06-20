@@ -49,6 +49,7 @@ public class SettingsAI : MonoBehaviour
 
     public void Die()
     {
+        isDestroying = true;
         GameManager.Instance.curEnemies[enemyType]--;
         SpawnCoroutine = GameManager.Instance.StartCoroutine(GameManager.Instance.Spawn());
         GameManager.Instance.enemySettingsAIList.Remove(this);
@@ -57,8 +58,8 @@ public class SettingsAI : MonoBehaviour
 
     public void Clear()
     {
-        GameManager.Instance.curEnemies[enemyType]--;
         isDestroying = true;
+        GameManager.Instance.curEnemies[enemyType]--;
         GameManager.Instance.enemySettingsAIList.Remove(this);
         Destroy(gameObject);
     }
