@@ -109,7 +109,7 @@ public class Player : SingletonMonobehaviour<Player>
             tongueLine.SetPosition(0, new Vector3(tongueLength, 0f, 0f));
 
             tongueCollider.offset = new Vector2(tongueLength /2 -0.01f, 0f);
-            tongueCollider.size = new Vector2(tongueLength - 0.01f, 0.14f);
+            tongueCollider.size = new Vector2(tongueLength - 0.01f, 0.2f);
             nearTongueCollider.offset = new Vector2(tongueLength /2 -0.01f, 0f);
             nearTongueCollider.size = new Vector2(tongueLength -0.01f, 0.14f);
 
@@ -131,6 +131,8 @@ public class Player : SingletonMonobehaviour<Player>
             StopCoroutine(elongateCoroutine);
         }
 
+        nearTongueCollider.offset = new Vector2(0 / 2 - 0.01f, 0f);
+        nearTongueCollider.size = new Vector2(0 , 0.14f);
 
         nearTongueCollider.enabled = false;
 
@@ -155,6 +157,7 @@ public class Player : SingletonMonobehaviour<Player>
 
     public void MinusHp(bool minus)
     {
+        HPBar.Instance.StopHunger();
         if (minus)
         {
             if (health >= 0)
@@ -178,6 +181,7 @@ public class Player : SingletonMonobehaviour<Player>
                 HPBar.Instance.SetHPImage(health, true);
             }
         }
+        HPBar.Instance.StartHunger();
     }
 
     void OnDisable()

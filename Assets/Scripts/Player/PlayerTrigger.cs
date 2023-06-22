@@ -35,12 +35,16 @@ public class PlayerTrigger : SingletonMonobehaviour<PlayerTrigger>
                 curMultiplayer += Settings.scoreMultiplyer;
                 StopCoroutine(scoreMultiplayerCoroutine);
             }
+
+            HPBar.Instance.StopHunger();
+            HPBar.Instance.StartHunger();
+
             scoreMultiplayerCoroutine = StartCoroutine(ScoreMultiplayer());
             GameMenu.Instance.ChangeScore(settingsAi.score * curMultiplayer);
             settingsAi.Die();
             isScoreMultiplaying = true;
         }
-        if (collision.CompareTag("Damage"))
+        else if (collision.CompareTag("Damage"))
         {
             if (scoreMultiplayerCoroutine != null)
             {
@@ -50,6 +54,17 @@ public class PlayerTrigger : SingletonMonobehaviour<PlayerTrigger>
             GameMenu.Instance.ChangeScore(settingsAi.score * curMultiplayer);
             settingsAi.Die();
             player.MinusHp(true);
+        }
+        else if (collision.CompareTag("RestoreHP"))
+        {
+            if (scoreMultiplayerCoroutine != null)
+            {
+                StopCoroutine(scoreMultiplayerCoroutine);
+            }
+            SettingsAI settingsAi = collision.gameObject.GetComponent<SettingsAI>();
+            GameMenu.Instance.ChangeScore(settingsAi.score * curMultiplayer);
+            settingsAi.Die();
+            player.MinusHp(false);
         }
     }
     IEnumerator ScoreMultiplayer()

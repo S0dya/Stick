@@ -19,8 +19,8 @@ GameObject:
   - component: {fileID: 804656531701492224}
   - component: {fileID: 804656531701492230}
   m_Layer: 12
-  m_Name: GreenFly
-  m_TagString: Food
+  m_Name: FireFly
+  m_TagString: RestoreHP
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -81,7 +81,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 96ec31460b9654840bd15e63071d619f, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 11866eb7534536d489ea28bac5719f7c, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -106,12 +106,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   point: {fileID: 0}
   amountOfPointsToVisit: 20
-  timeForTakingAnotherPoint: 0.5
-  timeForChangingSpeed: 4
-  score: 10
-  enemyType: 0
-  defaultSpeed: 4
-  speedOnNearTheTongue: 6
+  timeForTakingAnotherPoint: 0
+  timeForChangingSpeed: 8
+  score: 30
+  enemyType: 2
+  defaultSpeed: 5
+  speedOnNearTheTongue: 7
   isDestroying: 0
 --- !u!114 &804656531701492236
 MonoBehaviour:
@@ -165,7 +165,7 @@ Animator:
   m_GameObject: {fileID: 804656531701492233}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 69170bc040bed7946b940ddbd394bd7a, type: 2}
+  m_Controller: {fileID: 9100000, guid: 589ea90253d471f418dfce6d298dacb4, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -191,7 +191,7 @@ CircleCollider2D:
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
-  m_Radius: 0.15
+  m_Radius: 0.14
 --- !u!50 &804656531701492238
 Rigidbody2D:
   serializedVersion: 4

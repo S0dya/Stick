@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 public class GameManager : SingletonMonobehaviour<GameManager>
 {
@@ -14,17 +15,18 @@ public class GameManager : SingletonMonobehaviour<GameManager>
 
     [SerializeField] GameObject flyPrefab;
     [SerializeField] GameObject beePrefab;
-    [SerializeField] GameObject butterflyPrefab;
+    [SerializeField] GameObject fireflyPrefab;
 
     [SerializeField] GameObject pointPrefab;
 
     [SerializeField] int[] maxEnemies;
-     public int[] curEnemies;
+    public int[] curEnemies;
 
     public List<SettingsAI> enemySettingsAIList = new List<SettingsAI>();
 
     [HideInInspector] public bool isGameMenuOpen;
 
+    Coroutine maxEnemiesIncrease;
     //Logic
 
     protected override void Awake()
@@ -63,6 +65,10 @@ public class GameManager : SingletonMonobehaviour<GameManager>
         {
             StartCoroutine(Spawn());
         }
+
+        Debug.Log(Player.Instance.health);
+        HPBar.Instance.StartHunger();
+        maxEnemiesIncrease = StartCoroutine(MaxEnemiesIncrease());
     }
 
     void DefineEdgesOfScreen()
@@ -82,19 +88,20 @@ public class GameManager : SingletonMonobehaviour<GameManager>
         SettingsAI settingsAI = new SettingsAI();
 
         int val = -1;
-        if (enemySettingsAIList.Count < 15)
+        if (enemySettingsAIList.Count < maxEnemies.Sum())
         {
-            if (curEnemies[0] < maxEnemies[0] && curEnemies[1] < maxEnemies[1])
-            {
-                val = Random.Range(0, 2);
-            }
-            if (curEnemies[0] < maxEnemies[0])
+            int cur = Random.Range(0, 100);
+            if (cur > 100)
             {
                 val = 0;
             }
-            else if (curEnemies[1] < maxEnemies[1])
+            else if (cur > 100)
             {
                 val = 1;
+            }
+            else
+            {
+                val = 2;
             }
         }
         
@@ -110,13 +117,16 @@ public class GameManager : SingletonMonobehaviour<GameManager>
                 GameObject beeGameObject = Instantiate(beePrefab, spawnPosition, Quaternion.identity, enemyParent);
                 settingsAI = beeGameObject.GetComponent<SettingsAI>();
                 break;
+            case 2:
+                GameObject fireflyGameObject = Instantiate(fireflyPrefab, spawnPosition, Quaternion.identity, enemyParent);
+                settingsAI = fireflyGameObject.GetComponent<SettingsAI>();
+                break;
             default:
                 Debug.Log("switch at gm");
                 break;
         }
 
         settingsAI.point = pointGameObject;
-        settingsAI.amountOfPointsToVisit = Random.Range(2, 5);
     }
 
 
@@ -145,6 +155,11 @@ public class GameManager : SingletonMonobehaviour<GameManager>
         {
             enemySettingsAIList[0].Clear();
         }
+        if (maxEnemiesIncrease != null)
+        {
+            StopCoroutine(maxEnemiesIncrease);
+        }
+        HPBar.Instance.StopHunger();
     }
 
 
@@ -176,5 +191,13 @@ public class GameManager : SingletonMonobehaviour<GameManager>
         }
     }   
 
+    public IEnumerator MaxEnemiesIncrease()
+    {
+        while (true)
+        {
 
+            StartCoroutine(Timer(10f));
+            yield return null;
+        }
+    }
 }
