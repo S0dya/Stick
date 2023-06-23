@@ -40,10 +40,12 @@ public class GameMenu : SingletonMonobehaviour<GameMenu>
     void OnEnable()
     {
         player.enabled = true;
+        Player.Instance.playerSprite.enabled = true;
     }
     void OnDisable()
     {
         player.enabled = false;
+        Player.Instance.playerSprite.enabled = false;
     }
 
 
@@ -76,6 +78,7 @@ public class GameMenu : SingletonMonobehaviour<GameMenu>
         SetPlayer();
         Menu.Instance.OpenMenu();
         //moveCamDownCoroutine = StartCoroutine(MoveCamDown());
+        SaveManager.Instance.SaveDataToFile();
     }
 
     public void Restart()

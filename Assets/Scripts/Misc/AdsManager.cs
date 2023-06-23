@@ -36,7 +36,6 @@ public class AdsManager : SingletonMonobehaviour<AdsManager>, IUnityAdsInitializ
     #region Interface Implementations
     public void OnInitializationComplete()
     {
-        Debug.Log("Init Success");
         LoadRewardedAd();
     }
 
@@ -47,7 +46,6 @@ public class AdsManager : SingletonMonobehaviour<AdsManager>, IUnityAdsInitializ
 
     public void OnUnityAdsAdLoaded(string placementId)
     {
-        Debug.Log($"Load Success: {placementId}");
     }
 
     public void OnUnityAdsFailedToLoad(string placementId, UnityAdsLoadError error, string message)
@@ -62,17 +60,14 @@ public class AdsManager : SingletonMonobehaviour<AdsManager>, IUnityAdsInitializ
 
     public void OnUnityAdsShowStart(string placementId)
     {
-        Debug.Log($"OnUnityAdsShowStart: {placementId}");
     }
 
     public void OnUnityAdsShowClick(string placementId)
     {
-        Debug.Log($"OnUnityAdsShowClick: {placementId}");
     }
 
     public void OnUnityAdsShowComplete(string placementId, UnityAdsShowCompletionState showCompletionState)
     {
-        Debug.Log($"OnUnityAdsShowComplete: [{showCompletionState}]: {placementId}");
         GameManager.Instance.RewardPlayer();
     }
     #endregion

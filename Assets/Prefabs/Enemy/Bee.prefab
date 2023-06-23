@@ -106,6 +106,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   point: {fileID: 0}
   amountOfPointsToVisit: 20
+  minAOPTV: 3
+  maxAOPTV: 7
   timeForTakingAnotherPoint: 1
   timeForChangingSpeed: 2
   score: -20

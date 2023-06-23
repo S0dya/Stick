@@ -9,6 +9,8 @@ public class SettingsAI : MonoBehaviour
     //point
     public GameObject point;
     public int amountOfPointsToVisit;
+    public int minAOPTV;
+    public int maxAOPTV;
 
     //coroutine
     public float timeForTakingAnotherPoint;
@@ -35,6 +37,8 @@ public class SettingsAI : MonoBehaviour
     void Start()
     {
         GameManager.Instance.enemySettingsAIList.Add(this);
+
+        amountOfPointsToVisit = Random.Range(minAOPTV, maxAOPTV);
     }
 
     public void DisableMovement()
@@ -56,7 +60,6 @@ public class SettingsAI : MonoBehaviour
     public void Clear()
     {
         isDestroying = true;
-        GameManager.Instance.curEnemies[enemyType]--;
         GameManager.Instance.enemySettingsAIList.Remove(this);
         Destroy(point);
         Destroy(gameObject);

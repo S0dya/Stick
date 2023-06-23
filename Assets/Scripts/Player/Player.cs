@@ -11,6 +11,7 @@ public class Player : SingletonMonobehaviour<Player>
     GameObject tongueObject;
     Vector2 mousePos;
     Camera camera;
+    [HideInInspector] public SpriteRenderer playerSprite;
 
     Coroutine elongateCoroutine;
     Coroutine shortenCoroutine;
@@ -32,6 +33,7 @@ public class Player : SingletonMonobehaviour<Player>
         tongueCollider = tongueObject.GetComponent<BoxCollider2D>();
         rigidbody = GetComponent<Rigidbody2D>();
         camera = Camera.main;
+        playerSprite = GetComponent<SpriteRenderer>();
 
         tongueCollider.enabled = false;
     }

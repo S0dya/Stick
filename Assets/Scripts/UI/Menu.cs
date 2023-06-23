@@ -72,6 +72,7 @@ public class Menu : SingletonMonobehaviour<Menu>
     {
         CloseMenu();
         Shop.Instance.OpenShop();
+        moneyAmount.text = Settings.Money.ToString();
     }
 
 

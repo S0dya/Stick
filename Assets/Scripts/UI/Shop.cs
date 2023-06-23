@@ -6,13 +6,13 @@ using TMPro;
 
 public class Shop : SingletonMonobehaviour<Shop>
 {
-    [SerializeField] Sprite[] GekoSkins;
-    [SerializeField] int[] skinsPrices;
-    [SerializeField] string[] skinNames;
+    public Sprite[] GekoSkins;
+    public int[] skinsPrices;
+    public string[] skinNames;
 
-    [SerializeField] Sprite[] backgrounds;
-    [SerializeField] int[] backgroundPrices;
-    [SerializeField] string[] backgroundNames;
+    public Sprite[] backgrounds;
+    public int[] backgroundPrices;
+    public string[] backgroundNames;
 
     GameObject shop;
     Image blockedBackground;
@@ -60,6 +60,7 @@ public class Shop : SingletonMonobehaviour<Shop>
     public void CloseShop()
     {
         shop.SetActive(false);
+        SaveManager.Instance.SaveDataToFile();
     }
 
     //Buttons

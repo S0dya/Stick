@@ -39,7 +39,6 @@ public class SaveManager : SingletonMonobehaviour<SaveManager>
             }
         }
 
-        //UIManager.Instance.DisablePauseMenu();
     }
 
     public void SaveDataToFile()
@@ -55,7 +54,6 @@ public class SaveManager : SingletonMonobehaviour<SaveManager>
         string json = JsonConvert.SerializeObject(gameSave);
         File.WriteAllText(filePath, json);
 
-        //UIManager.Instance.DisablePauseMenu();
     }
 
     public void StoreCurrentSceneData()

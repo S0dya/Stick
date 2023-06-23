@@ -36,6 +36,7 @@ public class Donate : SingletonMonobehaviour<Donate>
     public void CloseDonate()
     {
         donate.SetActive(false);
+        SaveManager.Instance.SaveDataToFile();
     }
     //Buttons
 

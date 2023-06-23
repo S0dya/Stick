@@ -5,6 +5,7 @@ using UnityEngine;
 public static class Settings
 {
     //Game 
+    public static string GameScene = "SampleScene";
 
     public static int Money;
     public static bool IsMusicEnabled;
@@ -60,8 +61,6 @@ public static class Settings
         timeWhileScoreMultiplying = 1f;
 
         GekoSkinIndex = 0;//DelLater
-        SetGekoSkinIndex = 0;//DelLater
         BackgroundIndex = 0;
-        SetBackgroundIndex = 0;
     }
 }
