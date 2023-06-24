@@ -13,7 +13,7 @@ public class Menu : SingletonMonobehaviour<Menu>
     GameObject menuObject;
     GameObject shop;
     Image[] cancelledMusicImages;
-    TextMeshProUGUI moneyAmount;
+    [HideInInspector] public TextMeshProUGUI moneyAmount;
 
     //Coroutine moveCamUpCoroutine;
 
@@ -37,8 +37,9 @@ public class Menu : SingletonMonobehaviour<Menu>
 
     void Start()
     {
+        SaveManager.Instance.SaveDataToFile();
         OpenMenu();
-        
+
     }
 
     public void OpenMenu()
@@ -56,6 +57,7 @@ public class Menu : SingletonMonobehaviour<Menu>
         CloseMenu();
         StartGame();
         Shop.Instance.SetSkin(Settings.SetGekoSkinIndex);
+        Shop.Instance.SetBackground(Settings.SetBackgroundIndex);
     }
 
     public void Music()
@@ -120,6 +122,8 @@ public class Menu : SingletonMonobehaviour<Menu>
         gameMenuObject.SetActive(true);
         GameMenu.Instance.ClearGame();
         GameManager.Instance.StartGame();
+        GameMenu.Instance.ToggleInGameMenu(true);
+
     }
 
     public void ToggleButtonsBar(bool val)

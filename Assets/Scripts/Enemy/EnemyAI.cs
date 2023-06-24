@@ -84,11 +84,14 @@ public class EnemyAI : AIPath
     }
     IEnumerator ChangeSpeed()
     { 
+        float curRotationSpeed = rotationSpeed;
         maxSpeed = settingsAI.speedOnNearTheTongue; //change Later
+        rotationSpeed = curRotationSpeed * 1.5f;
 
         yield return GameManager.Instance.StartCoroutine(GameManager.Instance.Timer(settingsAI.timeForChangingSpeed));
 
         maxSpeed = settingsAI.defaultSpeed;
+        rotationSpeed = curRotationSpeed;
     }
 
     void OnTriggerExit2D(Collider2D collision)

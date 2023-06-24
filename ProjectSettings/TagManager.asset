@@ -39,6 +39,8 @@ TagManager:
   - MoneyAmount
   - RewardedAdText
   - RestoreHP
+  - InGameUI
+  - ScoreInGameMenu
   layers:
   - Default
   - TransparentFX

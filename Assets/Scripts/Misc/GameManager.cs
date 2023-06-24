@@ -1,8 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using System.Linq;
-using System;
 
 public class GameManager : SingletonMonobehaviour<GameManager>, ISaveable
 {
@@ -94,10 +92,10 @@ public class GameManager : SingletonMonobehaviour<GameManager>, ISaveable
 
     public IEnumerator Spawn()
     {
-        yield return StartCoroutine(Timer(UnityEngine.Random.Range(0.1f, 1.5f)));
+        yield return StartCoroutine(Timer(Random.Range(0.1f, 1.5f)));
 
-        float randomX = UnityEngine.Random.Range(0, 2) == 0 ? -Settings.ScreenWidth * 0.7f : Settings.ScreenWidth * 0.7f;
-        float randomY = UnityEngine.Random.Range(0f, Settings.maxY);
+        float randomX = Random.Range(0, 2) == 0 ? -Settings.ScreenWidth * 0.7f : Settings.ScreenWidth * 0.7f;
+        float randomY = Random.Range(0f, Settings.maxY);
         Vector3 spawnPosition = new Vector3(randomX, randomY, 1f);
         GameObject pointGameObject = Instantiate(pointPrefab, spawnPosition, Quaternion.identity, pointParent);
         SettingsAI settingsAI = new SettingsAI();
@@ -105,12 +103,12 @@ public class GameManager : SingletonMonobehaviour<GameManager>, ISaveable
         int val = -1;
         if (enemySettingsAIList.Count < maxEnemies)
         {
-            int cur = UnityEngine.Random.Range(0, 100);
+            int cur = Random.Range(0, 100);
             if (cur > 30)
             {
                 val = 0;
             }
-            else if (cur > 10)
+            else if (cur > 5)
             {
                 val = 1;
             }
@@ -253,8 +251,14 @@ public class GameManager : SingletonMonobehaviour<GameManager>, ISaveable
 
         int[] skinPrices = new int[Shop.Instance.skinsPrices.Length];
         int[] backgroundPrices = new int[Shop.Instance.backgroundPrices.Length];
-        Array.Copy(Shop.Instance.skinsPrices, skinPrices, Shop.Instance.skinsPrices.Length);
-        Array.Copy(Shop.Instance.backgroundPrices, backgroundPrices, Shop.Instance.backgroundPrices.Length);
+        for (int i = 0; i < skinPrices.Length; i++)
+        {
+            skinPrices[i] = Shop.Instance.skinsPrices[i];
+        }
+        for (int i = 0; i < backgroundPrices.Length; i++)
+        {
+            backgroundPrices[i] = Shop.Instance.backgroundPrices[i];
+        }
         sceneSave.intArrayDictionary.Add("skinPrices", skinPrices);
         sceneSave.intArrayDictionary.Add("backgroundPrices", backgroundPrices);
 
@@ -269,20 +273,18 @@ public class GameManager : SingletonMonobehaviour<GameManager>, ISaveable
         {
             if (gameObjectSave.sceneData.TryGetValue(Settings.GameScene, out SceneSave sceneSave))
             {
-                Debug.Log("D");
                 if (sceneSave.intDictionary != null)
                 {
-                    Debug.Log("D");
                     if (sceneSave.intDictionary.TryGetValue("money", out int money))
                     {
                         Debug.Log(money);
                         Settings.Money = money;
                     }
-                    else if (sceneSave.intDictionary.TryGetValue("setGekoSkinIndex", out int setGekoSkinIndex))
+                    if (sceneSave.intDictionary.TryGetValue("setGekoSkinIndex", out int setGekoSkinIndex))
                     {
                         Settings.SetGekoSkinIndex = setGekoSkinIndex;
                     }
-                    else if (sceneSave.intDictionary.TryGetValue("setBackgroundIndex", out int setBackgroundIndex))
+                    if (sceneSave.intDictionary.TryGetValue("setBackgroundIndex", out int setBackgroundIndex))
                     {
                         Settings.SetBackgroundIndex = setBackgroundIndex;
                     }
@@ -291,11 +293,17 @@ public class GameManager : SingletonMonobehaviour<GameManager>, ISaveable
                 {
                     if (sceneSave.intArrayDictionary.TryGetValue("skinPrices", out int[] skinPrices))
                     {
-                        Shop.Instance.skinsPrices = skinPrices;
+                        for (int i = 0; i < skinPrices.Length; i++)
+                        {
+                            Shop.Instance.skinsPrices[i] = skinPrices[i];
+                        }
                     }
-                    else if (sceneSave.intArrayDictionary.TryGetValue("backgroundPrices", out int[] backgroundPrices))
+                    if (sceneSave.intArrayDictionary.TryGetValue("backgroundPrices", out int[] backgroundPrices))
                     {
-                        Shop.Instance.backgroundPrices = backgroundPrices;
+                        for (int i = 0; i < backgroundPrices.Length; i++)
+                        {
+                            Shop.Instance.backgroundPrices[i] = backgroundPrices[i];
+                        }
                     }
                 }
             }

@@ -17,9 +17,9 @@ public class Shop : SingletonMonobehaviour<Shop>
     GameObject shop;
     Image blockedBackground;
     Image backgroundImage;
-    Image setBackgroundImage;
+    GameObject setBackgroundImage;
     Image blockedSkin;
-    Image setSkinImage;
+    GameObject setSkinImage;
     Image playerImage;
     TextMeshProUGUI skinName;
     TextMeshProUGUI backgroundName;
@@ -34,9 +34,9 @@ public class Shop : SingletonMonobehaviour<Shop>
         shop = GameObject.FindGameObjectWithTag("Shop");
         playerSkin = GameObject.FindGameObjectWithTag("Player").GetComponent<SpriteRenderer>();
         blockedSkin = GameObject.FindGameObjectWithTag("BlockedSkin").GetComponent<Image>();
-        setSkinImage = GameObject.FindGameObjectWithTag("SetSkinImage").GetComponent<Image>();
+        setSkinImage = GameObject.FindGameObjectWithTag("SetSkinImage");
         blockedBackground = GameObject.FindGameObjectWithTag("BlockedBackground").GetComponent<Image>();
-        setBackgroundImage = GameObject.FindGameObjectWithTag("SetBackgroundImage").GetComponent<Image>();
+        setBackgroundImage = GameObject.FindGameObjectWithTag("SetBackgroundImage");
         backgroundImage = GameObject.FindGameObjectWithTag("BackgroundImage").GetComponent<Image>();
         background = GameObject.FindGameObjectWithTag("Background").GetComponent<SpriteRenderer>();
         playerImage = GameObject.FindGameObjectWithTag("Skin").GetComponent<Image>();
@@ -60,13 +60,13 @@ public class Shop : SingletonMonobehaviour<Shop>
     public void CloseShop()
     {
         shop.SetActive(false);
-        SaveManager.Instance.SaveDataToFile();
     }
 
     //Buttons
     public void Home()
     {
         CloseShop();
+        SaveManager.Instance.SaveDataToFile();
         Menu.Instance.OpenMenu();
     }
 
@@ -119,7 +119,6 @@ public class Shop : SingletonMonobehaviour<Shop>
     public void SetSkinButton()
     {
         Settings.SetGekoSkinIndex = Settings.GekoSkinIndex;
-        SetSkin(Settings.SetGekoSkinIndex);
     }
 
     public void BuySkinButton()
@@ -128,6 +127,7 @@ public class Shop : SingletonMonobehaviour<Shop>
         {
             Settings.Money -= skinsPrices[Settings.GekoSkinIndex];
             skinsPrices[Settings.GekoSkinIndex] = 0;
+            Menu.Instance.moneyAmount.text = Settings.Money.ToString();
             LockSkin(false);
         }
     }
@@ -135,7 +135,6 @@ public class Shop : SingletonMonobehaviour<Shop>
     public void SetBackgroundButton()
     {
         Settings.SetBackgroundIndex = Settings.BackgroundIndex;
-        SetBackground(Settings.SetBackgroundIndex);
     }
 
     public void BuyBackgroundButton()
@@ -152,12 +151,12 @@ public class Shop : SingletonMonobehaviour<Shop>
     public void LockSkin(bool val)
     {
         blockedSkin.enabled = val;
-        setSkinImage.enabled = !val;
+        setSkinImage.SetActive(!val);
     }
     public void LockBackground(bool val)
     {
         blockedBackground.enabled = val;
-        setBackgroundImage.enabled = !val;
+        setBackgroundImage.SetActive(!val);
     }
 
     public void TestSkin(int i)

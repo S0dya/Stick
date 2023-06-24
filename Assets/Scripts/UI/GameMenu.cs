@@ -3,14 +3,18 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using System.Text;
+
 
 public class GameMenu : SingletonMonobehaviour<GameMenu>
 {
     GameObject playerObject;
     Player player;
     TextMeshProUGUI scoreText;
-    GameObject buttonsBarObject;
+    TextMeshProUGUI scoreInGameMenuText;
+    GameObject buttonsBarObject; 
     GameObject gameOverBarObject;
+    GameObject inGameUI;
     Image backgroundImage;
     Camera camera;
     
@@ -27,8 +31,10 @@ public class GameMenu : SingletonMonobehaviour<GameMenu>
         playerObject = GameObject.FindGameObjectWithTag("Player");
         player = playerObject.GetComponent<Player>();
         scoreText = GameObject.FindGameObjectWithTag("Score").GetComponent<TextMeshProUGUI>();
+        scoreInGameMenuText = GameObject.FindGameObjectWithTag("ScoreInGameMenu").GetComponent<TextMeshProUGUI>();
         buttonsBarObject = GameObject.FindGameObjectWithTag("ButtonsBar");
         gameOverBarObject = GameObject.FindGameObjectWithTag("GameOverBar");
+        inGameUI = GameObject.FindGameObjectWithTag("InGameUI");
         backgroundImage = GameObject.FindGameObjectWithTag("GameOverAndPause").GetComponent<Image>();
         camera = Camera.main;
     }
@@ -63,6 +69,7 @@ public class GameMenu : SingletonMonobehaviour<GameMenu>
     {
         ToggleButtonsBar(false);
         player.enabled = true;
+        inGameUI.SetActive(true);
 
         GameManager.Instance.CloseMenu();
     }
@@ -89,15 +96,17 @@ public class GameMenu : SingletonMonobehaviour<GameMenu>
         player.enabled = true;
     }
 
-    public void Ad()
-    {
-
-    }
-
     //gameMethods
     public void GameOver()
     {
         ToggleGameOverBar(true);
+        ToggleInGameMenu(false);
+
+        StringBuilder score = new StringBuilder();
+        score.Append("Score:");
+        score.AppendLine();
+        score.Append(scoreText.text.ToString());
+        scoreInGameMenuText.text = score.ToString();
 
         player.enabled = false;
         GameManager.Instance.OpenMenu();
@@ -160,6 +169,11 @@ public class GameMenu : SingletonMonobehaviour<GameMenu>
         buttonsBarObject.SetActive(val);
     }
 
+    public void ToggleInGameMenu(bool val)
+    {
+        inGameUI.SetActive(val);
+    }
+
     public void SetPlayer()
     {
         playerObject.transform.rotation = Quaternion.AngleAxis(90f, Vector3.forward);
@@ -172,4 +186,6 @@ public class GameMenu : SingletonMonobehaviour<GameMenu>
         player.isOutOfTrigger = false;
         player.isSticked = false;
     }
+
+
 }
