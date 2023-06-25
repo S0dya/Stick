@@ -12,16 +12,19 @@ public class GameMenu : SingletonMonobehaviour<GameMenu>
     Player player;
     TextMeshProUGUI scoreText;
     TextMeshProUGUI scoreInGameMenuText;
-    GameObject buttonsBarObject; 
+    TextMeshProUGUI rewardedAdText;
+    GameObject buttonsBarObject;
     GameObject gameOverBarObject;
     GameObject inGameUI;
     Image backgroundImage;
     Camera camera;
-    
+    Image lockedAd;
+
     //Coroutine moveCamDownCoroutine;
 
 
     [HideInInspector] public int score;
+    bool canShowRewardedAd;
 
 
     protected override void Awake()
@@ -32,11 +35,13 @@ public class GameMenu : SingletonMonobehaviour<GameMenu>
         player = playerObject.GetComponent<Player>();
         scoreText = GameObject.FindGameObjectWithTag("Score").GetComponent<TextMeshProUGUI>();
         scoreInGameMenuText = GameObject.FindGameObjectWithTag("ScoreInGameMenu").GetComponent<TextMeshProUGUI>();
+        rewardedAdText = GameObject.FindGameObjectWithTag("RewardedAdText").GetComponent<TextMeshProUGUI>();
         buttonsBarObject = GameObject.FindGameObjectWithTag("ButtonsBar");
         gameOverBarObject = GameObject.FindGameObjectWithTag("GameOverBar");
         inGameUI = GameObject.FindGameObjectWithTag("InGameUI");
         backgroundImage = GameObject.FindGameObjectWithTag("GameOverAndPause").GetComponent<Image>();
         camera = Camera.main;
+        lockedAd = GameObject.FindGameObjectWithTag("LockedAd").GetComponent<Image>();
     }
 
     void Start()
@@ -96,17 +101,23 @@ public class GameMenu : SingletonMonobehaviour<GameMenu>
         player.enabled = true;
     }
 
+    public void RewardedAdButton()
+    {
+        if (canShowRewardedAd)
+        {
+            AdsManager.Instance.ShowRewardedAd();
+
+            ToggleRewardedAd(false);
+        }
+    }
+
     //gameMethods
     public void GameOver()
     {
         ToggleGameOverBar(true);
         ToggleInGameMenu(false);
 
-        StringBuilder score = new StringBuilder();
-        score.Append("Score:");
-        score.AppendLine();
-        score.Append(scoreText.text.ToString());
-        scoreInGameMenuText.text = score.ToString();
+        ShowScoreInGameMenu();
 
         player.enabled = false;
         GameManager.Instance.OpenMenu();
@@ -116,6 +127,8 @@ public class GameMenu : SingletonMonobehaviour<GameMenu>
     {
         ToggleGameOverBar(false);
         ToggleButtonsBar(false);
+        ToggleRewardedAd(true);
+        ToggleInGameMenu(true);
 
         Player.Instance.health = 2;
         HPBar.Instance.ResetHPImages();
@@ -155,6 +168,24 @@ public class GameMenu : SingletonMonobehaviour<GameMenu>
         scoreText.text = score.ToString();
     }
 
+    public void DoubleScore()
+    {
+        if (score > 0)
+        {
+            score *= 2;
+            scoreText.text = score.ToString();
+        }
+    }
+
+    public void ShowScoreInGameMenu()
+    {
+        StringBuilder score = new StringBuilder();
+        score.Append("Score:");
+        score.AppendLine();
+        score.Append(scoreText.text.ToString());
+        scoreInGameMenuText.text = score.ToString();
+    }
+
     public void ToggleGameOverBar(bool val)
     {
         GameManager.Instance.isGameMenuOpen = val;
@@ -172,6 +203,14 @@ public class GameMenu : SingletonMonobehaviour<GameMenu>
     public void ToggleInGameMenu(bool val)
     {
         inGameUI.SetActive(val);
+    }
+
+    public void ToggleRewardedAd(bool val)
+    {
+        canShowRewardedAd = false;
+        rewardedAdText.enabled = val;
+        lockedAd.enabled = !val;
+        canShowRewardedAd = val;
     }
 
     public void SetPlayer()

@@ -41,6 +41,9 @@ TagManager:
   - RestoreHP
   - InGameUI
   - ScoreInGameMenu
+  - LockedAd
+  - ComboText
+  - ComboTextParentTransform
   layers:
   - Default
   - TransparentFX

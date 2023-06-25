@@ -115,7 +115,7 @@ public class Player : SingletonMonobehaviour<Player>
             nearTongueCollider.offset = new Vector2(tongueLength /2 -0.01f, 0f);
             nearTongueCollider.size = new Vector2(tongueLength -0.01f, 0.14f);
 
-            Tongue.Instance.StickingPart.transform.position = transform.TransformPoint(tongueLine.GetPosition(0));
+            Tongue.Instance.stickingPartObject.transform.position = transform.TransformPoint(tongueLine.GetPosition(0));
 
             tongueLength += Settings.tongueMultiplyer * Time.deltaTime;
             yield return null;
@@ -146,7 +146,7 @@ public class Player : SingletonMonobehaviour<Player>
         {
             tongueLine.SetPosition(0, new Vector3(tongueLength, 0f, 0f));
 
-            Tongue.Instance.StickingPart.transform.position = transform.TransformPoint(tongueLine.GetPosition(0));
+            Tongue.Instance.stickingPartObject.transform.position = transform.TransformPoint(tongueLine.GetPosition(0));
 
             tongueLength -= (Settings.tongueMultiplyer * 1.3f) * Time.deltaTime;
             yield return null;
@@ -156,6 +156,9 @@ public class Player : SingletonMonobehaviour<Player>
         isSticked = false;
         canElongate = true;
     }
+
+
+
 
     public void MinusHp(bool minus)
     {

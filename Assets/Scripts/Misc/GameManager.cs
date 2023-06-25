@@ -30,7 +30,10 @@ public class GameManager : SingletonMonobehaviour<GameManager>, ISaveable
     public string ISaveableUniqueID { get { return _iSaveableUniqueID; } set { _iSaveableUniqueID = value; } }
     GameObjectSave _gameObjectSave;
     public GameObjectSave GameObjectSave { get { return _gameObjectSave; } set { _gameObjectSave = value; } }
-    
+
+
+    float fireFlySpawnChance;
+    float beeSpawnChance;
 
     protected override void Awake()
     {
@@ -81,6 +84,8 @@ public class GameManager : SingletonMonobehaviour<GameManager>, ISaveable
         }
 
         HPBar.Instance.StartHunger();
+        beeSpawnChance = 30;
+        fireFlySpawnChance = 3;
         maxEnemiesIncrease = StartCoroutine(MaxEnemiesIncrease());
     }
 
@@ -104,11 +109,11 @@ public class GameManager : SingletonMonobehaviour<GameManager>, ISaveable
         if (enemySettingsAIList.Count < maxEnemies)
         {
             int cur = Random.Range(0, 100);
-            if (cur > 30)
+            if (cur > beeSpawnChance)
             {
                 val = 0;
             }
-            else if (cur > 5)
+            else if (cur > fireFlySpawnChance)
             {
                 val = 1;
             }
@@ -180,7 +185,8 @@ public class GameManager : SingletonMonobehaviour<GameManager>, ISaveable
     {
         if (isGameMenuOpen)
         {
-            GameMenu.Instance.score *= 2;
+            GameMenu.Instance.DoubleScore();
+            GameMenu.Instance.ShowScoreInGameMenu();
         }
         else
         {
@@ -208,8 +214,16 @@ public class GameManager : SingletonMonobehaviour<GameManager>, ISaveable
     {
         while (true)
         {
-            yield return StartCoroutine(Timer(10f));
-            maxEnemies++;
+            if (maxEnemies < 17)
+            {
+                yield return StartCoroutine(Timer(10f));
+                
+                maxEnemies++;
+            }
+
+            yield return StartCoroutine(Timer(7f));
+            beeSpawnChance++;
+            fireFlySpawnChance += 0.5f;
             StartCoroutine(Spawn());
             yield return null;
         }

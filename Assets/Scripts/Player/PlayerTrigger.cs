@@ -8,7 +8,7 @@ public class PlayerTrigger : SingletonMonobehaviour<PlayerTrigger>
     Player player;
 
     [HideInInspector] public bool isScoreMultiplaying;
-    float curMultiplayer;
+    [HideInInspector] public float curMultiplayer;
 
     protected override void Awake()
     {
@@ -25,11 +25,12 @@ public class PlayerTrigger : SingletonMonobehaviour<PlayerTrigger>
 
     void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.CompareTag("Food"))
+        if (collision.CompareTag("Food") || collision.CompareTag("RestoreHP"))
         {
             SettingsAI settingsAi = collision.gameObject.GetComponent<SettingsAI>();
             if (settingsAi.isDestroying)
                 return;
+
             if (scoreMultiplayerCoroutine != null)
             {
                 curMultiplayer += Settings.scoreMultiplyer;
@@ -43,6 +44,11 @@ public class PlayerTrigger : SingletonMonobehaviour<PlayerTrigger>
             GameMenu.Instance.ChangeScore(settingsAi.score * curMultiplayer);
             settingsAi.Die();
             isScoreMultiplaying = true;
+
+            if (collision.CompareTag("RestoreHP"))
+            {
+                player.MinusHp(false);
+            }
         }
         else if (collision.CompareTag("Damage"))
         {
@@ -55,23 +61,16 @@ public class PlayerTrigger : SingletonMonobehaviour<PlayerTrigger>
             settingsAi.Die();
             player.MinusHp(true);
         }
-        else if (collision.CompareTag("RestoreHP"))
-        {
-            if (scoreMultiplayerCoroutine != null)
-            {
-                StopCoroutine(scoreMultiplayerCoroutine);
-            }
-            SettingsAI settingsAi = collision.gameObject.GetComponent<SettingsAI>();
-            GameMenu.Instance.ChangeScore(settingsAi.score * curMultiplayer);
-            settingsAi.Die();
-            player.MinusHp(false);
-        }
     }
     IEnumerator ScoreMultiplayer()
     {
+        if (curMultiplayer < 3)
+        {
+            curMultiplayer += 0.5f;
+        }
         yield return GameManager.Instance.StartCoroutine(GameManager.Instance.Timer(Settings.timeWhileScoreMultiplying));
 
-        curMultiplayer = 1f;
+        curMultiplayer = 1;
         isScoreMultiplaying = false;
     }
 }
