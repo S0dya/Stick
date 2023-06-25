@@ -7,6 +7,7 @@ public class Tongue : SingletonMonobehaviour<Tongue>
     Player player;
     public GameObject stickingPartObject;
     StickingPart stickingPart;
+    LineRenderer tongue;
 
     Transform ComboTextParent;
     [SerializeField] GameObject x2MultiplayerPrefab;
@@ -20,16 +21,20 @@ public class Tongue : SingletonMonobehaviour<Tongue>
 
         player = GetComponentInParent<Player>();
         stickingPart = stickingPartObject.GetComponent<StickingPart>();
+        tongue = GetComponent<LineRenderer>();
 
         ComboTextParent = GameObject.FindGameObjectWithTag("ComboTextParentTransform").transform;
     }
 
     void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.CompareTag("Damage") || collision.CompareTag("Food") || collision.CompareTag("RestoreHP"))
+        if (player.isSticked)
+        {
+            return;
+        }
+        else if (collision.CompareTag("Damage") || collision.CompareTag("Food") || collision.CompareTag("RestoreHP"))
         {
             player.isSticked = true;
-
 
             if ((collision.CompareTag("Food") || collision.CompareTag("RestoreHP")))
             {
@@ -37,28 +42,27 @@ public class Tongue : SingletonMonobehaviour<Tongue>
 
                 if (PlayerTrigger.Instance.isScoreMultiplaying)
                 {
+                    GameObject multiplayerObj = new GameObject();
+
                     switch (PlayerTrigger.Instance.curMultiplayer)
                     {
                         case 1.5f:
-                            Debug.Log(1);
-                            Instantiate(x2MultiplayerPrefab, stickingPartObject.transform.position, Quaternion.identity, ComboTextParent);
+                            multiplayerObj = Instantiate(x2MultiplayerPrefab, ComboTextParent);
                             break;
                         case 2f:
-                            Debug.Log(2);
-                            Instantiate(x3MultiplayerPrefab, stickingPartObject.transform.position, Quaternion.identity, ComboTextParent);
+                            multiplayerObj = Instantiate(x3MultiplayerPrefab, ComboTextParent);
                             break;
                         case 2.5f:
-                            Debug.Log(3);
-                            Instantiate(x4MultiplayerPrefab, stickingPartObject.transform.position, Quaternion.identity, ComboTextParent);
+                            multiplayerObj = Instantiate(x4MultiplayerPrefab, ComboTextParent);
                             break;
                         case 3f:
-                            Debug.Log(4);
-                            Instantiate(x5MultiplayerPrefab, stickingPartObject.transform.position, Quaternion.identity, ComboTextParent);
+                            multiplayerObj = Instantiate(x5MultiplayerPrefab, ComboTextParent);
                             break;
                         default:
-                            Debug.Log("def");
                             break;
                     }
+
+                    multiplayerObj.transform.position = Camera.main.WorldToScreenPoint(stickingPartObject.transform.position);
                 }
             }
 
@@ -67,5 +71,11 @@ public class Tongue : SingletonMonobehaviour<Tongue>
 
             collision.transform.SetParent(stickingPartObject.transform);
         }
+    }
+
+    public void SetColor(Color startColor, Color endColor)
+    {
+        tongue.startColor = startColor;
+        tongue.endColor = endColor;
     }
 }

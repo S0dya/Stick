@@ -5,7 +5,7 @@ using UnityEngine;
 public static class Settings
 {
     //Game 
-    public static string GameScene = "SampleScene";
+    public static string GameScene = "GameScene";
 
     public static int Money;
     public static bool IsMusicEnabled;
@@ -15,6 +15,9 @@ public static class Settings
 
     public static int BackgroundIndex;
     public static int SetBackgroundIndex;
+
+    public static Color SetTongueColorStart;
+    public static Color SetTongueColorEnd;
 
     //Screen
     public static float ScreenWidth { get; private set; }
@@ -33,10 +36,12 @@ public static class Settings
     public static float posYForCamUp { get; private set; }
 
     //Player
-    public static int maxHealth { get; private set; }
-    public static float tongueMultiplyer { get; private set; }
-    public static float scoreMultiplyer { get; private set; }
-    public static float timeWhileScoreMultiplying { get; private set; }
+    public static int maxHealth = 2;
+    public static float tongueMultiplyer = 30;
+    public static float curTongueMultiplyer;
+    public static float scoreMultiplyer = 0.5f;
+    public static float timeWhileScoreMultiplying = 1f;
+    
 
 
     public static void Initialize()
@@ -54,11 +59,6 @@ public static class Settings
 
         posYForCamDown = -4.7f;
         posYForCamUp = 0.7f;
-
-        maxHealth = 2;
-        tongueMultiplyer = 30f;
-        scoreMultiplyer = 0.2f;
-        timeWhileScoreMultiplying = 1f;
 
         GekoSkinIndex = 0;//DelLater
         BackgroundIndex = 0;

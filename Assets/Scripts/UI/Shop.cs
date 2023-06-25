@@ -9,6 +9,8 @@ public class Shop : SingletonMonobehaviour<Shop>
     public Sprite[] GekoSkins;
     public int[] skinsPrices;
     public string[] skinNames;
+    public Color[] tongueColorsStart;
+    public Color[] tongueColorsEnd;
 
     public Sprite[] backgrounds;
     public int[] backgroundPrices;
@@ -167,6 +169,7 @@ public class Shop : SingletonMonobehaviour<Shop>
     public void SetSkin(int i)
     {
         playerSkin.sprite = GekoSkins[i];
+        Tongue.Instance.SetColor(tongueColorsStart[i], tongueColorsEnd[i]);
     }
     
     public void TestBackground(int i)

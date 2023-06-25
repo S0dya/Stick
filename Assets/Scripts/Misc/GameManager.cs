@@ -168,6 +168,14 @@ public class GameManager : SingletonMonobehaviour<GameManager>, ISaveable
 
     public void ClearGame()
     {
+        GameObject[] comboTextObjs = GameObject.FindGameObjectsWithTag("ComboText");
+        List<ComboText> comboTexts = new List<ComboText>();
+        foreach (var cto in comboTextObjs)
+        {
+            comboTexts.Add(cto.GetComponent<ComboText>());
+        }
+
+
         StopAllCoroutines();
         while (enemySettingsAIList.Count > 0)
         {
@@ -177,6 +185,13 @@ public class GameManager : SingletonMonobehaviour<GameManager>, ISaveable
         {
             StopCoroutine(maxEnemiesIncrease);
         }
+
+        while (comboTexts.Count > 0)
+        {
+            comboTexts[0].Clear();
+            comboTexts.RemoveAt(0);
+        }
+
         HPBar.Instance.StopHunger();
     }
 

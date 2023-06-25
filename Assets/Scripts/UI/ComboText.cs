@@ -32,7 +32,11 @@ public class ComboText : MonoBehaviour
 
         if (time > duration)
         {
-            Destroy(gameObject);
         }
+    }
+
+    public void Clear()
+    {
+        Destroy(gameObject);
     }
 }

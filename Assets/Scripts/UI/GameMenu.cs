@@ -132,8 +132,8 @@ public class GameMenu : SingletonMonobehaviour<GameMenu>
 
         Player.Instance.health = 2;
         HPBar.Instance.ResetHPImages();
-
         Player.Instance.tongueLength = 0f;
+        PlayerTrigger.Instance.TurnOffMultyplaing();
 
         GameManager.Instance.ClearGame();
 
