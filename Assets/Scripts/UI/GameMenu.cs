@@ -66,6 +66,7 @@ public class GameMenu : SingletonMonobehaviour<GameMenu>
     {
         ToggleButtonsBar(true);
         player.enabled = false;
+        AudioManager.Instance.ChangeMusic("Music", "MusicPiano");
 
         GameManager.Instance.OpenMenu();
     }
@@ -75,6 +76,7 @@ public class GameMenu : SingletonMonobehaviour<GameMenu>
         ToggleButtonsBar(false);
         player.enabled = true;
         inGameUI.SetActive(true);
+        AudioManager.Instance.ChangeMusic("MusicPiano", "Music");
 
         GameManager.Instance.CloseMenu();
     }
@@ -91,6 +93,7 @@ public class GameMenu : SingletonMonobehaviour<GameMenu>
         Menu.Instance.OpenMenu();
         //moveCamDownCoroutine = StartCoroutine(MoveCamDown());
         SaveManager.Instance.SaveDataToFile();
+        AudioManager.Instance.ToggleMusic(false);
     }
 
     public void Restart()
@@ -99,6 +102,7 @@ public class GameMenu : SingletonMonobehaviour<GameMenu>
         SetPlayer();
         GameManager.Instance.StartGame();
         player.enabled = true;
+        AudioManager.Instance.ToggleMusic(true);
     }
 
     public void RewardedAdButton()
@@ -118,6 +122,7 @@ public class GameMenu : SingletonMonobehaviour<GameMenu>
         ToggleInGameMenu(false);
 
         ShowScoreInGameMenu();
+        AudioManager.Instance.ToggleMusic(false);
 
         player.enabled = false;
         GameManager.Instance.OpenMenu();

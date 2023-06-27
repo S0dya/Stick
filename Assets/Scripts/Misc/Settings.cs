@@ -8,7 +8,7 @@ public static class Settings
     public static string GameScene = "GameScene";
 
     public static int Money;
-    public static bool IsMusicEnabled;
+    public static bool IsMusicEnabled = true;
 
     public static int GekoSkinIndex;
     public static int SetGekoSkinIndex;

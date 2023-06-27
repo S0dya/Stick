@@ -12,6 +12,7 @@ public class FMODManager : SingletonMonobehaviour<FMODManager>
     [field: Header("Music")]
 
     [field: SerializeField] public EventReference Music { get; private set; }
+    [field: SerializeField] public EventReference MusicPiano { get; private set; }
 
     [field: Header("Player")]
 

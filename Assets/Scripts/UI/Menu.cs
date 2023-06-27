@@ -85,6 +85,7 @@ public class Menu : SingletonMonobehaviour<Menu>
         {
             im.enabled = val;
         }
+        AudioManager.Instance.ToggleSound(val);
         Settings.IsMusicEnabled = val;
     }
 
@@ -123,11 +124,16 @@ public class Menu : SingletonMonobehaviour<Menu>
         GameMenu.Instance.ClearGame();
         GameManager.Instance.StartGame();
         GameMenu.Instance.ToggleInGameMenu(true);
-
+        AudioManager.Instance.ToggleMusic(true);
     }
 
     public void ToggleButtonsBar(bool val)
     {
         menuBottomButtonsBarObject.SetActive(val);
+    }
+
+    public void PlayOneShotButtonPress()
+    {
+        AudioManager.Instance.PlayOneShot(FMODManager.Instance.ButtonPress, new Vector3(0, 0, 0));
     }
 }

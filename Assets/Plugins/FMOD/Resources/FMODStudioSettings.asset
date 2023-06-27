@@ -350,8 +350,8 @@ MonoBehaviour:
   switchSettingsMigration: 1
   HasSourceProject: 1
   HasPlatforms: 1
-  sourceProjectPath: D:/Projects/MusicFMOD/Projects/PinkThing/GekoGame/GekoGame.fspro
-  sourceBankPath: D:/Projects/MusicFMOD/Projects/PinkThing/GekoGame/Build
+  sourceProjectPath: D:/Projects/MusicFMOD/Projects/Test/Test.fspro
+  sourceBankPath: D:/Projects/MusicFMOD/Projects/Test/Build
   sourceBankPathUnformatted: 
   BankRefreshCooldown: 5
   ShowBankRefreshWindow: 1
@@ -375,9 +375,9 @@ MonoBehaviour:
   MasterBanks:
   - Master
   Banks:
+  - Ambient
   - Music
   - SFX
-  - TestLevel
   BanksToLoad: []
   LiveUpdatePort: 9264
   EnableMemoryTracking: 0

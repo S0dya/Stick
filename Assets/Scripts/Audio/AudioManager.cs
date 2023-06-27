@@ -9,7 +9,7 @@ public class AudioManager : SingletonMonobehaviour<AudioManager>
     List<EventInstance> eventInstances;
     List<StudioEventEmitter> eventEmitters;
 
-    Dictionary<string, EventInstance> EventInstancesDict;
+    [HideInInspector] public Dictionary<string, EventInstance> EventInstancesDict;
 
     bool calmMusicIsCurrentlyPlaying;
 
@@ -25,10 +25,12 @@ public class AudioManager : SingletonMonobehaviour<AudioManager>
 
     void Start()
     {
-        EventInstancesDict.Add("Ambience", CreateInstance(FMODManager.Instance.Amnbience));
         EventInstancesDict.Add("Music", CreateInstance(FMODManager.Instance.Music));
-
+        EventInstancesDict.Add("MusicPiano", CreateInstance(FMODManager.Instance.MusicPiano));
         EventInstancesDict.Add("ButtonPress", CreateInstance(FMODManager.Instance.ButtonPress));
+        EventInstancesDict.Add("Amnbience", CreateInstance(FMODManager.Instance.Amnbience));
+
+        EventInstancesDict["Amnbience"].start();
     }
 
 
@@ -72,41 +74,42 @@ public class AudioManager : SingletonMonobehaviour<AudioManager>
         return emitter;
     }
 
-    /*
-    void CleanUp()
+    public void ToggleSound(bool val)
     {
-        foreach (EventInstance eventInstance in eventInstances)
+        float volume = val ? 1f : 0f;
+        foreach(var sound in EventInstancesDict)
         {
-            eventInstance.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
-            eventInstance.release();
+            sound.Value.setParameterByName("volume", volume);
         }
     }
 
-    void OnDestroy() //maybe delete later
+    public void ChangeMusic(string curMusic, string newMusic)
     {
-        CleanUp();
+        int pos;
+        EventInstancesDict[curMusic].getTimelinePosition(out pos);
+        float time = pos / 1000f;
+
+        EventInstancesDict[newMusic].setTimelinePosition((int)(time * 1000));
+        EventInstancesDict[curMusic].stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
+        EventInstancesDict[newMusic].start();
     }
-    */
+
+    public void ToggleMusic(bool val)
+    {
+        if (val)
+        {
+            EventInstancesDict["Music"].start();
+        }
+        else
+        {
+            EventInstancesDict["Music"].stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
+            EventInstancesDict["MusicPiano"].stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
+        }
+        
+    }
 
     public void PlayInstance(string instanceName)
     {
         EventInstancesDict[instanceName].start();
     }
-
-
-
-        /*
-        if (GameManager.enemiesFollowingPlayer == 0)
-        {
-            fightMusicInstance.stop();
-            calmMusicInstance.start();
-        }
-        else
-        {
-            if (GameManager.enemiesFollowingPlayer == 1)
-            {
-                fightMusicInstance.start();
-                calmMusicInstance.stop();
-            }
-        }*/
 }
