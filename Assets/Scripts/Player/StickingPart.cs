@@ -4,12 +4,7 @@ using UnityEngine;
 
 public class StickingPart : MonoBehaviour
 {
-    [SerializeField] ParticleSystem catchedEffect;
-
-    public void PlayCatchedEffect()
-    {
-        Instantiate(catchedEffect, transform.position, Quaternion.identity);
-    }
+    
 
 
 

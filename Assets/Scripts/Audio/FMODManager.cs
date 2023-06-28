@@ -8,6 +8,7 @@ public class FMODManager : SingletonMonobehaviour<FMODManager>
     [field: Header("Ambience")]
 
     [field: SerializeField] public EventReference Amnbience { get; private set; }
+    [field: SerializeField] public EventReference FliesAmnbience { get; private set; }
 
     [field: Header("Music")]
 
@@ -21,7 +22,9 @@ public class FMODManager : SingletonMonobehaviour<FMODManager>
 
     [field: Header("Enemy")]
 
-    [field: SerializeField] public EventReference Flying { get; private set; }
+    [field: SerializeField] public EventReference FlySound { get; private set; }
+    [field: SerializeField] public EventReference BeeSound { get; private set; }
+    [field: SerializeField] public EventReference FireFlySound { get; private set; }
 
     [field: Header("UI")]
 

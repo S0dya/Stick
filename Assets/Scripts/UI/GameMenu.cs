@@ -93,7 +93,8 @@ public class GameMenu : SingletonMonobehaviour<GameMenu>
         Menu.Instance.OpenMenu();
         //moveCamDownCoroutine = StartCoroutine(MoveCamDown());
         SaveManager.Instance.SaveDataToFile();
-        AudioManager.Instance.ToggleMusic(false);
+        AudioManager.Instance.ChangeMusic("Music", "MusicPiano");
+        AudioManager.Instance.EventInstancesDict["FliesAmbience"].stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
     }
 
     public void Restart()

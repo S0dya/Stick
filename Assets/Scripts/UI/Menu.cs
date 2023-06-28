@@ -32,7 +32,6 @@ public class Menu : SingletonMonobehaviour<Menu>
         cancelledMusicImages = new Image[cancelledMusicObjects.Length];
         for (int i = 0; i < cancelledMusicImages.Length; i++)
             cancelledMusicImages[i] = (cancelledMusicObjects[i].GetComponent<Image>());
-
     }
 
     void Start()
@@ -124,7 +123,8 @@ public class Menu : SingletonMonobehaviour<Menu>
         GameMenu.Instance.ClearGame();
         GameManager.Instance.StartGame();
         GameMenu.Instance.ToggleInGameMenu(true);
-        AudioManager.Instance.ToggleMusic(true);
+        AudioManager.Instance.ChangeMusic("MusicPiano", "Music");
+        AudioManager.Instance.EventInstancesDict["FliesAmbience"].start();
     }
 
     public void ToggleButtonsBar(bool val)
@@ -134,6 +134,6 @@ public class Menu : SingletonMonobehaviour<Menu>
 
     public void PlayOneShotButtonPress()
     {
-        AudioManager.Instance.PlayOneShot(FMODManager.Instance.ButtonPress, new Vector3(0, 0, 0));
+        AudioManager.Instance.PlayOneShot(FMODManager.Instance.ButtonPress);
     }
 }

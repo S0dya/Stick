@@ -3320,7 +3320,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 110
+  m_fontSize: 107.15
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -14747,6 +14747,13 @@ MonoBehaviour:
       Data3: -1774732402
       Data4: -176803140
     Path: event:/Ambient/Nature
+  <FliesAmnbience>k__BackingField:
+    Guid:
+      Data1: 803324186
+      Data2: 1279208613
+      Data3: 1526485690
+      Data4: -1065449028
+    Path: event:/Ambient/FlyesAmbience
   <Music>k__BackingField:
     Guid:
       Data1: -921109433
@@ -14775,13 +14782,27 @@ MonoBehaviour:
       Data3: 0
       Data4: 0
     Path: 
-  <Flying>k__BackingField:
+  <FlySound>k__BackingField:
     Guid:
-      Data1: 0
-      Data2: 0
-      Data3: 0
-      Data4: 0
-    Path: 
+      Data1: 1274568885
+      Data2: 1246216936
+      Data3: 921050544
+      Data4: -661910103
+    Path: event:/SFX/FlySound
+  <BeeSound>k__BackingField:
+    Guid:
+      Data1: 1260536700
+      Data2: 1280516179
+      Data3: 1998122627
+      Data4: 1050237483
+    Path: event:/SFX/BeeSound
+  <FireFlySound>k__BackingField:
+    Guid:
+      Data1: 1790208731
+      Data2: 1203598169
+      Data3: 1855924398
+      Data4: 1989907401
+    Path: event:/SFX/FireFlySound
   <ButtonPress>k__BackingField:
     Guid:
       Data1: -772832464
@@ -16072,7 +16093,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 128.35
+  m_fontSize: 105.85
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -18093,7 +18114,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 72
+  m_fontSize: 60.85
   m_fontSizeBase: 24
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -19145,6 +19166,10 @@ PrefabInstance:
       propertyPath: m_LocalPosition.y
       value: -0.1
       objectReference: {fileID: 0}
+    - target: {fileID: 3733936121086173614, guid: f0884d350442150478f7b09df4c41971, type: 3}
+      propertyPath: catchedEffect
+      value: 
+      objectReference: {fileID: 5649709780268958976, guid: 85c052b99e3dcd34bba4aede80238f2d, type: 3}
     - target: {fileID: 3733936121086173614, guid: f0884d350442150478f7b09df4c41971, type: 3}
       propertyPath: stickingPartObject
       value: 

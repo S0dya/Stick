@@ -9,6 +9,8 @@ public class Tongue : SingletonMonobehaviour<Tongue>
     StickingPart stickingPart;
     LineRenderer tongue;
 
+    [SerializeField] ParticleSystem catchedEffect;
+
     Transform ComboTextParent;
     [SerializeField] GameObject x2MultiplayerPrefab;
     [SerializeField] GameObject x3MultiplayerPrefab;
@@ -28,17 +30,29 @@ public class Tongue : SingletonMonobehaviour<Tongue>
 
     void OnTriggerEnter2D(Collider2D collision)
     {
+        bool isDamage = collision.CompareTag("Damage");
+        bool isFood = collision.CompareTag("Food");
+        bool isRestoreHp = collision.CompareTag("RestoreHP");
         if (player.isSticked)
         {
             return;
         }
-        else if (collision.CompareTag("Damage") || collision.CompareTag("Food") || collision.CompareTag("RestoreHP"))
+        else if (isDamage || isFood || isRestoreHp)
         {
             player.isSticked = true;
 
-            if ((collision.CompareTag("Food") || collision.CompareTag("RestoreHP")))
+            if ((isFood || isRestoreHp))
             {
-                stickingPart.PlayCatchedEffect();
+                if (isFood)
+                {
+                    AudioManager.Instance.PlayOneShot(FMODManager.Instance.FlySound);
+                }
+                else
+                {
+                    AudioManager.Instance.PlayOneShot(FMODManager.Instance.FireFlySound);
+                }
+
+                Instantiate(catchedEffect, collision.transform.position, Quaternion.identity);
 
                 if (PlayerTrigger.Instance.isScoreMultiplaying)
                 {
@@ -62,8 +76,12 @@ public class Tongue : SingletonMonobehaviour<Tongue>
                             break;
                     }
 
-                    multiplayerObj.transform.position = Camera.main.WorldToScreenPoint(stickingPartObject.transform.position);
+                    multiplayerObj.transform.position = Camera.main.WorldToScreenPoint(collision.transform.position);
                 }
+            }
+            else
+            {
+                AudioManager.Instance.PlayOneShot(FMODManager.Instance.BeeSound);
             }
 
             EnemyAI enemyAi = collision.gameObject.GetComponent<EnemyAI>();

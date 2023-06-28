@@ -13,6 +13,8 @@ public class AudioManager : SingletonMonobehaviour<AudioManager>
 
     bool calmMusicIsCurrentlyPlaying;
 
+    Coroutine fadeOutCoroutine;
+
     protected override void Awake()
     {
         base.Awake();
@@ -29,8 +31,11 @@ public class AudioManager : SingletonMonobehaviour<AudioManager>
         EventInstancesDict.Add("MusicPiano", CreateInstance(FMODManager.Instance.MusicPiano));
         EventInstancesDict.Add("ButtonPress", CreateInstance(FMODManager.Instance.ButtonPress));
         EventInstancesDict.Add("Amnbience", CreateInstance(FMODManager.Instance.Amnbience));
+        EventInstancesDict.Add("FliesAmbience", CreateInstance(FMODManager.Instance.FliesAmnbience));
 
         EventInstancesDict["Amnbience"].start();
+        EventInstancesDict["MusicPiano"].start();
+        EventInstancesDict["Music"].setVolume(0);
     }
 
 
@@ -52,7 +57,17 @@ public class AudioManager : SingletonMonobehaviour<AudioManager>
 
     public void PlayOneShot(EventReference sound, Vector3 position)
     {
-        RuntimeManager.PlayOneShot(sound, position);
+        if (Settings.IsMusicEnabled)
+        {
+            RuntimeManager.PlayOneShot(sound, position);
+        }
+    }
+    public void PlayOneShot(EventReference sound)
+    {
+        if (Settings.IsMusicEnabled)
+        {
+            RuntimeManager.PlayOneShot(sound, new Vector3(0, 0, 0));
+        }
     }
 
     public EventInstance CreateInstance(EventReference sound)
@@ -79,7 +94,7 @@ public class AudioManager : SingletonMonobehaviour<AudioManager>
         float volume = val ? 1f : 0f;
         foreach(var sound in EventInstancesDict)
         {
-            sound.Value.setParameterByName("volume", volume);
+            sound.Value.setVolume(volume);
         }
     }
 
@@ -90,22 +105,52 @@ public class AudioManager : SingletonMonobehaviour<AudioManager>
         float time = pos / 1000f;
 
         EventInstancesDict[newMusic].setTimelinePosition((int)(time * 1000));
-        EventInstancesDict[curMusic].stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
-        EventInstancesDict[newMusic].start();
+
+        fadeOutCoroutine = StartCoroutine(FadeOutMusic(EventInstancesDict[curMusic], EventInstancesDict[newMusic]));
+    }
+    private IEnumerator FadeOutMusic(EventInstance music, EventInstance musicFadeIn)
+    {
+        musicFadeIn.setVolume(0);
+        musicFadeIn.start();
+
+        float timer = 0.5f;
+        float timerFadeIn = 0f;
+
+
+        while (timer > 0)
+        {
+            music.setVolume(timer * 1.5f);
+            musicFadeIn.setVolume(timerFadeIn * 1.5f);
+            Debug.Log(timer * 1.5f);
+            timer -= Time.deltaTime;
+            timerFadeIn += Time.deltaTime;
+
+            if (!Settings.IsMusicEnabled)
+            {
+                music.setVolume(0);
+                musicFadeIn.setVolume(0);
+                break;
+            }
+
+            yield return null;
+        }
+
+        music.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
     }
 
     public void ToggleMusic(bool val)
     {
         if (val)
         {
-            EventInstancesDict["Music"].start();
+            EventInstancesDict["MusicPiano"].start();
+            EventInstancesDict["FliesAmbience"].stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
         }
         else
         {
+            EventInstancesDict["MusicPiano"].start();
+            EventInstancesDict["FliesAmbience"].stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
             EventInstancesDict["Music"].stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
-            EventInstancesDict["MusicPiano"].stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
         }
-        
     }
 
     public void PlayInstance(string instanceName)

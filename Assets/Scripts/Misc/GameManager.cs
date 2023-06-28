@@ -50,7 +50,6 @@ public class GameManager : SingletonMonobehaviour<GameManager>, ISaveable
 
         ISaveableUniqueID = GetComponent<GenerateGUID>().GUID;
         GameObjectSave = new GameObjectSave();
-
     }
 
     void Start()
