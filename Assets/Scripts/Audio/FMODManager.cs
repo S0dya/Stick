@@ -30,6 +30,10 @@ public class FMODManager : SingletonMonobehaviour<FMODManager>
 
     [field: SerializeField] public EventReference ButtonPress { get; private set; }
 
+    [field: SerializeField] public EventReference[] CatchSounds { get; private set; }
+
+    [field: SerializeField] public EventReference PlaySound { get; private set; }
+    [field: SerializeField] public EventReference GameOverSound { get; private set; }
 
     protected override void Awake()
     {

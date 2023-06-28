@@ -60,6 +60,7 @@ public class AdsManager : SingletonMonobehaviour<AdsManager>, IUnityAdsInitializ
 
     public void OnUnityAdsShowStart(string placementId)
     {
+        AudioManager.Instance.ToggleSound(false);
     }
 
     public void OnUnityAdsShowClick(string placementId)
@@ -68,6 +69,7 @@ public class AdsManager : SingletonMonobehaviour<AdsManager>, IUnityAdsInitializ
 
     public void OnUnityAdsShowComplete(string placementId, UnityAdsShowCompletionState showCompletionState)
     {
+        AudioManager.Instance.ToggleSound(true);
         GameManager.Instance.RewardPlayer();
     }
     #endregion

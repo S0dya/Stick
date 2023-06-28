@@ -113,15 +113,13 @@ public class AudioManager : SingletonMonobehaviour<AudioManager>
         musicFadeIn.setVolume(0);
         musicFadeIn.start();
 
-        float timer = 0.5f;
+        float timer = 0.33f;
         float timerFadeIn = 0f;
-
 
         while (timer > 0)
         {
-            music.setVolume(timer * 1.5f);
-            musicFadeIn.setVolume(timerFadeIn * 1.5f);
-            Debug.Log(timer * 1.5f);
+            music.setVolume(timer * 3f);
+            musicFadeIn.setVolume(timerFadeIn * 3f);
             timer -= Time.deltaTime;
             timerFadeIn += Time.deltaTime;
 
@@ -138,6 +136,7 @@ public class AudioManager : SingletonMonobehaviour<AudioManager>
         music.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
     }
 
+    /*
     public void ToggleMusic(bool val)
     {
         if (val)
@@ -152,7 +151,7 @@ public class AudioManager : SingletonMonobehaviour<AudioManager>
             EventInstancesDict["Music"].stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
         }
     }
-
+    */
     public void PlayInstance(string instanceName)
     {
         EventInstancesDict[instanceName].start();

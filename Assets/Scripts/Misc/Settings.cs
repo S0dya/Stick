@@ -48,7 +48,7 @@ public static class Settings
     {
         ScreenWidth = Camera.main.ScreenToWorldPoint(new Vector3(Screen.width, 0f, 0f)).x - Camera.main.ScreenToWorldPoint(Vector3.zero).x;
         ScreenHeight = Camera.main.ScreenToWorldPoint(new Vector3(0f, Screen.height, 0f)).y - Camera.main.ScreenToWorldPoint(Vector3.zero).y;
-        heightForInput = Screen.height;
+        heightForInput = Screen.height*1.5f;
 
         minX = -ScreenWidth / 2f;
         maxX = ScreenWidth / 2f;

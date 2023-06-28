@@ -57,6 +57,7 @@ public class Menu : SingletonMonobehaviour<Menu>
         StartGame();
         Shop.Instance.SetSkin(Settings.SetGekoSkinIndex);
         Shop.Instance.SetBackground(Settings.SetBackgroundIndex);
+        AudioManager.Instance.PlayOneShot(FMODManager.Instance.PlaySound);
     }
 
     public void Music()
@@ -82,7 +83,7 @@ public class Menu : SingletonMonobehaviour<Menu>
     {
         foreach(Image im in cancelledMusicImages)
         {
-            im.enabled = val;
+            im.enabled = !val;
         }
         AudioManager.Instance.ToggleSound(val);
         Settings.IsMusicEnabled = val;

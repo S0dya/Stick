@@ -103,7 +103,7 @@ public class GameMenu : SingletonMonobehaviour<GameMenu>
         SetPlayer();
         GameManager.Instance.StartGame();
         player.enabled = true;
-        AudioManager.Instance.ToggleMusic(true);
+        AudioManager.Instance.EventInstancesDict["Music"].start();
     }
 
     public void RewardedAdButton()
@@ -123,7 +123,8 @@ public class GameMenu : SingletonMonobehaviour<GameMenu>
         ToggleInGameMenu(false);
 
         ShowScoreInGameMenu();
-        AudioManager.Instance.ToggleMusic(false);
+        AudioManager.Instance.PlayOneShot(FMODManager.Instance.GameOverSound);
+        AudioManager.Instance.EventInstancesDict["Music"].stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
 
         player.enabled = false;
         GameManager.Instance.OpenMenu();
@@ -139,7 +140,7 @@ public class GameMenu : SingletonMonobehaviour<GameMenu>
         Player.Instance.health = 2;
         HPBar.Instance.ResetHPImages();
         Player.Instance.tongueLength = 0f;
-        PlayerTrigger.Instance.TurnOffMultyplaing();
+        Tongue.Instance.TurnOffMultyplaing();
 
         GameManager.Instance.ClearGame();
 

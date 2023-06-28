@@ -8,7 +8,7 @@ public class SettingsAI : MonoBehaviour
 
     //point
     public GameObject point;
-    public int amountOfPointsToVisit;
+    [HideInInspector] public int amountOfPointsToVisit;
     public int minAOPTV;
     public int maxAOPTV;
 

@@ -110,7 +110,7 @@ MonoBehaviour:
   maxAOPTV: 13
   timeForTakingAnotherPoint: 0.3
   timeForChangingSpeed: 4
-  score: 10
+  score: 5
   enemyType: 0
   defaultSpeed: 4
   speedOnNearTheTongue: 6
