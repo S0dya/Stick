@@ -75,31 +75,27 @@ public class Tongue : SingletonMonobehaviour<Tongue>
 
                 if (isScoreMultiplaying)
                 {
-                    GameObject multiplayerObj = new GameObject();
-
                     switch (curMultiplayer)
                     {
                         case 1.5f:
-                            multiplayerObj = Instantiate(x2MultiplayerPrefab, ComboTextParent);
+                            Instantiate(x2MultiplayerPrefab, Camera.main.WorldToScreenPoint(collision.transform.position), Quaternion.identity, ComboTextParent);
                             AudioManager.Instance.PlayOneShot(FMODManager.Instance.CatchSounds[0]);
                             break;
                         case 2f:
-                            multiplayerObj = Instantiate(x3MultiplayerPrefab, ComboTextParent);
+                            Instantiate(x3MultiplayerPrefab, Camera.main.WorldToScreenPoint(collision.transform.position), Quaternion.identity, ComboTextParent);
                             AudioManager.Instance.PlayOneShot(FMODManager.Instance.CatchSounds[1]);
                             break;
                         case 2.5f:
-                            multiplayerObj = Instantiate(x4MultiplayerPrefab, ComboTextParent);
+                            Instantiate(x4MultiplayerPrefab, Camera.main.WorldToScreenPoint(collision.transform.position), Quaternion.identity, ComboTextParent);
                             AudioManager.Instance.PlayOneShot(FMODManager.Instance.CatchSounds[2]);
                             break;
                         case 3f:
-                            multiplayerObj = Instantiate(x5MultiplayerPrefab, ComboTextParent);
+                            Instantiate(x5MultiplayerPrefab, Camera.main.WorldToScreenPoint(collision.transform.position), Quaternion.identity, ComboTextParent);
                             AudioManager.Instance.PlayOneShot(FMODManager.Instance.CatchSounds[3]);
                             break;
                         default:
                             break;
                     }
-
-                    multiplayerObj.transform.position = Camera.main.WorldToScreenPoint(collision.transform.position);
                 }
                 
                 if (scoreMultiplayerCoroutine != null)

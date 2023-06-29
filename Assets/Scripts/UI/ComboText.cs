@@ -32,6 +32,7 @@ public class ComboText : MonoBehaviour
 
         if (time > duration)
         {
+            Clear();
         }
     }
 
