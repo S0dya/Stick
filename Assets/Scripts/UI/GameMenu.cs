@@ -8,44 +8,25 @@ using System.Text;
 
 public class GameMenu : SingletonMonobehaviour<GameMenu>
 {
-    GameObject playerObject;
+    [SerializeField] GameObject playerObject;
+    [SerializeField] TextMeshProUGUI scoreText;
+    [SerializeField] TextMeshProUGUI scoreInGameMenuText;
+    [SerializeField] TextMeshProUGUI rewardedAdText;
+    [SerializeField] GameObject buttonsBarObject;
+    [SerializeField] GameObject gameOverBarObject;
+    [SerializeField] GameObject inGameUI;
+    [SerializeField] Image backgroundImage;
+    [SerializeField] Image lockedAd;
     Player player;
-    TextMeshProUGUI scoreText;
-    TextMeshProUGUI scoreInGameMenuText;
-    TextMeshProUGUI rewardedAdText;
-    GameObject buttonsBarObject;
-    GameObject gameOverBarObject;
-    GameObject inGameUI;
-    Image backgroundImage;
-    Camera camera;
-    Image lockedAd;
-
-    //Coroutine moveCamDownCoroutine;
-
 
     [HideInInspector] public int score;
     bool canShowRewardedAd;
-
 
     protected override void Awake()
     {
         base.Awake();
 
-        playerObject = GameObject.FindGameObjectWithTag("Player");
         player = playerObject.GetComponent<Player>();
-        scoreText = GameObject.FindGameObjectWithTag("Score").GetComponent<TextMeshProUGUI>();
-        scoreInGameMenuText = GameObject.FindGameObjectWithTag("ScoreInGameMenu").GetComponent<TextMeshProUGUI>();
-        rewardedAdText = GameObject.FindGameObjectWithTag("RewardedAdText").GetComponent<TextMeshProUGUI>();
-        buttonsBarObject = GameObject.FindGameObjectWithTag("ButtonsBar");
-        gameOverBarObject = GameObject.FindGameObjectWithTag("GameOverBar");
-        inGameUI = GameObject.FindGameObjectWithTag("InGameUI");
-        backgroundImage = GameObject.FindGameObjectWithTag("GameOverAndPause").GetComponent<Image>();
-        camera = Camera.main;
-        lockedAd = GameObject.FindGameObjectWithTag("LockedAd").GetComponent<Image>();
-    }
-
-    void Start()
-    {
     }
 
     void OnEnable()
@@ -88,10 +69,10 @@ public class GameMenu : SingletonMonobehaviour<GameMenu>
 
     public void Home()
     {
+        Debug.Log("asd");
         ClearGame();
         SetPlayer();
         Menu.Instance.OpenMenu();
-        //moveCamDownCoroutine = StartCoroutine(MoveCamDown());
         SaveManager.Instance.SaveDataToFile();
         AudioManager.Instance.ChangeMusic("Music", "MusicPiano");
         AudioManager.Instance.EventInstancesDict["FliesAmbience"].stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
@@ -148,23 +129,6 @@ public class GameMenu : SingletonMonobehaviour<GameMenu>
         score = 0;
         ChangeScore(0);
     }
-
-
-    /*
-    IEnumerator MoveCamDown()
-    {
-        float curY = camera.transform.position.y;
-        while (camera.transform.position.y > Settings.posYForCamDown + 0.7f)
-        {
-            float y = Mathf.Lerp(camera.transform.position.y, Settings.posYForCamDown, 0.05f);
-
-            camera.transform.position = new Vector2(camera.transform.position.x, y);
-            yield return null;
-        }
-
-        yield return null;
-    }
-    */
 
     //inGameMethods
     public void ChangeScore(float value)

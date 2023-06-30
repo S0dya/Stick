@@ -26,8 +26,6 @@ public class GameManager : SingletonMonobehaviour<GameManager>, ISaveable
 
     Coroutine maxEnemiesIncrease;
 
-    string _iSaveableUniqueID;
-    public string ISaveableUniqueID { get { return _iSaveableUniqueID; } set { _iSaveableUniqueID = value; } }
     GameObjectSave _gameObjectSave;
     public GameObjectSave GameObjectSave { get { return _gameObjectSave; } set { _gameObjectSave = value; } }
 
@@ -48,7 +46,6 @@ public class GameManager : SingletonMonobehaviour<GameManager>, ISaveable
         Settings.Initialize();
         background.transform.localScale = new Vector3(Settings.ScreenWidth, Settings.ScreenHeight * 0.8f, 0);
 
-        ISaveableUniqueID = GetComponent<GenerateGUID>().GUID;
         GameObjectSave = new GameObjectSave();
     }
 
@@ -122,8 +119,6 @@ public class GameManager : SingletonMonobehaviour<GameManager>, ISaveable
             }
         }
         
-
-
         switch (val)
         {
             case 0:
@@ -295,43 +290,40 @@ public class GameManager : SingletonMonobehaviour<GameManager>, ISaveable
     }
 
 
-    public void ISaveableLoad(GameSave gameSave)
+    public void ISaveableLoad(GameObjectSave gameObjectSave)
     {
-        if (gameSave.gameObjectData.TryGetValue(ISaveableUniqueID, out GameObjectSave gameObjectSave))
+        if (gameObjectSave.sceneData.TryGetValue(Settings.GameScene, out SceneSave sceneSave))
         {
-            if (gameObjectSave.sceneData.TryGetValue(Settings.GameScene, out SceneSave sceneSave))
+            if (sceneSave.intDictionary != null)
             {
-                if (sceneSave.intDictionary != null)
+                if (sceneSave.intDictionary.TryGetValue("money", out int money))
                 {
-                    if (sceneSave.intDictionary.TryGetValue("money", out int money))
+                    Debug.Log(money);
+                    Settings.Money = money;
+                }
+                if (sceneSave.intDictionary.TryGetValue("setGekoSkinIndex", out int setGekoSkinIndex))
+                {
+                    Settings.SetGekoSkinIndex = setGekoSkinIndex;
+                }
+                if (sceneSave.intDictionary.TryGetValue("setBackgroundIndex", out int setBackgroundIndex))
+                {
+                    Settings.SetBackgroundIndex = setBackgroundIndex;
+                }
+            }
+            if (sceneSave.intArrayDictionary != null)
+            {
+                if (sceneSave.intArrayDictionary.TryGetValue("skinPrices", out int[] skinPrices))
+                {
+                    for (int i = 0; i < skinPrices.Length; i++)
                     {
-                        Debug.Log(money);
-                        Settings.Money = money;
-                    }
-                    if (sceneSave.intDictionary.TryGetValue("setGekoSkinIndex", out int setGekoSkinIndex))
-                    {
-                        Settings.SetGekoSkinIndex = setGekoSkinIndex;
-                    }
-                    if (sceneSave.intDictionary.TryGetValue("setBackgroundIndex", out int setBackgroundIndex))
-                    {
-                        Settings.SetBackgroundIndex = setBackgroundIndex;
+                        Shop.Instance.skinsPrices[i] = skinPrices[i];
                     }
                 }
-                if (sceneSave.intArrayDictionary != null)
+                if (sceneSave.intArrayDictionary.TryGetValue("backgroundPrices", out int[] backgroundPrices))
                 {
-                    if (sceneSave.intArrayDictionary.TryGetValue("skinPrices", out int[] skinPrices))
+                    for (int i = 0; i < backgroundPrices.Length; i++)
                     {
-                        for (int i = 0; i < skinPrices.Length; i++)
-                        {
-                            Shop.Instance.skinsPrices[i] = skinPrices[i];
-                        }
-                    }
-                    if (sceneSave.intArrayDictionary.TryGetValue("backgroundPrices", out int[] backgroundPrices))
-                    {
-                        for (int i = 0; i < backgroundPrices.Length; i++)
-                        {
-                            Shop.Instance.backgroundPrices[i] = backgroundPrices[i];
-                        }
+                        Shop.Instance.backgroundPrices[i] = backgroundPrices[i];
                     }
                 }
             }

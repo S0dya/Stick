@@ -59,8 +59,5 @@ public static class Settings
 
         posYForCamDown = -4.7f;
         posYForCamUp = 0.7f;
-
-        GekoSkinIndex = 0;//DelLater
-        BackgroundIndex = 0;
     }
 }

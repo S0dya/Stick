@@ -5,13 +5,13 @@ using UnityEngine;
 public class Player : SingletonMonobehaviour<Player>
 {
     [HideInInspector] public LineRenderer tongueLine;
-    Rigidbody2D rigidbody;
     [HideInInspector] public BoxCollider2D tongueCollider;
     [HideInInspector] public BoxCollider2D nearTongueCollider;
+    [HideInInspector] public SpriteRenderer playerSprite;
     GameObject tongueObject;
     Vector2 mousePos;
     Camera camera;
-    [HideInInspector] public SpriteRenderer playerSprite;
+    Rigidbody2D rigidbody;
 
     Coroutine elongateCoroutine;
     Coroutine shortenCoroutine;
@@ -58,15 +58,10 @@ public class Player : SingletonMonobehaviour<Player>
 
                 if (touch.phase == TouchPhase.Began)
                 {
-                    mousePos = camera.ScreenToWorldPoint(Input.mousePosition);
                     if (touch.position.y / Settings.heightForInput > Settings.blindZoneOfY)
                     {
                         Elongate();
                     }
-                }
-                else if (touch.phase == TouchPhase.Ended || touch.phase == TouchPhase.Canceled)
-                {
-                    Shorten();
                 }
             }
         }
@@ -156,8 +151,6 @@ public class Player : SingletonMonobehaviour<Player>
         isSticked = false;
         canElongate = true;
     }
-
-
 
 
     public void MinusHp(bool minus)

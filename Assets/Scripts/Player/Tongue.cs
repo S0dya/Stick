@@ -17,11 +17,10 @@ public class Tongue : SingletonMonobehaviour<Tongue>
     [SerializeField] GameObject x4MultiplayerPrefab;
     [SerializeField] GameObject x5MultiplayerPrefab;
 
-    Coroutine scoreMultiplayerCoroutine;
-
     [HideInInspector] public bool isScoreMultiplaying;
-    [HideInInspector] public float curMultiplayer;
+    [HideInInspector] public float curMultiplayer = 1f;
 
+    Coroutine scoreMultiplayerCoroutine;
 
     protected override void Awake()
     {
@@ -34,12 +33,6 @@ public class Tongue : SingletonMonobehaviour<Tongue>
         ComboTextParent = GameObject.FindGameObjectWithTag("ComboTextParentTransform").transform;
     }
 
-    void Start()
-    {
-        curMultiplayer = 1f;
-        isScoreMultiplaying = false;
-    }
-
     void OnTriggerEnter2D(Collider2D collision)
     {
         bool isDamage = collision.CompareTag("Damage");
@@ -50,8 +43,6 @@ public class Tongue : SingletonMonobehaviour<Tongue>
         {
             return;
         }
-
-
         else if (isDamage || isFood || isRestoreHp)
         {
             SettingsAI settingsAi = collision.gameObject.GetComponent<SettingsAI>();
@@ -146,7 +137,6 @@ public class Tongue : SingletonMonobehaviour<Tongue>
         isScoreMultiplaying = false;
         Settings.curTongueMultiplyer = Settings.tongueMultiplyer;
     }
-    
     
     public void SetColor(Color startColor, Color endColor)
     {

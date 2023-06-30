@@ -3343,7 +3343,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8c625db82e8d58f4481249251342115d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moneyAmount: {fileID: 0}
+  menu: {fileID: 2102692065}
+  gameMenu: {fileID: 1624949069}
+  shop: {fileID: 1089363859}
+  cancelledMusicImages:
+  - {fileID: 920371730}
+  - {fileID: 614178347}
+  moneyAmount: {fileID: 1829000029}
 --- !u!1 &454284079
 GameObject:
   m_ObjectHideFlags: 0
@@ -5623,7 +5629,7 @@ GameObject:
   - component: {fileID: 794598518}
   m_Layer: 5
   m_Name: SkinName
-  m_TagString: SkinName
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -6360,7 +6366,7 @@ GameObject:
   - component: {fileID: 846829476}
   m_Layer: 5
   m_Name: SetBackgroundButton
-  m_TagString: SetBackgroundImage
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -7147,6 +7153,7 @@ MonoBehaviour:
   - 400
   - 900
   - 1800
+  donate: {fileID: 1385589925}
 --- !u!1 &914923767
 GameObject:
   m_ObjectHideFlags: 0
@@ -8061,7 +8068,7 @@ GameObject:
   - component: {fileID: 1089363860}
   m_Layer: 5
   m_Name: ShopBar
-  m_TagString: Shop
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -8354,7 +8361,7 @@ GameObject:
   - component: {fileID: 1172443508}
   m_Layer: 5
   m_Name: Skin
-  m_TagString: Skin
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -8938,7 +8945,7 @@ GameObject:
   - component: {fileID: 1333581459}
   m_Layer: 5
   m_Name: BlockedBackground
-  m_TagString: BlockedBackground
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -14594,7 +14601,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1439613181}
   - component: {fileID: 1439613182}
-  - component: {fileID: 1439613183}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -14638,19 +14644,6 @@ MonoBehaviour:
   maxEnemies: 0
   enemySettingsAIList: []
   isGameMenuOpen: 0
---- !u!114 &1439613183
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1439613180}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e6f0f84fbe462ce44930523afff96888, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _gUID: f632ad77-b976-4138-bd30-0932fc424ac3
 --- !u!1 &1473940628
 GameObject:
   m_ObjectHideFlags: 0
@@ -14964,7 +14957,7 @@ GameObject:
   - component: {fileID: 1507514752}
   m_Layer: 5
   m_Name: BackgroundName
-  m_TagString: BackgroundName
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -16082,6 +16075,17 @@ MonoBehaviour:
   backgroundNames:
   - asb32
   - as1
+  shop: {fileID: 1089363859}
+  blockedBackground: {fileID: 1333581459}
+  backgroundImage: {fileID: 2003104178}
+  setBackgroundImage: {fileID: 846829474}
+  blockedSkin: {fileID: 1717136724}
+  setSkinImage: {fileID: 1623982387}
+  skin: {fileID: 1172443508}
+  skinName: {fileID: 794598519}
+  backgroundName: {fileID: 1507514753}
+  background: {fileID: 2034581490}
+  playerSkin: {fileID: 3733936121075764000}
 --- !u!1 &1623982387
 GameObject:
   m_ObjectHideFlags: 0
@@ -16096,7 +16100,7 @@ GameObject:
   - component: {fileID: 1623982389}
   m_Layer: 5
   m_Name: SetSkinButton
-  m_TagString: SetSkinImage
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -16279,6 +16283,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b1de73f7a4285fc428494b38516f398b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerObject: {fileID: 3733936121075763996}
+  scoreText: {fileID: 2011016567}
+  scoreInGameMenuText: {fileID: 1667224375}
+  rewardedAdText: {fileID: 12357573}
+  buttonsBarObject: {fileID: 1913395858}
+  gameOverBarObject: {fileID: 240031478}
+  inGameUI: {fileID: 1026330696}
+  backgroundImage: {fileID: 276861099}
+  lockedAd: {fileID: 1696896339}
   score: 0
 --- !u!1 &1667224372
 GameObject:
@@ -17053,7 +17066,7 @@ GameObject:
   - component: {fileID: 1717136723}
   m_Layer: 5
   m_Name: BlockedSkin
-  m_TagString: BlockedSkin
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -18726,7 +18739,7 @@ GameObject:
   - component: {fileID: 2003104178}
   m_Layer: 5
   m_Name: Background
-  m_TagString: BackgroundImage
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -19960,5 +19973,10 @@ PrefabInstance:
 --- !u!1 &3733936121075763996 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 3733936120448204131, guid: f0884d350442150478f7b09df4c41971, type: 3}
+  m_PrefabInstance: {fileID: 3733936121075763995}
+  m_PrefabAsset: {fileID: 0}
+--- !u!212 &3733936121075764000 stripped
+SpriteRenderer:
+  m_CorrespondingSourceObject: {fileID: 3733936120448204135, guid: f0884d350442150478f7b09df4c41971, type: 3}
   m_PrefabInstance: {fileID: 3733936121075763995}
   m_PrefabAsset: {fileID: 0}

@@ -6,7 +6,7 @@ using Newtonsoft.Json;
 
 public class SaveManager : SingletonMonobehaviour<SaveManager>
 {
-    public GameSave gameSave;
+    public GameObjectSave gameObjectSave;
     public List<ISaveable> iSaveableObjectList;
 
     protected override void Awake()
@@ -23,35 +23,17 @@ public class SaveManager : SingletonMonobehaviour<SaveManager>
         if (File.Exists(filePath))
         {
             string json = File.ReadAllText(filePath);
-            gameSave = JsonConvert.DeserializeObject<GameSave>(json);
-
-            for (int i = iSaveableObjectList.Count - 1; i >= 0; i--)
-            {
-                if (gameSave.gameObjectData.ContainsKey(iSaveableObjectList[i].ISaveableUniqueID))
-                {
-                    iSaveableObjectList[i].ISaveableLoad(gameSave);
-                }
-                else
-                {
-                    Component component = (Component)iSaveableObjectList[i];
-                    Destroy(component.gameObject);
-                }
-            }
+            gameObjectSave = JsonConvert.DeserializeObject<GameObjectSave>(json);
+            iSaveableObjectList[0].ISaveableLoad(gameObjectSave);
         }
-
     }
 
     public void SaveDataToFile()
     {
-        gameSave = new GameSave();
-
-        foreach (ISaveable iSaveableObject in iSaveableObjectList)
-        {
-            gameSave.gameObjectData.Add(iSaveableObject.ISaveableUniqueID, iSaveableObject.ISaveableSave());
-        }
+        gameObjectSave = iSaveableObjectList[0].ISaveableSave();
 
         string filePath = Application.persistentDataPath + "/data.json";
-        string json = JsonConvert.SerializeObject(gameSave);
+        string json = JsonConvert.SerializeObject(gameObjectSave);
         File.WriteAllText(filePath, json);
 
     }

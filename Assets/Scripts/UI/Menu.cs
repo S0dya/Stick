@@ -4,47 +4,31 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-
 public class Menu : SingletonMonobehaviour<Menu>
 {
-    Camera camera;
-    GameObject menuBottomButtonsBarObject;
-    GameObject gameMenuObject;
-    GameObject menuObject;
-    GameObject shop;
-    Image[] cancelledMusicImages;
-    [HideInInspector] public TextMeshProUGUI moneyAmount;
+    [SerializeField] GameObject menu;
+    [SerializeField] GameObject gameMenu;
+    [SerializeField] GameObject shop;
+    [SerializeField] Image[] cancelledMusicImages;
+    public TextMeshProUGUI moneyAmount;
 
-    //Coroutine moveCamUpCoroutine;
-
-
-    void Awake()
+    protected override void Awake()
     {   
         base.Awake();
 
-        camera = Camera.main;
-        menuBottomButtonsBarObject = GameObject.FindGameObjectWithTag("MenuBottomButtonsBar");
-        gameMenuObject = GameObject.FindGameObjectWithTag("GameMenu");
-        menuObject = GameObject.FindGameObjectWithTag("Menu");
-        moneyAmount = GameObject.FindGameObjectWithTag("MoneyAmount").GetComponent<TextMeshProUGUI>();
-
-        GameObject[] cancelledMusicObjects = GameObject.FindGameObjectsWithTag("CancelledMusicObject");
-        cancelledMusicImages = new Image[cancelledMusicObjects.Length];
-        for (int i = 0; i < cancelledMusicImages.Length; i++)
-            cancelledMusicImages[i] = (cancelledMusicObjects[i].GetComponent<Image>());
     }
 
     void Start()
     {
-        SaveManager.Instance.SaveDataToFile();
+        //SaveManager.Instance.SaveDataToFile();
         OpenMenu();
 
     }
 
     public void OpenMenu()
     {
-        menuObject.SetActive(true);
-        gameMenuObject.SetActive(false);
+        menu.SetActive(true);
+        gameMenu.SetActive(false);
         Shop.Instance.CloseShop();
         Donate.Instance.CloseDonate();
     }
@@ -52,7 +36,6 @@ public class Menu : SingletonMonobehaviour<Menu>
     //ButtonsMethods
     public void Play()
     {
-        //moveCamUpCoroutine = StartCoroutine(MoveCamUp());
         CloseMenu();
         StartGame();
         Shop.Instance.SetSkin(Settings.SetGekoSkinIndex);
@@ -95,46 +78,19 @@ public class Menu : SingletonMonobehaviour<Menu>
         moneyAmount.text = Settings.Money.ToString();
     }
 
-    /*
-    IEnumerator MoveCamUp()
-    {
-        float curY = camera.transform.position.y;
-        while (camera.transform.position.y < Settings.posYForCamUp - 0.7f)
-        {
-            float y = Mathf.Lerp(camera.transform.position.y, Settings.posYForCamUp, 0.05f);
-
-            camera.transform.position = new Vector2(camera.transform.position.x, y);
-            yield return null;
-        }
-
-        
-        yield return null;
-    }
-    */
-
     void CloseMenu()
     {
-        menuObject.SetActive(false);
+        menu.SetActive(false);
     }
 
     void StartGame()
     {
         Shop.Instance.CloseShop();
-        gameMenuObject.SetActive(true);
+        gameMenu.SetActive(true);
         GameMenu.Instance.ClearGame();
         GameManager.Instance.StartGame();
         GameMenu.Instance.ToggleInGameMenu(true);
         AudioManager.Instance.ChangeMusic("MusicPiano", "Music");
         AudioManager.Instance.EventInstancesDict["FliesAmbience"].start();
-    }
-
-    public void ToggleButtonsBar(bool val)
-    {
-        menuBottomButtonsBarObject.SetActive(val);
-    }
-
-    public void PlayOneShotButtonPress()
-    {
-        AudioManager.Instance.PlayOneShot(FMODManager.Instance.ButtonPress);
     }
 }

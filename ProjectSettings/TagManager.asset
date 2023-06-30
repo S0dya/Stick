@@ -21,7 +21,6 @@ TagManager:
   - ButtonsBar
   - Menu
   - GameMenu
-  - MenuBottomButtonsBar
   - GameOverAndPause
   - CancelledMusicObject
   - BlockedSkin

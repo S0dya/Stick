@@ -16,34 +16,22 @@ public class Shop : SingletonMonobehaviour<Shop>
     public int[] backgroundPrices;
     public string[] backgroundNames;
 
-    GameObject shop;
-    Image blockedBackground;
-    Image backgroundImage;
-    GameObject setBackgroundImage;
-    Image blockedSkin;
-    GameObject setSkinImage;
-    Image playerImage;
-    TextMeshProUGUI skinName;
-    TextMeshProUGUI backgroundName;
-
-    SpriteRenderer background;
-    SpriteRenderer playerSkin;
+    [SerializeField] GameObject shop;
+    [SerializeField] Image blockedBackground;
+    [SerializeField] Image backgroundImage;
+    [SerializeField] GameObject setBackgroundImage;
+    [SerializeField] Image blockedSkin;
+    [SerializeField] GameObject setSkinImage;
+    [SerializeField] Image skin;
+    [SerializeField] TextMeshProUGUI skinName;
+    [SerializeField] TextMeshProUGUI backgroundName;
+    [SerializeField] SpriteRenderer background;
+    [SerializeField] SpriteRenderer playerSkin;
 
     protected override void Awake()
     {
         base.Awake();
 
-        shop = GameObject.FindGameObjectWithTag("Shop");
-        playerSkin = GameObject.FindGameObjectWithTag("Player").GetComponent<SpriteRenderer>();
-        blockedSkin = GameObject.FindGameObjectWithTag("BlockedSkin").GetComponent<Image>();
-        setSkinImage = GameObject.FindGameObjectWithTag("SetSkinImage");
-        blockedBackground = GameObject.FindGameObjectWithTag("BlockedBackground").GetComponent<Image>();
-        setBackgroundImage = GameObject.FindGameObjectWithTag("SetBackgroundImage");
-        backgroundImage = GameObject.FindGameObjectWithTag("BackgroundImage").GetComponent<Image>();
-        background = GameObject.FindGameObjectWithTag("Background").GetComponent<SpriteRenderer>();
-        playerImage = GameObject.FindGameObjectWithTag("Skin").GetComponent<Image>();
-        skinName = GameObject.FindGameObjectWithTag("SkinName").GetComponent<TextMeshProUGUI>();
-        backgroundName = GameObject.FindGameObjectWithTag("BackgroundName").GetComponent<TextMeshProUGUI>();
     }
 
     public void OpenShop()
@@ -164,7 +152,7 @@ public class Shop : SingletonMonobehaviour<Shop>
     public void TestSkin(int i)
     {
         skinName.text = skinNames[i];
-        playerImage.sprite = GekoSkins[i];
+        skin.sprite = GekoSkins[i];
     }
     public void SetSkin(int i)
     {

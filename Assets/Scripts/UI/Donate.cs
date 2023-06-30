@@ -9,15 +9,13 @@ public class Donate : SingletonMonobehaviour<Donate>
     [SerializeField] float[] donatePrices;
     [SerializeField] float[] donateAmounts;
 
-    GameObject donate;
+    [SerializeField] GameObject donate;
 
     TextMeshProUGUI[] donateTexts;
 
     protected override void Awake()
     {
         base.Awake();
-
-        donate = GameObject.FindGameObjectWithTag("Donate");
 
         GameObject[] donateObjects = GameObject.FindGameObjectsWithTag("DonateText");
         donateTexts = new TextMeshProUGUI[donateObjects.Length];
@@ -50,8 +48,4 @@ public class Donate : SingletonMonobehaviour<Donate>
         SaveManager.Instance.SaveDataToFile();
         Shop.Instance.OpenShop();
     }
-
-    //Methods
-
-
 }
