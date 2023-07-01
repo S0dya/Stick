@@ -4,23 +4,21 @@ using UnityEngine;
 
 public class GameManager : SingletonMonobehaviour<GameManager>, ISaveable
 {
-    BoxCollider2D edgesCollider;
-    BoxCollider2D edgesColliderForTongue;
-    GameObject background; 
+    [SerializeField] BoxCollider2D edgesCollider;
+    [SerializeField] BoxCollider2D edgesColliderForTongue;
+    [SerializeField] GameObject background;
 
     //Gameplay
-    Transform enemyParent;
-    Transform pointParent;
+    [SerializeField] Transform enemyParent;
+    [SerializeField] Transform pointParent;
 
     [SerializeField] GameObject flyPrefab;
     [SerializeField] GameObject beePrefab;
     [SerializeField] GameObject fireflyPrefab;
-
     [SerializeField] GameObject pointPrefab;
 
-    public int maxEnemies;
-
     public List<SettingsAI> enemySettingsAIList = new List<SettingsAI>();
+    public int maxEnemies;
 
     [HideInInspector] public bool isGameMenuOpen;
 
@@ -36,12 +34,6 @@ public class GameManager : SingletonMonobehaviour<GameManager>, ISaveable
     protected override void Awake()
     {
         base.Awake();
-
-        enemyParent = GameObject.FindGameObjectWithTag("EnemyParentTransform").transform;
-        pointParent = GameObject.FindGameObjectWithTag("PointParentTransform").transform;
-        edgesCollider = GameObject.FindGameObjectWithTag("Edges").GetComponent<BoxCollider2D>();
-        edgesColliderForTongue = GameObject.FindGameObjectWithTag("EdgesForTongue").GetComponent<BoxCollider2D>();
-        background = GameObject.FindGameObjectWithTag("Background");
 
         Settings.Initialize();
         background.transform.localScale = new Vector3(Settings.ScreenWidth, Settings.ScreenHeight * 0.8f, 0);

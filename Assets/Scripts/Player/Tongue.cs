@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering.Universal;
 
 public class Tongue : SingletonMonobehaviour<Tongue>
 {
@@ -8,10 +9,11 @@ public class Tongue : SingletonMonobehaviour<Tongue>
     public GameObject stickingPartObject;
     StickingPart stickingPart;
     LineRenderer tongue;
+    Light2D lightForStickingPart;
 
     [SerializeField] ParticleSystem catchedEffect;
 
-    Transform ComboTextParent;
+    [SerializeField] Transform ComboTextParent;
     [SerializeField] GameObject x2MultiplayerPrefab;
     [SerializeField] GameObject x3MultiplayerPrefab;
     [SerializeField] GameObject x4MultiplayerPrefab;
@@ -29,8 +31,7 @@ public class Tongue : SingletonMonobehaviour<Tongue>
         player = GetComponentInParent<Player>();
         stickingPart = stickingPartObject.GetComponent<StickingPart>();
         tongue = GetComponent<LineRenderer>();
-
-        ComboTextParent = GameObject.FindGameObjectWithTag("ComboTextParentTransform").transform;
+        lightForStickingPart = GetComponentInChildren<Light2D>();
     }
 
     void OnTriggerEnter2D(Collider2D collision)
@@ -55,11 +56,11 @@ public class Tongue : SingletonMonobehaviour<Tongue>
             {
                 if (isFood)
                 {
-                    AudioManager.Instance.PlayOneShot(FMODManager.Instance.FlySound);
+                    AudioManager.Instance.PlayOneShot("FlySound");
                 }
                 else
                 {
-                    AudioManager.Instance.PlayOneShot(FMODManager.Instance.FireFlySound);
+                    AudioManager.Instance.PlayOneShot("FireFlySound");
                 }
 
                 Instantiate(catchedEffect, collision.transform.position, Quaternion.identity);
@@ -70,19 +71,19 @@ public class Tongue : SingletonMonobehaviour<Tongue>
                     {
                         case 1.5f:
                             Instantiate(x2MultiplayerPrefab, Camera.main.WorldToScreenPoint(collision.transform.position), Quaternion.identity, ComboTextParent);
-                            AudioManager.Instance.PlayOneShot(FMODManager.Instance.CatchSounds[0]);
+                            AudioManager.Instance.PlayOneShot("CatchSounds0");
                             break;
                         case 2f:
                             Instantiate(x3MultiplayerPrefab, Camera.main.WorldToScreenPoint(collision.transform.position), Quaternion.identity, ComboTextParent);
-                            AudioManager.Instance.PlayOneShot(FMODManager.Instance.CatchSounds[1]);
+                            AudioManager.Instance.PlayOneShot("CatchSounds1");
                             break;
                         case 2.5f:
                             Instantiate(x4MultiplayerPrefab, Camera.main.WorldToScreenPoint(collision.transform.position), Quaternion.identity, ComboTextParent);
-                            AudioManager.Instance.PlayOneShot(FMODManager.Instance.CatchSounds[2]);
+                            AudioManager.Instance.PlayOneShot("CatchSounds2");
                             break;
                         case 3f:
                             Instantiate(x5MultiplayerPrefab, Camera.main.WorldToScreenPoint(collision.transform.position), Quaternion.identity, ComboTextParent);
-                            AudioManager.Instance.PlayOneShot(FMODManager.Instance.CatchSounds[3]);
+                            AudioManager.Instance.PlayOneShot("CatchSounds3");
                             break;
                         default:
                             break;
@@ -110,7 +111,7 @@ public class Tongue : SingletonMonobehaviour<Tongue>
             {
                 GameMenu.Instance.ChangeScore(settingsAi.score * curMultiplayer);
                 TurnOffMultyplaing();
-                AudioManager.Instance.PlayOneShot(FMODManager.Instance.BeeSound);
+                AudioManager.Instance.PlayOneShot("BeeSound");
             }
 
             EnemyAI enemyAi = collision.gameObject.GetComponent<EnemyAI>();
@@ -142,5 +143,7 @@ public class Tongue : SingletonMonobehaviour<Tongue>
     {
         tongue.startColor = startColor;
         tongue.endColor = endColor;
+
+        lightForStickingPart.color = endColor;
     }
 }

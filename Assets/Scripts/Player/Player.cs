@@ -6,9 +6,9 @@ public class Player : SingletonMonobehaviour<Player>
 {
     [HideInInspector] public LineRenderer tongueLine;
     [HideInInspector] public BoxCollider2D tongueCollider;
-    [HideInInspector] public BoxCollider2D nearTongueCollider;
-    [HideInInspector] public SpriteRenderer playerSprite;
-    GameObject tongueObject;
+    public BoxCollider2D nearTongueCollider;
+    public SpriteRenderer playerSprite;
+    [SerializeField] GameObject tongueObject;
     Vector2 mousePos;
     Camera camera;
     Rigidbody2D rigidbody;
@@ -27,13 +27,10 @@ public class Player : SingletonMonobehaviour<Player>
     {
         base.Awake();
 
-        nearTongueCollider = GameObject.FindGameObjectWithTag("NearTongue").GetComponent<BoxCollider2D>();
-        tongueObject = GameObject.FindGameObjectWithTag("Tongue");
         tongueLine = tongueObject.GetComponent<LineRenderer>();
         tongueCollider = tongueObject.GetComponent<BoxCollider2D>();
         rigidbody = GetComponent<Rigidbody2D>();
         camera = Camera.main;
-        playerSprite = GetComponent<SpriteRenderer>();
 
         tongueCollider.enabled = false;
     }

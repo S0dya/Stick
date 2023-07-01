@@ -40,7 +40,7 @@ public class Menu : SingletonMonobehaviour<Menu>
         StartGame();
         Shop.Instance.SetSkin(Settings.SetGekoSkinIndex);
         Shop.Instance.SetBackground(Settings.SetBackgroundIndex);
-        AudioManager.Instance.PlayOneShot(FMODManager.Instance.PlaySound);
+        AudioManager.Instance.PlayOneShot("PlaySound");
     }
 
     public void Music()
@@ -90,7 +90,7 @@ public class Menu : SingletonMonobehaviour<Menu>
         GameMenu.Instance.ClearGame();
         GameManager.Instance.StartGame();
         GameMenu.Instance.ToggleInGameMenu(true);
-        AudioManager.Instance.ChangeMusic("MusicPiano", "Music");
+        AudioManager.Instance.ChangeMusic();
         AudioManager.Instance.EventInstancesDict["FliesAmbience"].start();
     }
 }

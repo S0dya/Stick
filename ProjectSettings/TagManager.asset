@@ -4,45 +4,15 @@
 TagManager:
   serializedVersion: 2
   tags:
-  - Obstacle
   - Enemy
   - Food
-  - Tongue
-  - Snail
-  - Edge
-  - EnemyParentTransform
-  - PointParentTransform
-  - NearTongue
-  - Edges
   - Damage
-  - EdgesForTongue
-  - Score
-  - GameOverBar
   - ButtonsBar
-  - Menu
-  - GameMenu
-  - GameOverAndPause
-  - CancelledMusicObject
-  - BlockedSkin
-  - SetSkinImage
-  - SkinName
-  - BlockedBackground
-  - SetBackgroundImage
-  - Background
-  - BackgroundImage
-  - BackgroundName
-  - Skin
-  - Shop
-  - DonateText
-  - Donate
-  - MoneyAmount
-  - RewardedAdText
   - RestoreHP
-  - InGameUI
-  - ScoreInGameMenu
-  - LockedAd
+  - EdgesForTongue
   - ComboText
-  - ComboTextParentTransform
+  - Edges
+  - NearTongue
   layers:
   - Default
   - TransparentFX
@@ -58,7 +28,7 @@ TagManager:
   - Obstacle
   - Enemy
   - Effects
-  - 
+  - Light
   - 
   - 
   - 

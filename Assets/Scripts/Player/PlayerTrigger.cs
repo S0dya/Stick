@@ -4,13 +4,12 @@ using UnityEngine;
 
 public class PlayerTrigger : SingletonMonobehaviour<PlayerTrigger>
 {
-    Player player;
+    [SerializeField] Player player;
    
     protected override void Awake()
     {
         base.Awake();
 
-        player = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
     }
 
     void OnTriggerEnter2D(Collider2D collision)

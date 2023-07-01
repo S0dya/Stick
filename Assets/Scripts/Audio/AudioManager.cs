@@ -32,10 +32,18 @@ public class AudioManager : SingletonMonobehaviour<AudioManager>
         EventInstancesDict.Add("ButtonPress", CreateInstance(FMODManager.Instance.ButtonPress));
         EventInstancesDict.Add("Amnbience", CreateInstance(FMODManager.Instance.Amnbience));
         EventInstancesDict.Add("FliesAmbience", CreateInstance(FMODManager.Instance.FliesAmnbience));
+        EventInstancesDict.Add("PlaySound", CreateInstance(FMODManager.Instance.PlaySound));
+        EventInstancesDict.Add("GameOverSound", CreateInstance(FMODManager.Instance.GameOverSound));
+        EventInstancesDict.Add("FlySound", CreateInstance(FMODManager.Instance.FlySound));
+        EventInstancesDict.Add("BeeSound", CreateInstance(FMODManager.Instance.BeeSound));
+        EventInstancesDict.Add("FireFlySound", CreateInstance(FMODManager.Instance.FireFlySound));
+        for (int i = 0; i < FMODManager.Instance.CatchSounds.Length; i++)
+        {
+            EventInstancesDict.Add("CatchSounds" + i, CreateInstance(FMODManager.Instance.CatchSounds[i]));
+        }
 
         EventInstancesDict["Amnbience"].start();
         EventInstancesDict["MusicPiano"].start();
-        EventInstancesDict["Music"].setVolume(0);
     }
 
 
@@ -55,18 +63,11 @@ public class AudioManager : SingletonMonobehaviour<AudioManager>
     }
 
 
-    public void PlayOneShot(EventReference sound, Vector3 position)
+    public void PlayOneShot(string sound)
     {
         if (Settings.IsMusicEnabled)
         {
-            RuntimeManager.PlayOneShot(sound, position);
-        }
-    }
-    public void PlayOneShot(EventReference sound)
-    {
-        if (Settings.IsMusicEnabled)
-        {
-            RuntimeManager.PlayOneShot(sound, new Vector3(0, 0, 0));
+            EventInstancesDict[sound].start();
         }
     }
 
@@ -98,28 +99,47 @@ public class AudioManager : SingletonMonobehaviour<AudioManager>
         }
     }
 
-    public void ChangeMusic(string curMusic, string newMusic)
+    public void ChangeMusic()
     {
+        string curMusic = "MusicPiano";
+        string newMusic = "Music";
+        PLAYBACK_STATE playbackState;
+        EventInstancesDict["Music"].getPlaybackState(out playbackState);
+        if (playbackState == PLAYBACK_STATE.PLAYING)
+        {
+            Debug.Log("D");
+            curMusic = "Music";
+            newMusic = "MusicPiano";
+        }
+        
         int pos;
         EventInstancesDict[curMusic].getTimelinePosition(out pos);
         float time = pos / 1000f;
 
         EventInstancesDict[newMusic].setTimelinePosition((int)(time * 1000));
 
-        fadeOutCoroutine = StartCoroutine(FadeOutMusic(EventInstancesDict[curMusic], EventInstancesDict[newMusic]));
+        if (!Settings.IsMusicEnabled)
+        {
+            EventInstancesDict[curMusic].start();
+            EventInstancesDict[newMusic].stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
+        }
+        else
+        {
+            fadeOutCoroutine = StartCoroutine(FadeOutMusic(EventInstancesDict[curMusic], EventInstancesDict[newMusic]));
+        }
     }
     private IEnumerator FadeOutMusic(EventInstance music, EventInstance musicFadeIn)
     {
         musicFadeIn.setVolume(0);
         musicFadeIn.start();
 
-        float timer = 0.33f;
+        float timer = 0.25f;
         float timerFadeIn = 0f;
 
         while (timer > 0)
         {
-            music.setVolume(timer * 3f);
-            musicFadeIn.setVolume(timerFadeIn * 3f);
+            music.setVolume(timer * 4f);
+            musicFadeIn.setVolume(timerFadeIn * 4f);
             timer -= Time.deltaTime;
             timerFadeIn += Time.deltaTime;
 
@@ -136,22 +156,6 @@ public class AudioManager : SingletonMonobehaviour<AudioManager>
         music.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
     }
 
-    /*
-    public void ToggleMusic(bool val)
-    {
-        if (val)
-        {
-            EventInstancesDict["MusicPiano"].start();
-            EventInstancesDict["FliesAmbience"].stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
-        }
-        else
-        {
-            EventInstancesDict["MusicPiano"].start();
-            EventInstancesDict["FliesAmbience"].stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
-            EventInstancesDict["Music"].stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
-        }
-    }
-    */
     public void PlayInstance(string instanceName)
     {
         EventInstancesDict[instanceName].start();

@@ -11,17 +11,14 @@ public class Donate : SingletonMonobehaviour<Donate>
 
     [SerializeField] GameObject donate;
 
-    TextMeshProUGUI[] donateTexts;
+    [SerializeField] TextMeshProUGUI[] donateTexts;
 
     protected override void Awake()
     {
         base.Awake();
 
-        GameObject[] donateObjects = GameObject.FindGameObjectsWithTag("DonateText");
-        donateTexts = new TextMeshProUGUI[donateObjects.Length];
         for (int i = 0; i < donateTexts.Length; i++)
         {
-            donateTexts[i] = (donateObjects[i].GetComponent<TextMeshProUGUI>());
             donateTexts[i].text = $"{donateAmounts[i]} for {donatePrices[i]}$";
         }
     }

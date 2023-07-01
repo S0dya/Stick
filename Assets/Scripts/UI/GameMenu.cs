@@ -32,12 +32,12 @@ public class GameMenu : SingletonMonobehaviour<GameMenu>
     void OnEnable()
     {
         player.enabled = true;
-        Player.Instance.playerSprite.enabled = true;
+        player.playerSprite.enabled = true;
     }
     void OnDisable()
     {
         player.enabled = false;
-        Player.Instance.playerSprite.enabled = false;
+        player.playerSprite.enabled = false;
     }
 
 
@@ -47,7 +47,7 @@ public class GameMenu : SingletonMonobehaviour<GameMenu>
     {
         ToggleButtonsBar(true);
         player.enabled = false;
-        AudioManager.Instance.ChangeMusic("Music", "MusicPiano");
+        AudioManager.Instance.ChangeMusic();
 
         GameManager.Instance.OpenMenu();
     }
@@ -57,7 +57,7 @@ public class GameMenu : SingletonMonobehaviour<GameMenu>
         ToggleButtonsBar(false);
         player.enabled = true;
         inGameUI.SetActive(true);
-        AudioManager.Instance.ChangeMusic("MusicPiano", "Music");
+        AudioManager.Instance.ChangeMusic();
 
         GameManager.Instance.CloseMenu();
     }
@@ -69,12 +69,11 @@ public class GameMenu : SingletonMonobehaviour<GameMenu>
 
     public void Home()
     {
-        Debug.Log("asd");
         ClearGame();
         SetPlayer();
         Menu.Instance.OpenMenu();
         SaveManager.Instance.SaveDataToFile();
-        AudioManager.Instance.ChangeMusic("Music", "MusicPiano");
+        AudioManager.Instance.ChangeMusic();
         AudioManager.Instance.EventInstancesDict["FliesAmbience"].stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
     }
 
@@ -104,7 +103,7 @@ public class GameMenu : SingletonMonobehaviour<GameMenu>
         ToggleInGameMenu(false);
 
         ShowScoreInGameMenu();
-        AudioManager.Instance.PlayOneShot(FMODManager.Instance.GameOverSound);
+        AudioManager.Instance.PlayOneShot("GameOverSound");
         AudioManager.Instance.EventInstancesDict["Music"].stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
 
         player.enabled = false;

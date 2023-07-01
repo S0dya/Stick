@@ -46,7 +46,7 @@ public class HPBar : SingletonMonobehaviour<HPBar>
         yield return GameManager.Instance.StartCoroutine(GameManager.Instance.Timer(5f));
         hpImages[index].enabled = false;
 
-        yield return GameManager.Instance.StartCoroutine(GameManager.Instance.Timer(0.5f));
+        yield return GameManager.Instance.StartCoroutine(GameManager.Instance.Timer(0.3f));
         hpImages[index].enabled = true;
 
         for (int i = 0; i < 2; i++)
@@ -55,7 +55,7 @@ public class HPBar : SingletonMonobehaviour<HPBar>
         
             hpImages[index].enabled = false;
 
-            yield return GameManager.Instance.StartCoroutine(GameManager.Instance.Timer(0.5f));
+            yield return GameManager.Instance.StartCoroutine(GameManager.Instance.Timer(0.2f));
             hpImages[index].enabled = true;
         }
         for (int i = 0; i < 3; i++)
@@ -64,9 +64,11 @@ public class HPBar : SingletonMonobehaviour<HPBar>
 
             hpImages[index].enabled = false;
 
-            yield return GameManager.Instance.StartCoroutine(GameManager.Instance.Timer(0.2f));
+            yield return GameManager.Instance.StartCoroutine(GameManager.Instance.Timer(0.1f));
             hpImages[index].enabled = true;
         }
+
+        yield return GameManager.Instance.StartCoroutine(GameManager.Instance.Timer(1f));
 
         Player.Instance.MinusHp(true);
         StartHunger();
