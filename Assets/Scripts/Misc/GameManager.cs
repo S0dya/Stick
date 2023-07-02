@@ -6,16 +6,20 @@ public class GameManager : SingletonMonobehaviour<GameManager>, ISaveable
 {
     [SerializeField] BoxCollider2D edgesCollider;
     [SerializeField] BoxCollider2D edgesColliderForTongue;
-    [SerializeField] GameObject background;
-
+    
     //Gameplay
-    [SerializeField] Transform enemyParent;
-    [SerializeField] Transform pointParent;
+    Transform enemyParent;
+    Transform pointParent;
 
     [SerializeField] GameObject flyPrefab;
     [SerializeField] GameObject beePrefab;
     [SerializeField] GameObject fireflyPrefab;
     [SerializeField] GameObject pointPrefab;
+
+    public Sprite[] GekoSkins;
+    public Sprite[] backgrounds;
+    public Color[] tongueColorsStart;
+    public Color[] tongueColorsEnd;
 
     public List<SettingsAI> enemySettingsAIList = new List<SettingsAI>();
     public int maxEnemies;
@@ -27,7 +31,6 @@ public class GameManager : SingletonMonobehaviour<GameManager>, ISaveable
     GameObjectSave _gameObjectSave;
     public GameObjectSave GameObjectSave { get { return _gameObjectSave; } set { _gameObjectSave = value; } }
 
-
     float fireFlySpawnChance;
     float beeSpawnChance;
 
@@ -36,7 +39,6 @@ public class GameManager : SingletonMonobehaviour<GameManager>, ISaveable
         base.Awake();
 
         Settings.Initialize();
-        background.transform.localScale = new Vector3(Settings.ScreenWidth, Settings.ScreenHeight * 0.8f, 0);
 
         GameObjectSave = new GameObjectSave();
     }
@@ -60,6 +62,8 @@ public class GameManager : SingletonMonobehaviour<GameManager>, ISaveable
 
     public void StartGame()
     {
+        enemyParent = GameObject.FindGameObjectWithTag("EnemyParentTransform").transform;
+        pointParent = GameObject.FindGameObjectWithTag("PointParentTransform").transform;
         AstarPath.active.Scan();
 
         DefineEdgesOfScreen();
@@ -229,6 +233,8 @@ public class GameManager : SingletonMonobehaviour<GameManager>, ISaveable
             yield return null;
         }
     }
+    
+    
 
 
     void OnEnable()

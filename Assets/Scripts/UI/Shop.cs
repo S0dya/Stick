@@ -6,13 +6,9 @@ using TMPro;
 
 public class Shop : SingletonMonobehaviour<Shop>
 {
-    public Sprite[] GekoSkins;
     public int[] skinsPrices;
     public string[] skinNames;
-    public Color[] tongueColorsStart;
-    public Color[] tongueColorsEnd;
 
-    public Sprite[] backgrounds;
     public int[] backgroundPrices;
     public string[] backgroundNames;
 
@@ -25,8 +21,6 @@ public class Shop : SingletonMonobehaviour<Shop>
     [SerializeField] Image skin;
     [SerializeField] TextMeshProUGUI skinName;
     [SerializeField] TextMeshProUGUI backgroundName;
-    [SerializeField] SpriteRenderer background;
-    [SerializeField] SpriteRenderer playerSkin;
 
     protected override void Awake()
     {
@@ -78,7 +72,7 @@ public class Shop : SingletonMonobehaviour<Shop>
 
     public void RightSlideSkin()
     {
-        if (Settings.GekoSkinIndex < GekoSkins.Length - 1)
+        if (Settings.GekoSkinIndex < GameManager.Instance.GekoSkins.Length - 1)
         {
             Settings.GekoSkinIndex++;
             TestSkin(Settings.GekoSkinIndex);
@@ -98,7 +92,7 @@ public class Shop : SingletonMonobehaviour<Shop>
 
     public void RightSlideBackground()
     {
-        if (Settings.BackgroundIndex < backgrounds.Length - 1)
+        if (Settings.BackgroundIndex < GameManager.Instance.backgrounds.Length - 1)
         {
             Settings.BackgroundIndex++;
             TestBackground(Settings.BackgroundIndex);
@@ -152,21 +146,12 @@ public class Shop : SingletonMonobehaviour<Shop>
     public void TestSkin(int i)
     {
         skinName.text = skinNames[i];
-        skin.sprite = GekoSkins[i];
-    }
-    public void SetSkin(int i)
-    {
-        playerSkin.sprite = GekoSkins[i];
-        Tongue.Instance.SetColor(tongueColorsStart[i], tongueColorsEnd[i]);
+        skin.sprite = GameManager.Instance.GekoSkins[i];
     }
     
     public void TestBackground(int i)
     {
         backgroundName.text = backgroundNames[i];
-        backgroundImage.sprite = backgrounds[i];
-    }
-    public void SetBackground(int i)
-    {
-        background.sprite = backgrounds[i];
+        backgroundImage.sprite = GameManager.Instance.backgrounds[i];
     }
 }

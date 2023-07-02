@@ -13,6 +13,9 @@ TagManager:
   - ComboText
   - Edges
   - NearTongue
+  - Background
+  - EnemyParentTransform
+  - PointParentTransform
   layers:
   - Default
   - TransparentFX

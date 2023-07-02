@@ -23,15 +23,20 @@ public class Player : SingletonMonobehaviour<Player>
     [HideInInspector] public float tongueLength;
     [HideInInspector] public int health;
 
+    [SerializeField] SpriteRenderer background;
+    SpriteRenderer playerSkin;
+
     protected override void Awake()
     {
         base.Awake();
 
+        playerSkin = GetComponent<SpriteRenderer>();
         tongueLine = tongueObject.GetComponent<LineRenderer>();
         tongueCollider = tongueObject.GetComponent<BoxCollider2D>();
         rigidbody = GetComponent<Rigidbody2D>();
         camera = Camera.main;
 
+        background.transform.localScale = new Vector3(Settings.ScreenWidth, Settings.ScreenHeight * 0.8f, 0);
         tongueCollider.enabled = false;
     }
 
@@ -177,6 +182,16 @@ public class Player : SingletonMonobehaviour<Player>
             }
         }
         HPBar.Instance.StartHunger();
+    }
+
+    public void SetSkin(int i)
+    {
+        playerSkin.sprite = GameManager.Instance.GekoSkins[i];
+        Tongue.Instance.SetColor(GameManager.Instance.tongueColorsStart[i], GameManager.Instance.tongueColorsEnd[i]);
+    }
+    public void SetBackground(int i)
+    {
+        background.sprite = GameManager.Instance.backgrounds[i];
     }
 
     void OnDisable()

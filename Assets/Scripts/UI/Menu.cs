@@ -7,7 +7,6 @@ using TMPro;
 public class Menu : SingletonMonobehaviour<Menu>
 {
     [SerializeField] GameObject menu;
-    [SerializeField] GameObject gameMenu;
     [SerializeField] GameObject shop;
     [SerializeField] Image[] cancelledMusicImages;
     public TextMeshProUGUI moneyAmount;
@@ -28,7 +27,6 @@ public class Menu : SingletonMonobehaviour<Menu>
     public void OpenMenu()
     {
         menu.SetActive(true);
-        gameMenu.SetActive(false);
         Shop.Instance.CloseShop();
         Donate.Instance.CloseDonate();
     }
@@ -36,10 +34,8 @@ public class Menu : SingletonMonobehaviour<Menu>
     //ButtonsMethods
     public void Play()
     {
-        CloseMenu();
+        LoadingScene.Instance.StartCoroutine(LoadingScene.Instance.LoadSceneAsync(1, 0));
         StartGame();
-        Shop.Instance.SetSkin(Settings.SetGekoSkinIndex);
-        Shop.Instance.SetBackground(Settings.SetBackgroundIndex);
         AudioManager.Instance.PlayOneShot("PlaySound");
     }
 
@@ -86,10 +82,6 @@ public class Menu : SingletonMonobehaviour<Menu>
     void StartGame()
     {
         Shop.Instance.CloseShop();
-        gameMenu.SetActive(true);
-        GameMenu.Instance.ClearGame();
-        GameManager.Instance.StartGame();
-        GameMenu.Instance.ToggleInGameMenu(true);
         AudioManager.Instance.ChangeMusic();
         AudioManager.Instance.EventInstancesDict["FliesAmbience"].start();
     }

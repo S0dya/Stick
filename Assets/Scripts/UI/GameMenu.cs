@@ -29,6 +29,15 @@ public class GameMenu : SingletonMonobehaviour<GameMenu>
         player = playerObject.GetComponent<Player>();
     }
 
+    void Start()
+    {
+        ToggleInGameMenu(true);
+        ClearGame();
+        player.SetSkin(Settings.SetGekoSkinIndex);
+        player.SetBackground(Settings.SetBackgroundIndex);
+        GameManager.Instance.StartGame();
+    }
+
     void OnEnable()
     {
         player.enabled = true;
@@ -69,9 +78,9 @@ public class GameMenu : SingletonMonobehaviour<GameMenu>
 
     public void Home()
     {
+        LoadingScene.Instance.StartCoroutine(LoadingScene.Instance.LoadSceneAsync(0, 1));
         ClearGame();
         SetPlayer();
-        Menu.Instance.OpenMenu();
         SaveManager.Instance.SaveDataToFile();
         AudioManager.Instance.ChangeMusic();
         AudioManager.Instance.EventInstancesDict["FliesAmbience"].stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
@@ -195,6 +204,4 @@ public class GameMenu : SingletonMonobehaviour<GameMenu>
         player.isOutOfTrigger = false;
         player.isSticked = false;
     }
-
-
 }
