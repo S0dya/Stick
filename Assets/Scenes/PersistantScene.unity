@@ -894,6 +894,8 @@ MonoBehaviour:
   - {r: 0.3773585, g: 0.047703803, b: 0.047703803, a: 0.9647059}
   - {r: 0, g: 0, b: 0, a: 0}
   - {r: 0, g: 0, b: 0, a: 0}
+  skinsPrices: 000000000a0000001e000000
+  backgroundsPrices: 000000001e000000
   enemySettingsAIList: []
   maxEnemies: 0
   isGameMenuOpen: 0

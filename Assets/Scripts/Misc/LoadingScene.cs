@@ -25,6 +25,8 @@ public class LoadingScene : SingletonMonobehaviour<LoadingScene>
         while (!operation.isDone)
         {
             float progression = Mathf.Clamp01(operation.progress / 0.9f);
+            Debug.Log(progression);
+            Debug.Log(Mathf.Clamp01(operation.progress / 0.9f) + " clamp");
 
             LoadingBarFill.fillAmount = progression;
 

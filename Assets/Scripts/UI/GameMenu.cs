@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using System.Text;
+using UnityEngine.Rendering.Universal;
 
 
 public class GameMenu : SingletonMonobehaviour<GameMenu>
@@ -17,7 +18,16 @@ public class GameMenu : SingletonMonobehaviour<GameMenu>
     [SerializeField] GameObject inGameUI;
     [SerializeField] Image backgroundImage;
     [SerializeField] Image lockedAd;
+    [SerializeField] Image cancelledMusicImage;
+    [SerializeField] Light2D globalLight;
     Player player;
+
+    bool isDay = true;
+    bool isNight;
+    int scoreNededForNightChange = 100;
+    int scoreNededForDayChange = 150;
+    Coroutine changeToDay;
+    Coroutine changeToNight;
 
     [HideInInspector] public int score;
     bool canShowRewardedAd;
@@ -31,25 +41,22 @@ public class GameMenu : SingletonMonobehaviour<GameMenu>
 
     void Start()
     {
+        CheckSound();
         ToggleInGameMenu(true);
         ClearGame();
         player.SetSkin(Settings.SetGekoSkinIndex);
         player.SetBackground(Settings.SetBackgroundIndex);
         GameManager.Instance.StartGame();
+        AudioManager.Instance.ToggleMusic(true);
     }
 
-    void OnEnable()
+    void Update()
     {
-        player.enabled = true;
-        player.playerSprite.enabled = true;
+        if (Input.GetKeyDown(KeyCode.G))
+        {
+            ChangeScore(50);
+        }
     }
-    void OnDisable()
-    {
-        player.enabled = false;
-        player.playerSprite.enabled = false;
-    }
-
-
 
     //buttonsMethods
     public void Stop()
@@ -73,7 +80,7 @@ public class GameMenu : SingletonMonobehaviour<GameMenu>
 
     public void Music()
     {
-        Menu.Instance.EnableMusic(!Settings.IsMusicEnabled);
+        EnableMusic(!Settings.IsMusicEnabled);
     }
 
     public void Home()
@@ -82,8 +89,8 @@ public class GameMenu : SingletonMonobehaviour<GameMenu>
         ClearGame();
         SetPlayer();
         SaveManager.Instance.SaveDataToFile();
-        AudioManager.Instance.ChangeMusic();
-        AudioManager.Instance.EventInstancesDict["FliesAmbience"].stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
+        AudioManager.Instance.ToggleMusic(false);
+
     }
 
     public void Restart()
@@ -106,6 +113,20 @@ public class GameMenu : SingletonMonobehaviour<GameMenu>
     }
 
     //gameMethods
+    void EnableMusic(bool val)
+    {
+        cancelledMusicImage.enabled = !val;
+        AudioManager.Instance.ToggleSound(val);
+        Settings.IsMusicEnabled = val;
+    }
+    void CheckSound()
+    {
+        if (!Settings.IsMusicEnabled)
+        {
+            cancelledMusicImage.enabled = true;
+        }
+    }
+
     public void GameOver()
     {
         ToggleGameOverBar(true);
@@ -113,7 +134,7 @@ public class GameMenu : SingletonMonobehaviour<GameMenu>
 
         ShowScoreInGameMenu();
         AudioManager.Instance.PlayOneShot("GameOverSound");
-        AudioManager.Instance.EventInstancesDict["Music"].stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
+        AudioManager.Instance.ToggleMusic(false);
 
         player.enabled = false;
         GameManager.Instance.OpenMenu();
@@ -144,6 +165,28 @@ public class GameMenu : SingletonMonobehaviour<GameMenu>
         int endValue = Mathf.FloorToInt(value);
         score += endValue;
         score = Mathf.Max(score, 0);
+        if (isDay && score > scoreNededForNightChange)
+        {
+            scoreNededForNightChange += 100;
+            isDay = false;
+            isNight = true;
+            if (changeToDay != null)
+            {
+                StopCoroutine(changeToDay);
+            }
+            changeToNight = StartCoroutine(ChangeToNight());
+        }
+        else if (isNight && score > scoreNededForDayChange)
+        {
+            scoreNededForDayChange += 100;
+            isDay = true;
+            isNight = false;
+            if (changeToNight != null)
+            {
+                StopCoroutine(changeToNight);
+            }
+            changeToDay = StartCoroutine(ChangeToDay());
+        }
         scoreText.text = score.ToString();
     }
 
@@ -203,5 +246,32 @@ public class GameMenu : SingletonMonobehaviour<GameMenu>
         player.canElongate = true;
         player.isOutOfTrigger = false;
         player.isSticked = false;
+    }
+
+    IEnumerator ChangeToNight()
+    { 
+        while (globalLight.intensity > 0.3f)
+        {
+            if (GameManager.Instance.isGameMenuOpen)
+            {
+                yield return null;
+            }
+            globalLight.intensity -= Time.deltaTime * 0.05f;
+
+            yield return null;
+        }
+    }
+    IEnumerator ChangeToDay()
+    {
+        while (globalLight.intensity < 1)
+        {
+            if (GameManager.Instance.isGameMenuOpen)
+            {
+                yield return null;
+            }
+            globalLight.intensity += Time.deltaTime * 0.06f;
+
+            yield return null;
+        }
     }
 }

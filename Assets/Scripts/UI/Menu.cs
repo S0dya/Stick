@@ -8,18 +8,19 @@ public class Menu : SingletonMonobehaviour<Menu>
 {
     [SerializeField] GameObject menu;
     [SerializeField] GameObject shop;
-    [SerializeField] Image[] cancelledMusicImages;
+    [SerializeField] Image cancelledMusicImage;
     public TextMeshProUGUI moneyAmount;
 
     protected override void Awake()
     {   
         base.Awake();
+        //SaveManager.Instance.SaveDataToFile();
 
     }
 
     void Start()
     {
-        //SaveManager.Instance.SaveDataToFile();
+        CheckSound();
         OpenMenu();
 
     }
@@ -35,7 +36,6 @@ public class Menu : SingletonMonobehaviour<Menu>
     public void Play()
     {
         LoadingScene.Instance.StartCoroutine(LoadingScene.Instance.LoadSceneAsync(1, 0));
-        StartGame();
         AudioManager.Instance.PlayOneShot("PlaySound");
     }
 
@@ -56,14 +56,25 @@ public class Menu : SingletonMonobehaviour<Menu>
         moneyAmount.text = Settings.Money.ToString();
     }
 
+    public void PlayButtonSound()
+    {
+        AudioManager.Instance.PlayOneShot("ButtonPress");
+    }
+
+
 
     //OtherMethods
-    public void EnableMusic(bool val)
+    void CheckSound()
     {
-        foreach(Image im in cancelledMusicImages)
+        if (!Settings.IsMusicEnabled)
         {
-            im.enabled = !val;
+            cancelledMusicImage.enabled = true;
         }
+    }
+
+    void EnableMusic(bool val)
+    {
+        cancelledMusicImage.enabled = !val;
         AudioManager.Instance.ToggleSound(val);
         Settings.IsMusicEnabled = val;
     }
@@ -77,12 +88,5 @@ public class Menu : SingletonMonobehaviour<Menu>
     void CloseMenu()
     {
         menu.SetActive(false);
-    }
-
-    void StartGame()
-    {
-        Shop.Instance.CloseShop();
-        AudioManager.Instance.ChangeMusic();
-        AudioManager.Instance.EventInstancesDict["FliesAmbience"].start();
     }
 }

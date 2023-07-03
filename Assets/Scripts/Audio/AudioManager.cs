@@ -43,9 +43,12 @@ public class AudioManager : SingletonMonobehaviour<AudioManager>
         }
 
         EventInstancesDict["Amnbience"].start();
-        EventInstancesDict["MusicPiano"].start();
-    }
 
+        if (!Settings.IsMusicEnabled)
+        {
+            ToggleSound(false);
+        }
+    }
 
     public void SetParameter(string instanceName, string parameterName, float value)
     {
@@ -90,6 +93,22 @@ public class AudioManager : SingletonMonobehaviour<AudioManager>
         return emitter;
     }
 
+    public void ToggleMusic(bool val)
+    {
+        if (val)
+        {
+            EventInstancesDict["Music"].setVolume(0.9f);
+            EventInstancesDict["Music"].start();
+            EventInstancesDict["FliesAmbience"].start();
+        }
+        else
+        {
+            EventInstancesDict["Music"].stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
+            EventInstancesDict["MusicPiano"].stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
+            EventInstancesDict["FliesAmbience"].stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
+        }
+    }
+    
     public void ToggleSound(bool val)
     {
         float volume = val ? 1f : 0f;
@@ -99,6 +118,8 @@ public class AudioManager : SingletonMonobehaviour<AudioManager>
         }
     }
 
+    
+
     public void ChangeMusic()
     {
         string curMusic = "MusicPiano";
@@ -107,7 +128,6 @@ public class AudioManager : SingletonMonobehaviour<AudioManager>
         EventInstancesDict["Music"].getPlaybackState(out playbackState);
         if (playbackState == PLAYBACK_STATE.PLAYING)
         {
-            Debug.Log("D");
             curMusic = "Music";
             newMusic = "MusicPiano";
         }
@@ -154,10 +174,5 @@ public class AudioManager : SingletonMonobehaviour<AudioManager>
         }
 
         music.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
-    }
-
-    public void PlayInstance(string instanceName)
-    {
-        EventInstancesDict[instanceName].start();
     }
 }

@@ -20,6 +20,8 @@ public class GameManager : SingletonMonobehaviour<GameManager>, ISaveable
     public Sprite[] backgrounds;
     public Color[] tongueColorsStart;
     public Color[] tongueColorsEnd;
+    public int[] skinsPrices;
+    public int[] backgroundsPrices;
 
     public List<SettingsAI> enemySettingsAIList = new List<SettingsAI>();
     public int maxEnemies;
@@ -56,8 +58,10 @@ public class GameManager : SingletonMonobehaviour<GameManager>, ISaveable
         }
         if (Input.GetKeyDown(KeyCode.Q))
         {
-            SaveManager.Instance.LoadDataFromFile();
+            //SaveManager.Instance.LoadDataFromFile();
+            AudioManager.Instance.ChangeMusic();
         }
+
     }
 
     public void StartGame()
@@ -264,21 +268,22 @@ public class GameManager : SingletonMonobehaviour<GameManager>, ISaveable
 
         sceneSave.intDictionary = new Dictionary<string, int>();
         sceneSave.intArrayDictionary = new Dictionary<string, int[]>();
-
+        sceneSave.boolDictionary = new Dictionary<string, bool>();
 
         sceneSave.intDictionary.Add("money", Settings.Money);
         sceneSave.intDictionary.Add("setGekoSkinIndex", Settings.SetGekoSkinIndex);
         sceneSave.intDictionary.Add("setBackgroundIndex", Settings.SetBackgroundIndex);
+        sceneSave.boolDictionary.Add("isMusicEnabled", Settings.IsMusicEnabled);
 
-        int[] skinPrices = new int[Shop.Instance.skinsPrices.Length];
-        int[] backgroundPrices = new int[Shop.Instance.backgroundPrices.Length];
+        int[] skinPrices = new int[skinsPrices.Length];
+        int[] backgroundPrices = new int[backgroundsPrices.Length];
         for (int i = 0; i < skinPrices.Length; i++)
         {
-            skinPrices[i] = Shop.Instance.skinsPrices[i];
+            skinPrices[i] = skinsPrices[i];
         }
         for (int i = 0; i < backgroundPrices.Length; i++)
         {
-            backgroundPrices[i] = Shop.Instance.backgroundPrices[i];
+            backgroundPrices[i] = backgroundsPrices[i];
         }
         sceneSave.intArrayDictionary.Add("skinPrices", skinPrices);
         sceneSave.intArrayDictionary.Add("backgroundPrices", backgroundPrices);
@@ -296,7 +301,6 @@ public class GameManager : SingletonMonobehaviour<GameManager>, ISaveable
             {
                 if (sceneSave.intDictionary.TryGetValue("money", out int money))
                 {
-                    Debug.Log(money);
                     Settings.Money = money;
                 }
                 if (sceneSave.intDictionary.TryGetValue("setGekoSkinIndex", out int setGekoSkinIndex))
@@ -314,15 +318,22 @@ public class GameManager : SingletonMonobehaviour<GameManager>, ISaveable
                 {
                     for (int i = 0; i < skinPrices.Length; i++)
                     {
-                        Shop.Instance.skinsPrices[i] = skinPrices[i];
+                        skinsPrices[i] = skinPrices[i];
                     }
                 }
                 if (sceneSave.intArrayDictionary.TryGetValue("backgroundPrices", out int[] backgroundPrices))
                 {
                     for (int i = 0; i < backgroundPrices.Length; i++)
                     {
-                        Shop.Instance.backgroundPrices[i] = backgroundPrices[i];
+                        backgroundsPrices[i] = backgroundPrices[i];
                     }
+                }
+            }
+            if (sceneSave.boolDictionary != null)
+            {
+                if (sceneSave.boolDictionary.TryGetValue("isMusicEnabled", out bool isMusicEnabled))
+                {
+                    Settings.IsMusicEnabled = isMusicEnabled;
                 }
             }
         }

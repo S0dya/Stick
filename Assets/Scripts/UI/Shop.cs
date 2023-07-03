@@ -6,12 +6,8 @@ using TMPro;
 
 public class Shop : SingletonMonobehaviour<Shop>
 {
-    public int[] skinsPrices;
     public string[] skinNames;
-
-    public int[] backgroundPrices;
     public string[] backgroundNames;
-
     [SerializeField] GameObject shop;
     [SerializeField] Image blockedBackground;
     [SerializeField] Image backgroundImage;
@@ -66,7 +62,7 @@ public class Shop : SingletonMonobehaviour<Shop>
         {
             Settings.GekoSkinIndex--;
             TestSkin(Settings.GekoSkinIndex);
-            LockSkin(skinsPrices[Settings.GekoSkinIndex] > 0);
+            LockSkin(GameManager.Instance.skinsPrices[Settings.GekoSkinIndex] > 0);
         }
     }
 
@@ -76,7 +72,7 @@ public class Shop : SingletonMonobehaviour<Shop>
         {
             Settings.GekoSkinIndex++;
             TestSkin(Settings.GekoSkinIndex);
-            LockSkin(skinsPrices[Settings.GekoSkinIndex] > 0);
+            LockSkin(GameManager.Instance.skinsPrices[Settings.GekoSkinIndex] > 0);
         }
     }
 
@@ -86,7 +82,7 @@ public class Shop : SingletonMonobehaviour<Shop>
         {
             Settings.BackgroundIndex--;
             TestBackground(Settings.BackgroundIndex);
-            LockBackground(backgroundPrices[Settings.BackgroundIndex] > 0);
+            LockBackground(GameManager.Instance.backgroundsPrices[Settings.BackgroundIndex] > 0);
         }
     }
 
@@ -96,7 +92,7 @@ public class Shop : SingletonMonobehaviour<Shop>
         {
             Settings.BackgroundIndex++;
             TestBackground(Settings.BackgroundIndex);
-            LockBackground(backgroundPrices[Settings.BackgroundIndex] > 0);
+            LockBackground(GameManager.Instance.backgroundsPrices[Settings.BackgroundIndex] > 0);
         }
     }
 
@@ -107,10 +103,10 @@ public class Shop : SingletonMonobehaviour<Shop>
 
     public void BuySkinButton()
     {
-        if (Settings.Money >= skinsPrices[Settings.GekoSkinIndex])
+        if (Settings.Money >= GameManager.Instance.skinsPrices[Settings.GekoSkinIndex])
         {
-            Settings.Money -= skinsPrices[Settings.GekoSkinIndex];
-            skinsPrices[Settings.GekoSkinIndex] = 0;
+            Settings.Money -= GameManager.Instance.skinsPrices[Settings.GekoSkinIndex];
+            GameManager.Instance.skinsPrices[Settings.GekoSkinIndex] = 0;
             Menu.Instance.moneyAmount.text = Settings.Money.ToString();
             LockSkin(false);
         }
@@ -123,10 +119,10 @@ public class Shop : SingletonMonobehaviour<Shop>
 
     public void BuyBackgroundButton()
     {
-        if (Settings.Money >= backgroundPrices[Settings.BackgroundIndex])
+        if (Settings.Money >= GameManager.Instance.backgroundsPrices[Settings.BackgroundIndex])
         {
-            Settings.Money -= backgroundPrices[Settings.BackgroundIndex];
-            backgroundPrices[Settings.BackgroundIndex] = 0;
+            Settings.Money -= GameManager.Instance.backgroundsPrices[Settings.BackgroundIndex];
+            GameManager.Instance.backgroundsPrices[Settings.BackgroundIndex] = 0;
             LockBackground(false);
         }
     }

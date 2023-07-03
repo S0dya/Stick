@@ -34,6 +34,11 @@ public class Donate : SingletonMonobehaviour<Donate>
     }
     //Buttons
 
+    public void RewardedAdButton()
+    {
+        AdsManager.Instance.ShowRewardedAd();
+    }
+
     public void DonateButton(int i)
     {
         Debug.Log("don " + i);
@@ -45,4 +50,6 @@ public class Donate : SingletonMonobehaviour<Donate>
         SaveManager.Instance.SaveDataToFile();
         Shop.Instance.OpenShop();
     }
+
+
 }
