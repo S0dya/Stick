@@ -48,6 +48,7 @@ public class GameManager : SingletonMonobehaviour<GameManager>, ISaveable
     void Start()
     {
         SaveManager.Instance.LoadDataFromFile();
+        LoadingScene.Instance.StartCoroutine(LoadingScene.Instance.LoadSceneAsync(1, -1));
     }
 
     void Update()//delLtaer
@@ -223,6 +224,10 @@ public class GameManager : SingletonMonobehaviour<GameManager>, ISaveable
     {
         while (true)
         {
+            if (isGameMenuOpen)
+            {
+                yield return null;
+            }
             if (maxEnemies < 17)
             {
                 yield return StartCoroutine(Timer(10f));
@@ -231,6 +236,10 @@ public class GameManager : SingletonMonobehaviour<GameManager>, ISaveable
             }
 
             yield return StartCoroutine(Timer(7f));
+            if (beeSpawnChance > 50)
+            {
+                break;
+            }
             beeSpawnChance++;
             fireFlySpawnChance += 0.5f;
             StartCoroutine(Spawn());

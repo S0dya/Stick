@@ -17,7 +17,10 @@ public class LoadingScene : SingletonMonobehaviour<LoadingScene>
 
     public IEnumerator LoadSceneAsync(int sceneId, int sceneToClose)
     {
-        AsyncOperation unloadOperation = SceneManager.UnloadSceneAsync(sceneToClose);
+        if (sceneToClose > 0)
+        {
+            AsyncOperation unloadOperation = SceneManager.UnloadSceneAsync(sceneToClose);
+        }
         AsyncOperation operation = SceneManager.LoadSceneAsync(sceneId, LoadSceneMode.Additive);
 
         LoadingScreen.SetActive(true);
@@ -25,8 +28,6 @@ public class LoadingScene : SingletonMonobehaviour<LoadingScene>
         while (!operation.isDone)
         {
             float progression = Mathf.Clamp01(operation.progress / 0.9f);
-            Debug.Log(progression);
-            Debug.Log(Mathf.Clamp01(operation.progress / 0.9f) + " clamp");
 
             LoadingBarFill.fillAmount = progression;
 

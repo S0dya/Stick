@@ -19,6 +19,9 @@ public static class Settings
     public static Color SetTongueColorStart;
     public static Color SetTongueColorEnd;
 
+    public static int scoreNeededForNightChange = 100;
+    public static int scoreNeededForDayChange = 150;
+
     //Screen
     public static float ScreenWidth { get; private set; }
     public static float ScreenHeight { get; private set; }

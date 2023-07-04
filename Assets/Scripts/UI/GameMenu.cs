@@ -22,10 +22,10 @@ public class GameMenu : SingletonMonobehaviour<GameMenu>
     [SerializeField] Light2D globalLight;
     Player player;
 
-    bool isDay = true;
+    bool isDay;
     bool isNight;
-    int scoreNededForNightChange = 100;
-    int scoreNededForDayChange = 150;
+    int scoreNededForNightChange;
+    int scoreNededForDayChange;
     Coroutine changeToDay;
     Coroutine changeToNight;
 
@@ -85,7 +85,7 @@ public class GameMenu : SingletonMonobehaviour<GameMenu>
 
     public void Home()
     {
-        LoadingScene.Instance.StartCoroutine(LoadingScene.Instance.LoadSceneAsync(0, 1));
+        LoadingScene.Instance.StartCoroutine(LoadingScene.Instance.LoadSceneAsync(1, 2));
         ClearGame();
         SetPlayer();
         SaveManager.Instance.SaveDataToFile();
@@ -155,6 +155,13 @@ public class GameMenu : SingletonMonobehaviour<GameMenu>
         GameManager.Instance.ClearGame();
 
         Menu.Instance.CountMoney(score);
+
+        globalLight.intensity = 1;
+        scoreNededForNightChange = Settings.scoreNeededForNightChange;
+        scoreNededForDayChange = Settings.scoreNeededForDayChange;
+        isDay = true;
+        isNight = false;
+
         score = 0;
         ChangeScore(0);
     }
@@ -165,6 +172,12 @@ public class GameMenu : SingletonMonobehaviour<GameMenu>
         int endValue = Mathf.FloorToInt(value);
         score += endValue;
         score = Mathf.Max(score, 0);
+        CheckDayNightChange();
+        scoreText.text = score.ToString();
+    }
+
+    void CheckDayNightChange()
+    {
         if (isDay && score > scoreNededForNightChange)
         {
             scoreNededForNightChange += 100;
@@ -187,7 +200,6 @@ public class GameMenu : SingletonMonobehaviour<GameMenu>
             }
             changeToDay = StartCoroutine(ChangeToDay());
         }
-        scoreText.text = score.ToString();
     }
 
     public void DoubleScore()
@@ -249,27 +261,29 @@ public class GameMenu : SingletonMonobehaviour<GameMenu>
     }
 
     IEnumerator ChangeToNight()
-    { 
+    {
+        yield return GameManager.Instance.StartCoroutine(GameManager.Instance.Timer(7f));
         while (globalLight.intensity > 0.3f)
         {
             if (GameManager.Instance.isGameMenuOpen)
             {
                 yield return null;
             }
-            globalLight.intensity -= Time.deltaTime * 0.05f;
+            globalLight.intensity = Mathf.Lerp(globalLight.intensity, 0.1f, Time.deltaTime * 0.05f);
 
             yield return null;
         }
     }
     IEnumerator ChangeToDay()
     {
+        yield return GameManager.Instance.StartCoroutine(GameManager.Instance.Timer(7f));
         while (globalLight.intensity < 1)
         {
             if (GameManager.Instance.isGameMenuOpen)
             {
                 yield return null;
             }
-            globalLight.intensity += Time.deltaTime * 0.06f;
+            globalLight.intensity = Mathf.Lerp(globalLight.intensity, 1.1f, Time.deltaTime * 0.7f);
 
             yield return null;
         }

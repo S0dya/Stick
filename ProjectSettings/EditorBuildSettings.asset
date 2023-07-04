@@ -9,6 +9,9 @@ EditorBuildSettings:
     path: Assets/Scenes/SampleScene.unity
     guid: 2cda990e2423bbf4892e6590ba056729
   - enabled: 1
+    path: Assets/Scenes/PersistantScene.unity
+    guid: 5aad6923b9dbaee44972971fba246633
+  - enabled: 1
     path: Assets/Scenes/MenuScene.unity
     guid: 48b44ce541f2de642a2328d976a76abd
   - enabled: 1
@@ -16,4 +19,5 @@ EditorBuildSettings:
     guid: 3fc8acdd13e6c734bafef6554d6fdbcd
   m_configObjects:
     com.unity.adaptiveperformance.loader_settings: {fileID: 11400000, guid: 23110984fa5c796409cce40a1f03f6db, type: 2}
+    com.unity.adaptiveperformance.samsung.android.provider_settings: {fileID: 11400000, guid: 1bd244dd808d78e429924fa27e54d9a8, type: 2}
     com.unity.adaptiveperformance.simulator.provider_settings: {fileID: 11400000, guid: 04c8dd7750a71ed448d19dd480633ce4, type: 2}

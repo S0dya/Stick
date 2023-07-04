@@ -35,7 +35,7 @@ public class Menu : SingletonMonobehaviour<Menu>
     //ButtonsMethods
     public void Play()
     {
-        LoadingScene.Instance.StartCoroutine(LoadingScene.Instance.LoadSceneAsync(1, 0));
+        LoadingScene.Instance.StartCoroutine(LoadingScene.Instance.LoadSceneAsync(2, 1));
         AudioManager.Instance.PlayOneShot("PlaySound");
     }
 

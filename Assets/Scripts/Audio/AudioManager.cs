@@ -95,6 +95,8 @@ public class AudioManager : SingletonMonobehaviour<AudioManager>
 
     public void ToggleMusic(bool val)
     {
+        if (!Settings.IsMusicEnabled)
+            return;
         if (val)
         {
             EventInstancesDict["Music"].setVolume(0.9f);
