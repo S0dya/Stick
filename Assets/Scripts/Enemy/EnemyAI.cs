@@ -2,44 +2,64 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-using Pathfinding;
-
-public class EnemyAI : AIPath
+public class EnemyAI : MonoBehaviour
 {
     SettingsAI settingsAI;
-    AIDestinationSetter destinationSetter;
+    Rigidbody2D rigidbody;
 
     float randomX;
     float randomY;
+    Vector2 target;
 
     Coroutine changingSpeedCoroutine;
 
     void Awake()
     {
         settingsAI = GetComponent<SettingsAI>();
-        destinationSetter = GetComponent<AIDestinationSetter>();
+        rigidbody = GetComponent<Rigidbody2D>();
     }
 
     void Start()
     {
-        maxSpeed = settingsAI.defaultSpeed;
-
         GetRandomPosition();
-        destinationSetter.target = settingsAI.point.transform;
+        StartCoroutine(MoveToTarget());
     }
 
-    public void OnEndReached()
+    public IEnumerator MoveToTarget()
     {
-        settingsAI.amountOfPointsToVisit--;
+        while (true)
+        {
+            Vector2 direction = target - rigidbody.position;
+            float distance = direction.magnitude;
 
-        StartCoroutine(TakeAnotherPoint());
+            if (distance > 0.2f)
+            {
+                direction.Normalize();
 
+                float dotValue = Vector2.Dot(transform.up, direction);
+                float targetRotation = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg - 90f;
+                rigidbody.MoveRotation(Mathf.LerpAngle(rigidbody.rotation, targetRotation, settingsAI.rotationSpeed * Time.deltaTime));
+
+                rigidbody.velocity = transform.up * settingsAI.speed * Mathf.Max(dotValue, 0.1f);
+            }
+            else
+            {
+                rigidbody.velocity = Vector2.zero;
+                StartCoroutine(WaitBeforNewTarget());
+                break;
+            }
+            
+            yield return null;
+        }
     }
-    IEnumerator TakeAnotherPoint()
+
+    IEnumerator WaitBeforNewTarget()
     {
         yield return GameManager.Instance.StartCoroutine(GameManager.Instance.Timer(settingsAI.timeForTakingAnotherPoint));
 
+        settingsAI.amountOfPointsToVisit--;
         GetRandomPosition();
+        StartCoroutine(MoveToTarget());
     }
 
     void GetRandomPosition()
@@ -55,18 +75,18 @@ public class EnemyAI : AIPath
             randomY = Random.Range(Settings.minY * 1.2f, Settings.ScreenHeight * 1.5f);
         }
 
-        settingsAI.point.transform.position = new Vector2(randomX, randomY);
+        target = new Vector2(randomX, randomY);
     }
 
-    void OnDrawGizmos()//Test del later
+    public void StopMoving()
     {
-        Gizmos.color = Color.red;
-        Vector3 minPoint = new Vector3(Settings.minX, Settings.minY, transform.position.z);
-        Vector3 maxPoint = new Vector3(Settings.maxX, Settings.maxY, transform.position.z);
-        Gizmos.DrawLine(minPoint, new Vector3(Settings.minX, Settings.maxY, transform.position.z));
-        Gizmos.DrawLine(minPoint, new Vector3(Settings.maxX, Settings.minY, transform.position.z));
-        Gizmos.DrawLine(maxPoint, new Vector3(Settings.minX, Settings.maxY, transform.position.z));
-        Gizmos.DrawLine(maxPoint, new Vector3(Settings.maxX, Settings.minY, transform.position.z));
+        rigidbody.velocity = Vector2.zero;
+        StopAllCoroutines();
+    }
+
+    public void StartMoving()
+    {
+        StartCoroutine(MoveToTarget());
     }
 
 
@@ -84,14 +104,14 @@ public class EnemyAI : AIPath
     }
     IEnumerator ChangeSpeed()
     { 
-        float curRotationSpeed = rotationSpeed;
-        maxSpeed = settingsAI.speedOnNearTheTongue; //change Later
-        rotationSpeed = curRotationSpeed * 1.5f;
+        float curRotationSpeed = settingsAI.rotationSpeed;
+        settingsAI.speed = settingsAI.speedOnNearTheTongue;
+        settingsAI.rotationSpeed = curRotationSpeed * 1.5f;
 
         yield return GameManager.Instance.StartCoroutine(GameManager.Instance.Timer(settingsAI.timeForChangingSpeed));
 
-        maxSpeed = settingsAI.defaultSpeed;
-        rotationSpeed = curRotationSpeed;
+        settingsAI.speed = settingsAI.defaultSpeed;
+        settingsAI.rotationSpeed = curRotationSpeed;
     }
 
     void OnTriggerExit2D(Collider2D collision)

@@ -9,12 +9,10 @@ public class GameManager : SingletonMonobehaviour<GameManager>, ISaveable
     
     //Gameplay
     Transform enemyParent;
-    Transform pointParent;
 
     [SerializeField] GameObject flyPrefab;
     [SerializeField] GameObject beePrefab;
     [SerializeField] GameObject fireflyPrefab;
-    [SerializeField] GameObject pointPrefab;
 
     public Sprite[] GekoSkins;
     public Sprite[] backgrounds;
@@ -68,8 +66,6 @@ public class GameManager : SingletonMonobehaviour<GameManager>, ISaveable
     public void StartGame()
     {
         enemyParent = GameObject.FindGameObjectWithTag("EnemyParentTransform").transform;
-        pointParent = GameObject.FindGameObjectWithTag("PointParentTransform").transform;
-        AstarPath.active.Scan();
 
         DefineEdgesOfScreen();
         enemySettingsAIList = new List<SettingsAI>();
@@ -99,8 +95,6 @@ public class GameManager : SingletonMonobehaviour<GameManager>, ISaveable
         float randomX = Random.Range(0, 2) == 0 ? -Settings.ScreenWidth * 0.7f : Settings.ScreenWidth * 0.7f;
         float randomY = Random.Range(0f, Settings.maxY);
         Vector3 spawnPosition = new Vector3(randomX, randomY, 1f);
-        GameObject pointGameObject = Instantiate(pointPrefab, spawnPosition, Quaternion.identity, pointParent);
-        SettingsAI settingsAI = new SettingsAI();
 
         int val = -1;
         if (enemySettingsAIList.Count < maxEnemies)
@@ -123,23 +117,18 @@ public class GameManager : SingletonMonobehaviour<GameManager>, ISaveable
         switch (val)
         {
             case 0:
-                GameObject flyGameObject = Instantiate(flyPrefab, spawnPosition, Quaternion.identity, enemyParent);
-                settingsAI = flyGameObject.GetComponent<SettingsAI>();
+                Instantiate(flyPrefab, spawnPosition, Quaternion.identity, enemyParent);
                 break;
             case 1:
-                GameObject beeGameObject = Instantiate(beePrefab, spawnPosition, Quaternion.identity, enemyParent);
-                settingsAI = beeGameObject.GetComponent<SettingsAI>();
+                Instantiate(beePrefab, spawnPosition, Quaternion.identity, enemyParent);
                 break;
             case 2:
-                GameObject fireflyGameObject = Instantiate(fireflyPrefab, spawnPosition, Quaternion.identity, enemyParent);
-                settingsAI = fireflyGameObject.GetComponent<SettingsAI>();
+                Instantiate(fireflyPrefab, spawnPosition, Quaternion.identity, enemyParent);
                 break;
             default:
                 Debug.Log("switch at gm");
                 break;
         }
-
-        settingsAI.point = pointGameObject;
     }
 
 
@@ -247,7 +236,14 @@ public class GameManager : SingletonMonobehaviour<GameManager>, ISaveable
         }
     }
     
-    
+    public void ToggleEnemiesToNight(bool var)
+    {
+        foreach (var ai in enemySettingsAIList)
+        {
+            ai.ToggleLight(var);
+        }
+    }
+
 
 
     void OnEnable()

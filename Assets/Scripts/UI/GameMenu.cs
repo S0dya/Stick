@@ -24,6 +24,7 @@ public class GameMenu : SingletonMonobehaviour<GameMenu>
 
     bool isDay;
     bool isNight;
+    [HideInInspector] public bool isCurNight;
     int scoreNededForNightChange;
     int scoreNededForDayChange;
     Coroutine changeToDay;
@@ -150,7 +151,7 @@ public class GameMenu : SingletonMonobehaviour<GameMenu>
         Player.Instance.health = 2;
         HPBar.Instance.ResetHPImages();
         Player.Instance.tongueLength = 0f;
-        Tongue.Instance.TurnOffMultyplaing();
+        StickingPart.Instance.TurnOffMultyplaing();
 
         GameManager.Instance.ClearGame();
 
@@ -161,6 +162,7 @@ public class GameMenu : SingletonMonobehaviour<GameMenu>
         scoreNededForDayChange = Settings.scoreNeededForDayChange;
         isDay = true;
         isNight = false;
+        isCurNight = false;
 
         score = 0;
         ChangeScore(0);
@@ -181,12 +183,14 @@ public class GameMenu : SingletonMonobehaviour<GameMenu>
         if (isDay && score > scoreNededForNightChange)
         {
             scoreNededForNightChange += 100;
+            isCurNight = true;
             isDay = false;
             isNight = true;
             if (changeToDay != null)
             {
                 StopCoroutine(changeToDay);
             }
+            GameManager.Instance.ToggleEnemiesToNight(true);
             changeToNight = StartCoroutine(ChangeToNight());
         }
         else if (isNight && score > scoreNededForDayChange)
@@ -287,5 +291,8 @@ public class GameMenu : SingletonMonobehaviour<GameMenu>
 
             yield return null;
         }
+
+        isCurNight = false;
+        GameManager.Instance.ToggleEnemiesToNight(false);
     }
 }

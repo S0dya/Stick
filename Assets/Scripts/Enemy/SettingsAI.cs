@@ -1,13 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering.Universal;
 
 public class SettingsAI : MonoBehaviour
 {
     EnemyAI enemyAi;
+    Light2D light;
 
     //point
-    public GameObject point;
     [HideInInspector] public int amountOfPointsToVisit;
     public int minAOPTV;
     public int maxAOPTV;
@@ -20,11 +21,14 @@ public class SettingsAI : MonoBehaviour
     public float score;
 
     //ai
-    public int enemyType;
+    [HideInInspector] public float speed;
+    public float rotationSpeed;
     public float defaultSpeed;
+    public int enemyType;
     public float speedOnNearTheTongue;
 
     //temp
+    Vector2 curTarget;
     float currentSpeed;
     Coroutine SpawnCoroutine;
     [HideInInspector] public bool isDestroying;
@@ -32,6 +36,9 @@ public class SettingsAI : MonoBehaviour
     void Awake()
     {
         enemyAi = GetComponent<EnemyAI>();
+        light = GetComponentInChildren<Light2D>();
+        speed = defaultSpeed;
+        ToggleLight(GameMenu.Instance.isCurNight);
     }
 
     void Start()
@@ -43,12 +50,16 @@ public class SettingsAI : MonoBehaviour
 
     public void DisableMovement()
     {
-        currentSpeed = enemyAi.maxSpeed;
-        enemyAi.canMove= false;
+        enemyAi.StopMoving();
     }
     public void EnableMovement()
     {
-        enemyAi.canMove = true;
+        enemyAi.StartMoving();
+    }
+
+    public void ToggleLight(bool val)
+    {
+        light.enabled = val;
     }
 
     public void Die()
@@ -61,9 +72,6 @@ public class SettingsAI : MonoBehaviour
     {
         isDestroying = true;
         GameManager.Instance.enemySettingsAIList.Remove(this);
-        Destroy(point);
         Destroy(gameObject);
     }
-
-    
 }

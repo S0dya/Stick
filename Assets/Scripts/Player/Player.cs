@@ -1,20 +1,26 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering.Universal;
 
 public class Player : SingletonMonobehaviour<Player>
 {
-    [HideInInspector] public LineRenderer tongueLine;
-    [HideInInspector] public BoxCollider2D tongueCollider;
-    public BoxCollider2D nearTongueCollider;
-    public SpriteRenderer playerSprite;
     [SerializeField] GameObject tongueObject;
+    [HideInInspector] public LineRenderer tongueLine;
+    Light2D lightForStickingPart;
+    [HideInInspector] public BoxCollider2D tongueCollider;
+
+    public BoxCollider2D nearTongueCollider;
+    
     Vector2 mousePos;
     Camera camera;
     Rigidbody2D rigidbody;
+    Rigidbody2D rigidbodyOfStickingObject;
 
     Coroutine elongateCoroutine;
     Coroutine shortenCoroutine;
+
+    [SerializeField] GameObject stickingPartObject;
 
     [HideInInspector] public bool isSticked;
     [HideInInspector] public bool isOutOfTrigger;
@@ -30,10 +36,13 @@ public class Player : SingletonMonobehaviour<Player>
     {
         base.Awake();
 
-        playerSkin = GetComponent<SpriteRenderer>();
         tongueLine = tongueObject.GetComponent<LineRenderer>();
+        lightForStickingPart = tongueObject.GetComponent<Light2D>();
         tongueCollider = tongueObject.GetComponent<BoxCollider2D>();
+
+        playerSkin = GetComponent<SpriteRenderer>();
         rigidbody = GetComponent<Rigidbody2D>();
+        rigidbodyOfStickingObject = stickingPartObject.GetComponent<Rigidbody2D>();
         camera = Camera.main;
 
         background.transform.localScale = new Vector3(Settings.ScreenWidth, Settings.ScreenHeight * 0.8f, 0);
@@ -60,6 +69,7 @@ public class Player : SingletonMonobehaviour<Player>
 
                 if (touch.phase == TouchPhase.Began)
                 {
+                    mousePos = camera.ScreenToWorldPoint(Input.mousePosition);
                     if (touch.position.y / Settings.heightForInput > Settings.blindZoneOfY)
                     {
                         Elongate();
@@ -71,9 +81,9 @@ public class Player : SingletonMonobehaviour<Player>
 
         if (Input.GetKeyDown(KeyCode.Mouse0))
         {
-            mousePos = camera.ScreenToWorldPoint(Input.mousePosition);
             if (Input.mousePosition.y / Settings.heightForInput > Settings.blindZoneOfY)
             {
+                mousePos = camera.ScreenToWorldPoint(Input.mousePosition);
                 Elongate();
             }
         }
@@ -105,16 +115,9 @@ public class Player : SingletonMonobehaviour<Player>
             {
                 yield return null;
             }
-            tongueLine.SetPosition(0, new Vector3(tongueLength, 0f, 0f));
 
-            tongueCollider.offset = new Vector2(tongueLength /2 -0.01f, 0f);
-            tongueCollider.size = new Vector2(tongueLength - 0.01f, 0.2f);
-            nearTongueCollider.offset = new Vector2(tongueLength /2 -0.01f, 0f);
-            nearTongueCollider.size = new Vector2(tongueLength -0.01f, 0.14f);
+            rigidbodyOfStickingObject.MovePosition(rigidbodyOfStickingObject.position + direction * Settings.tongueLengthenSpeed * Time.deltaTime);
 
-            Tongue.Instance.stickingPartObject.transform.position = transform.TransformPoint(tongueLine.GetPosition(0));
-
-            tongueLength += Settings.tongueMultiplyer * Time.deltaTime;
             yield return null;
         }
 
@@ -125,27 +128,23 @@ public class Player : SingletonMonobehaviour<Player>
     void Shorten()
     {
         tongueCollider.enabled = false;
+        nearTongueCollider.enabled = false;
         if (elongateCoroutine != null)
         {
             StopCoroutine(elongateCoroutine);
         }
 
-        nearTongueCollider.offset = new Vector2(0 / 2 - 0.01f, 0f);
-        nearTongueCollider.size = new Vector2(0 , 0.14f);
-
-        nearTongueCollider.enabled = false;
-
         shortenCoroutine = StartCoroutine(ShortenTongue());
     }
     IEnumerator ShortenTongue()
     {
-        while (tongueLength > -0.1)
+        Vector2 direction = transform.position - rigidbodyOfStickingObject.position;
+        float distance = direction.magnitude;
+
+        while (distance > 0.1)
         {
-            tongueLine.SetPosition(0, new Vector3(tongueLength, 0f, 0f));
+            rigidbodyOfStickingObject.velocity = transform.up * -Settings.tongueMultiplyer * Time.deltaTime;
 
-            Tongue.Instance.stickingPartObject.transform.position = transform.TransformPoint(tongueLine.GetPosition(0));
-
-            tongueLength -= (Settings.tongueMultiplyer * 1.3f) * Time.deltaTime;
             yield return null;
         }
 
@@ -187,11 +186,19 @@ public class Player : SingletonMonobehaviour<Player>
     public void SetSkin(int i)
     {
         playerSkin.sprite = GameManager.Instance.GekoSkins[i];
-        Tongue.Instance.SetColor(GameManager.Instance.tongueColorsStart[i], GameManager.Instance.tongueColorsEnd[i]);
+        SetColor(GameManager.Instance.tongueColorsStart[i], GameManager.Instance.tongueColorsEnd[i]);
     }
     public void SetBackground(int i)
     {
         background.sprite = GameManager.Instance.backgrounds[i];
+    }
+
+    public void SetColor(Color startColor, Color endColor)
+    {
+        tongueLine.startColor = startColor;
+        tongueLine.endColor = endColor;
+
+        lightForStickingPart.color = endColor;
     }
 
     void OnDisable()
