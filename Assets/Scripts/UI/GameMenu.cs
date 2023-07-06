@@ -254,11 +254,7 @@ public class GameMenu : SingletonMonobehaviour<GameMenu>
     public void SetPlayer()
     {
         playerObject.transform.rotation = Quaternion.AngleAxis(90f, Vector3.forward);
-        player.tongueLine.SetPosition(0, new Vector3(player.tongueLength, 0f, 0f));
-        player.tongueCollider.offset = new Vector2(player.tongueLength / 2 - 0.01f, 0f);
-        player.tongueCollider.size = new Vector2(player.tongueLength - 0.01f, 0.14f);
-        player.nearTongueCollider.offset = new Vector2(player.tongueLength / 2 - 0.01f, 0f);
-        player.nearTongueCollider.size = new Vector2(player.tongueLength - 0.01f, 0.14f);
+        player.stickingPartObject.transform.position = Vector2.zero;
         player.canElongate = true;
         player.isOutOfTrigger = false;
         player.isSticked = false;

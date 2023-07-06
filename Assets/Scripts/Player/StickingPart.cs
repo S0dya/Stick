@@ -9,6 +9,7 @@ public class StickingPart : SingletonMonobehaviour<StickingPart>
     [SerializeField] ParticleSystem catchedEffect;
     [SerializeField] Transform ComboTextParent;
     [SerializeField] GameObject[] MultiplayerPrefab;
+    [SerializeField] GameObject nearTongueObject;
 
     [HideInInspector] public bool isScoreMultiplaying;
     float curMultiplayer = 1f;
@@ -20,6 +21,8 @@ public class StickingPart : SingletonMonobehaviour<StickingPart>
         base.Awake();
 
         player = GetComponentInParent<Player>();
+
+        nearTongueObject.transform.SetParent(transform);
     }
 
     void OnTriggerEnter2D(Collider2D collision)
@@ -109,8 +112,7 @@ public class StickingPart : SingletonMonobehaviour<StickingPart>
 
             EnemyAI enemyAi = collision.gameObject.GetComponent<EnemyAI>();
             enemyAi.StopMoving();
-
-            collision.transform.SetParent(transform);
+            enemyAi.StartCoroutine(enemyAi.Attach());
         }
     }
 

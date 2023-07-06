@@ -89,12 +89,20 @@ public class EnemyAI : MonoBehaviour
         StartCoroutine(MoveToTarget());
     }
 
+    public IEnumerator Attach()
+    {
+        while (true)
+        {
+            transform.position = StickingPart.Instance.transform.position;
+            Debug.Log("d");
+            yield return null;
+        }
+    }
 
     void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.CompareTag("NearTongue"))
         {
-
             if (changingSpeedCoroutine != null)
             {
                 StopCoroutine(changingSpeedCoroutine);

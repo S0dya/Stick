@@ -40,7 +40,7 @@ public static class Settings
 
     //Player
     public static int maxHealth = 2;
-    public static float tongueMultiplyer = 30;
+    public static float tongueMultiplyer = 20;
     public static float curTongueMultiplyer;
     public static float scoreMultiplyer = 0.5f;
     public static float timeWhileScoreMultiplying = 1f;

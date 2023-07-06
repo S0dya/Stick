@@ -8,7 +8,6 @@ public class Player : SingletonMonobehaviour<Player>
     [SerializeField] GameObject tongueObject;
     [HideInInspector] public LineRenderer tongueLine;
     Light2D lightForStickingPart;
-    [HideInInspector] public BoxCollider2D tongueCollider;
 
     public BoxCollider2D nearTongueCollider;
     
@@ -16,11 +15,12 @@ public class Player : SingletonMonobehaviour<Player>
     Camera camera;
     Rigidbody2D rigidbody;
     Rigidbody2D rigidbodyOfStickingObject;
+    BoxCollider2D stickingPartCollider;
 
     Coroutine elongateCoroutine;
     Coroutine shortenCoroutine;
 
-    [SerializeField] GameObject stickingPartObject;
+    public GameObject stickingPartObject;
 
     [HideInInspector] public bool isSticked;
     [HideInInspector] public bool isOutOfTrigger;
@@ -36,22 +36,21 @@ public class Player : SingletonMonobehaviour<Player>
     {
         base.Awake();
 
-        tongueLine = tongueObject.GetComponent<LineRenderer>();
-        lightForStickingPart = tongueObject.GetComponent<Light2D>();
-        tongueCollider = tongueObject.GetComponent<BoxCollider2D>();
-
         playerSkin = GetComponent<SpriteRenderer>();
         rigidbody = GetComponent<Rigidbody2D>();
         rigidbodyOfStickingObject = stickingPartObject.GetComponent<Rigidbody2D>();
+        stickingPartCollider = stickingPartObject.GetComponent<BoxCollider2D>();
+        lightForStickingPart = stickingPartObject.GetComponentInChildren<Light2D>();
         camera = Camera.main;
 
         background.transform.localScale = new Vector3(Settings.ScreenWidth, Settings.ScreenHeight * 0.8f, 0);
-        tongueCollider.enabled = false;
+        stickingPartCollider.enabled = false;
+
+        tongueLine = tongueObject.GetComponent<LineRenderer>();
     }
 
     void Start()
     {
-        Shorten();
     }
 
     void Update()
@@ -97,14 +96,14 @@ public class Player : SingletonMonobehaviour<Player>
         }
 
         canElongate = false;
-        tongueCollider.enabled = true;
+        stickingPartCollider.enabled = true;
         nearTongueCollider.enabled = true;
 
         elongateCoroutine = StartCoroutine(ElongateTongue());
     }
     IEnumerator ElongateTongue()
     {
-        Vector3 direction = mousePos - (Vector2)transform.position;
+        Vector2 direction = mousePos - (Vector2)transform.position;
         direction.Normalize();
         float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
         transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
@@ -116,7 +115,11 @@ public class Player : SingletonMonobehaviour<Player>
                 yield return null;
             }
 
-            rigidbodyOfStickingObject.MovePosition(rigidbodyOfStickingObject.position + direction * Settings.tongueLengthenSpeed * Time.deltaTime);
+            float lengthForStickingObject = tongueLength * 0.7f;
+            Vector3 position = new Vector3(lengthForStickingObject, lengthForStickingObject, 0) * direction;
+            tongueLine.SetPosition(0, new Vector2(tongueLength, 0));
+            rigidbodyOfStickingObject.MovePosition(transform.position + position);
+            tongueLength += Settings.tongueMultiplyer * Time.deltaTime;
 
             yield return null;
         }
@@ -127,7 +130,7 @@ public class Player : SingletonMonobehaviour<Player>
 
     void Shorten()
     {
-        tongueCollider.enabled = false;
+        stickingPartCollider.enabled = false;
         nearTongueCollider.enabled = false;
         if (elongateCoroutine != null)
         {
@@ -138,12 +141,22 @@ public class Player : SingletonMonobehaviour<Player>
     }
     IEnumerator ShortenTongue()
     {
-        Vector2 direction = transform.position - rigidbodyOfStickingObject.position;
+        Vector2 direction = (Vector2)transform.position - (Vector2)stickingPartObject.transform.position;
+        direction.Normalize();
         float distance = direction.magnitude;
-
-        while (distance > 0.1)
+        
+        while (tongueLength > 0.1f)
         {
-            rigidbodyOfStickingObject.velocity = transform.up * -Settings.tongueMultiplyer * Time.deltaTime;
+            if (GameManager.Instance.isGameMenuOpen)
+            {
+                yield return null;
+            }
+
+            float lengthForStickingObject = tongueLength * 0.7f;
+            Vector3 position = new Vector3(lengthForStickingObject, lengthForStickingObject, 0) * direction;
+            tongueLine.SetPosition(0, new Vector2(tongueLength, 0));
+            rigidbodyOfStickingObject.MovePosition(transform.position - position);
+            tongueLength -= Settings.tongueMultiplyer * 1.2f * Time.deltaTime;
 
             yield return null;
         }
