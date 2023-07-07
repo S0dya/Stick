@@ -95,15 +95,13 @@ public class AudioManager : SingletonMonobehaviour<AudioManager>
 
     public void ToggleMusic(bool val)
     {
-        if (!Settings.IsMusicEnabled)
-            return;
-        if (val)
+        if (val && Settings.IsMusicEnabled)
         {
             EventInstancesDict["Music"].setVolume(0.9f);
             EventInstancesDict["Music"].start();
             EventInstancesDict["FliesAmbience"].start();
         }
-        else
+        else 
         {
             EventInstancesDict["Music"].stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
             EventInstancesDict["MusicPiano"].stop(FMOD.Studio.STOP_MODE.IMMEDIATE);

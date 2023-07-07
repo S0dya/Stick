@@ -32,7 +32,7 @@ public class EnemyAI : MonoBehaviour
             Vector2 direction = target - rigidbody.position;
             float distance = direction.magnitude;
 
-            if (distance > 0.2f)
+            if (distance > 0.3f)
             {
                 direction.Normalize();
 
@@ -94,32 +94,8 @@ public class EnemyAI : MonoBehaviour
         while (true)
         {
             transform.position = StickingPart.Instance.transform.position;
-            Debug.Log("d");
             yield return null;
         }
-    }
-
-    void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (collision.CompareTag("NearTongue"))
-        {
-            if (changingSpeedCoroutine != null)
-            {
-                StopCoroutine(changingSpeedCoroutine);
-            }
-            changingSpeedCoroutine = StartCoroutine(ChangeSpeed());
-        }
-    }
-    IEnumerator ChangeSpeed()
-    { 
-        float curRotationSpeed = settingsAI.rotationSpeed;
-        settingsAI.speed = settingsAI.speedOnNearTheTongue;
-        settingsAI.rotationSpeed = curRotationSpeed * 1.5f;
-
-        yield return GameManager.Instance.StartCoroutine(GameManager.Instance.Timer(settingsAI.timeForChangingSpeed));
-
-        settingsAI.speed = settingsAI.defaultSpeed;
-        settingsAI.rotationSpeed = curRotationSpeed;
     }
 
     void OnTriggerExit2D(Collider2D collision)
@@ -129,5 +105,4 @@ public class EnemyAI : MonoBehaviour
             settingsAI.Die();
         }
     }
-
 }

@@ -18,10 +18,17 @@ public class Shop : SingletonMonobehaviour<Shop>
     [SerializeField] TextMeshProUGUI skinName;
     [SerializeField] TextMeshProUGUI backgroundName;
 
+    [SerializeField] GameObject skinPriceObject;
+    [SerializeField] GameObject backgroundPriceObject;
+    TextMeshProUGUI skinPriceText;
+    TextMeshProUGUI backgroundPriceText;
+
     protected override void Awake()
     {
         base.Awake();
 
+        skinPriceText = skinPriceObject.GetComponentInChildren<TextMeshProUGUI>();
+        backgroundPriceText = backgroundPriceObject.GetComponentInChildren<TextMeshProUGUI>();
     }
 
     public void OpenShop()
@@ -132,11 +139,21 @@ public class Shop : SingletonMonobehaviour<Shop>
     {
         blockedSkin.enabled = val;
         setSkinImage.SetActive(!val);
+        skinPriceObject.SetActive(val);
+        if (val)
+        {
+            skinPriceText.text = GameManager.Instance.skinsPrices[Settings.GekoSkinIndex].ToString();
+        }
     }
     public void LockBackground(bool val)
     {
         blockedBackground.enabled = val;
         setBackgroundImage.SetActive(!val);
+        backgroundPriceObject.SetActive(val);
+        if (val)
+        {
+            backgroundPriceText.text = GameManager.Instance.backgroundsPrices[Settings.BackgroundIndex].ToString();
+        }
     }
 
     public void TestSkin(int i)

@@ -217,13 +217,10 @@ MonoBehaviour:
   minAOPTV: 3
   maxAOPTV: 7
   timeForTakingAnotherPoint: 1
-  timeForChangingSpeed: 2
   score: -20
-  speed: 0
-  rotationSpeed: 10
-  defaultSpeed: 2
+  speed: 3
+  rotationSpeed: 12
   enemyType: 1
-  speedOnNearTheTongue: 3
   isDestroying: 0
 --- !u!114 &804656531701492236
 MonoBehaviour:

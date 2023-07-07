@@ -15,17 +15,14 @@ public class SettingsAI : MonoBehaviour
 
     //coroutine
     public float timeForTakingAnotherPoint;
-    public float timeForChangingSpeed;
 
     //UI
     public float score;
 
     //ai
-    [HideInInspector] public float speed;
+    public float speed;
     public float rotationSpeed;
-    public float defaultSpeed;
     public int enemyType;
-    public float speedOnNearTheTongue;
 
     //temp
     Vector2 curTarget;
@@ -37,7 +34,6 @@ public class SettingsAI : MonoBehaviour
     {
         enemyAi = GetComponent<EnemyAI>();
         light = GetComponentInChildren<Light2D>();
-        speed = defaultSpeed;
         ToggleLight(GameMenu.Instance.isCurNight);
     }
 

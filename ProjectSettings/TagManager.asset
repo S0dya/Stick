@@ -12,7 +12,6 @@ TagManager:
   - EdgesForTongue
   - ComboText
   - Edges
-  - NearTongue
   - Background
   - EnemyParentTransform
   - PointParentTransform

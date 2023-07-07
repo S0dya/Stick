@@ -1037,16 +1037,17 @@ MonoBehaviour:
   backgrounds:
   - {fileID: 21300000, guid: a681ef5976a87b743b46b82016fe0229, type: 3}
   - {fileID: 21300000, guid: 8cedfcd5f4f89eb44a00f1ffbb14045f, type: 3}
+  - {fileID: 21300000, guid: 67ef79939e04a8346bc59178835921fe, type: 3}
   tongueColorsStart:
-  - {r: 1, g: 0, b: 0, a: 1}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
+  - {r: 1, g: 0.8132642, b: 0.5226415, a: 1}
+  - {r: 1, g: 0.5886792, b: 0.7328986, a: 1}
+  - {r: 0.6742939, g: 0.51975787, b: 0.9433962, a: 1}
   tongueColorsEnd:
-  - {r: 0.3773585, g: 0.047703803, b: 0.047703803, a: 0.9647059}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
+  - {r: 1, g: 0.37169808, b: 0.37169808, a: 1}
+  - {r: 1, g: 0.47547168, b: 0.80965304, a: 1}
+  - {r: 0.6828525, g: 0.51320755, b: 1, a: 1}
   skinsPrices: 000000000a0000001e000000
-  backgroundsPrices: 000000001e000000
+  backgroundsPrices: 000000001e0000001e000000
   enemySettingsAIList: []
   maxEnemies: 0
   isGameMenuOpen: 0

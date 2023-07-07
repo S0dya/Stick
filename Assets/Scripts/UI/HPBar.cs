@@ -43,7 +43,7 @@ public class HPBar : SingletonMonobehaviour<HPBar>
 
     IEnumerator Hunger(int index)
     {
-        yield return GameManager.Instance.StartCoroutine(GameManager.Instance.Timer(5f));
+        yield return GameManager.Instance.StartCoroutine(GameManager.Instance.Timer(3f));
         hpImages[index].enabled = false;
 
         yield return GameManager.Instance.StartCoroutine(GameManager.Instance.Timer(0.3f));
@@ -51,7 +51,7 @@ public class HPBar : SingletonMonobehaviour<HPBar>
 
         for (int i = 0; i < 2; i++)
         {
-            yield return GameManager.Instance.StartCoroutine(GameManager.Instance.Timer(3f));
+            yield return GameManager.Instance.StartCoroutine(GameManager.Instance.Timer(2f));
         
             hpImages[index].enabled = false;
 
@@ -60,7 +60,7 @@ public class HPBar : SingletonMonobehaviour<HPBar>
         }
         for (int i = 0; i < 3; i++)
         {
-            yield return GameManager.Instance.StartCoroutine(GameManager.Instance.Timer(2f));
+            yield return GameManager.Instance.StartCoroutine(GameManager.Instance.Timer(1f));
 
             hpImages[index].enabled = false;
 

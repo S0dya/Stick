@@ -9,8 +9,6 @@ public class Player : SingletonMonobehaviour<Player>
     [HideInInspector] public LineRenderer tongueLine;
     Light2D lightForStickingPart;
 
-    public BoxCollider2D nearTongueCollider;
-    
     Vector2 mousePos;
     Camera camera;
     Rigidbody2D rigidbody;
@@ -32,6 +30,8 @@ public class Player : SingletonMonobehaviour<Player>
     [SerializeField] SpriteRenderer background;
     SpriteRenderer playerSkin;
 
+    bool touchEnded;
+
     protected override void Awake()
     {
         base.Awake();
@@ -43,7 +43,6 @@ public class Player : SingletonMonobehaviour<Player>
         lightForStickingPart = stickingPartObject.GetComponentInChildren<Light2D>();
         camera = Camera.main;
 
-        background.transform.localScale = new Vector3(Settings.ScreenWidth, Settings.ScreenHeight * 0.8f, 0);
         stickingPartCollider.enabled = false;
 
         tongueLine = tongueObject.GetComponent<LineRenderer>();
@@ -51,6 +50,7 @@ public class Player : SingletonMonobehaviour<Player>
 
     void Start()
     {
+        Shorten();
     }
 
     void Update()
@@ -68,22 +68,18 @@ public class Player : SingletonMonobehaviour<Player>
 
                 if (touch.phase == TouchPhase.Began)
                 {
+                    touchEnded = false;
                     mousePos = camera.ScreenToWorldPoint(Input.mousePosition);
                     if (touch.position.y / Settings.heightForInput > Settings.blindZoneOfY)
                     {
                         Elongate();
                     }
                 }
-            }
-        }
 
-
-        if (Input.GetKeyDown(KeyCode.Mouse0))
-        {
-            if (Input.mousePosition.y / Settings.heightForInput > Settings.blindZoneOfY)
-            {
-                mousePos = camera.ScreenToWorldPoint(Input.mousePosition);
-                Elongate();
+                else if (touch.phase != TouchPhase.Ended)
+                {
+                    touchEnded = true;
+                }
             }
         }
     }
@@ -97,7 +93,6 @@ public class Player : SingletonMonobehaviour<Player>
 
         canElongate = false;
         stickingPartCollider.enabled = true;
-        nearTongueCollider.enabled = true;
 
         elongateCoroutine = StartCoroutine(ElongateTongue());
     }
@@ -108,7 +103,7 @@ public class Player : SingletonMonobehaviour<Player>
         float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
         transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
 
-        while (!isOutOfTrigger && !isSticked && !Input.GetKeyUp(KeyCode.Mouse0))
+        while (!isOutOfTrigger && !isSticked && !touchEnded)
         {
             if (GameManager.Instance.isGameMenuOpen)
             {
@@ -131,7 +126,6 @@ public class Player : SingletonMonobehaviour<Player>
     void Shorten()
     {
         stickingPartCollider.enabled = false;
-        nearTongueCollider.enabled = false;
         if (elongateCoroutine != null)
         {
             StopCoroutine(elongateCoroutine);
@@ -204,6 +198,9 @@ public class Player : SingletonMonobehaviour<Player>
     public void SetBackground(int i)
     {
         background.sprite = GameManager.Instance.backgrounds[i];
+        
+        float screenHeight = camera.orthographicSize * 1.58f;
+        background.transform.localScale = new Vector3(screenHeight * camera.aspect * 1.98f, screenHeight, 0);
     }
 
     public void SetColor(Color startColor, Color endColor)
