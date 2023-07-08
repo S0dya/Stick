@@ -191,7 +191,6 @@ MonoBehaviour:
   - {fileID: 6387018745822690031, guid: 262d5bb47341dce409ba3e4552bd20ac, type: 3}
   - {fileID: 6387018745822690031, guid: 15ce12f107f90ab4994cec635d8278a1, type: 3}
   - {fileID: 6387018745822690031, guid: cd16acd0971bc3745a28cfdf4964d066, type: 3}
-  nearTongueObject: {fileID: 0}
   isScoreMultiplaying: 0
 --- !u!50 &3733936121075763997
 Rigidbody2D:
@@ -382,7 +381,7 @@ Transform:
   m_GameObject: {fileID: 3733936120448204131}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0.78, y: -3.6, z: 0.034724765}
-  m_LocalScale: {x: 0.70000005, y: 0.70000005, z: 0}
+  m_LocalScale: {x: 1.296, y: 1.296, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1222603774}
@@ -477,7 +476,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tongueObject: {fileID: 1420220151}
   tongueLine: {fileID: 0}
-  nearTongueCollider: {fileID: 0}
   stickingPartObject: {fileID: 1222603773}
   isSticked: 0
   isOutOfTrigger: 0

@@ -6,6 +6,7 @@ public class EnemyAI : MonoBehaviour
 {
     SettingsAI settingsAI;
     Rigidbody2D rigidbody;
+    Animator animator;
 
     float randomX;
     float randomY;
@@ -17,6 +18,7 @@ public class EnemyAI : MonoBehaviour
     {
         settingsAI = GetComponent<SettingsAI>();
         rigidbody = GetComponent<Rigidbody2D>();
+        animator = GetComponent<Animator>();
     }
 
     void Start()
@@ -81,11 +83,13 @@ public class EnemyAI : MonoBehaviour
     public void StopMoving()
     {
         rigidbody.velocity = Vector2.zero;
+        animator.enabled = false;
         StopAllCoroutines();
     }
 
     public void StartMoving()
     {
+        animator.enabled = true;
         StartCoroutine(MoveToTarget());
     }
 

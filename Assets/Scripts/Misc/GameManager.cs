@@ -14,6 +14,8 @@ public class GameManager : SingletonMonobehaviour<GameManager>, ISaveable
     [SerializeField] GameObject beePrefab;
     [SerializeField] GameObject fireflyPrefab;
 
+    [SerializeField] GameObject playerPrefab;
+
     public Sprite[] GekoSkins;
     public Sprite[] backgrounds;
     public Color[] tongueColorsStart;
@@ -39,8 +41,13 @@ public class GameManager : SingletonMonobehaviour<GameManager>, ISaveable
         base.Awake();
 
         Settings.Initialize();
-
         GameObjectSave = new GameObjectSave();
+
+        float scaleFactor = Screen.width * 0.0012f;
+        flyPrefab.transform.localScale = new Vector2(scaleFactor, scaleFactor);
+        beePrefab.transform.localScale = new Vector2(scaleFactor, scaleFactor);
+        fireflyPrefab.transform.localScale = new Vector2(scaleFactor, scaleFactor);
+        playerPrefab.transform.localScale = new Vector2(scaleFactor, scaleFactor);
     }
 
     void Start()

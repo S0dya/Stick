@@ -258,6 +258,8 @@ public class GameMenu : SingletonMonobehaviour<GameMenu>
         player.canElongate = true;
         player.isOutOfTrigger = false;
         player.isSticked = false;
+        player.tongueLength = 0;
+        player.tongueLine.SetPosition(0, new Vector2(player.tongueLength, 0));
     }
 
     IEnumerator ChangeToNight()

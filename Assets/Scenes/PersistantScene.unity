@@ -1030,6 +1030,7 @@ MonoBehaviour:
   flyPrefab: {fileID: 804656531701492233, guid: 08a1bc9c90ea20940b499b4579935314, type: 3}
   beePrefab: {fileID: 804656531701492233, guid: 3765bbc3d1b92b74eaeca9646692aeb7, type: 3}
   fireflyPrefab: {fileID: 804656531701492233, guid: eb78d00f856b7944aa7eab19f3a15e6e, type: 3}
+  playerPrefab: {fileID: 3733936120448204131, guid: f0884d350442150478f7b09df4c41971, type: 3}
   GekoSkins:
   - {fileID: 21300000, guid: c664194afe033ac45bc19a71c518ff84, type: 3}
   - {fileID: 21300000, guid: f55b574c04b56b24d890801a5a728ce1, type: 3}

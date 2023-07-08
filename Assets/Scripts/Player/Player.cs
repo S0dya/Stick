@@ -43,9 +43,9 @@ public class Player : SingletonMonobehaviour<Player>
         lightForStickingPart = stickingPartObject.GetComponentInChildren<Light2D>();
         camera = Camera.main;
 
-        stickingPartCollider.enabled = false;
-
         tongueLine = tongueObject.GetComponent<LineRenderer>();
+
+        stickingPartCollider.enabled = false;
     }
 
     void Start()
@@ -75,8 +75,7 @@ public class Player : SingletonMonobehaviour<Player>
                         Elongate();
                     }
                 }
-
-                else if (touch.phase != TouchPhase.Ended)
+                else if (touch.phase == TouchPhase.Ended)
                 {
                     touchEnded = true;
                 }
@@ -146,11 +145,11 @@ public class Player : SingletonMonobehaviour<Player>
                 yield return null;
             }
 
+            tongueLength -= Settings.tongueMultiplyer * 1.2f * Time.deltaTime;
             float lengthForStickingObject = tongueLength * 0.7f;
             Vector3 position = new Vector3(lengthForStickingObject, lengthForStickingObject, 0) * direction;
             tongueLine.SetPosition(0, new Vector2(tongueLength, 0));
             rigidbodyOfStickingObject.MovePosition(transform.position - position);
-            tongueLength -= Settings.tongueMultiplyer * 1.2f * Time.deltaTime;
 
             yield return null;
         }
