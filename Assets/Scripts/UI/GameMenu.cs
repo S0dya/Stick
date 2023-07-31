@@ -91,7 +91,6 @@ public class GameMenu : SingletonMonobehaviour<GameMenu>
         SetPlayer();
         SaveManager.Instance.SaveDataToFile();
         AudioManager.Instance.ToggleMusic(false);
-
     }
 
     public void Restart()
@@ -182,7 +181,7 @@ public class GameMenu : SingletonMonobehaviour<GameMenu>
     {
         if (isDay && score > scoreNededForNightChange)
         {
-            scoreNededForNightChange += 100;
+            scoreNededForNightChange += 1000;
             isCurNight = true;
             isDay = false;
             isNight = true;
@@ -195,7 +194,7 @@ public class GameMenu : SingletonMonobehaviour<GameMenu>
         }
         else if (isNight && score > scoreNededForDayChange)
         {
-            scoreNededForDayChange += 100;
+            scoreNededForDayChange += 1000;
             isDay = true;
             isNight = false;
             if (changeToNight != null)
@@ -260,6 +259,7 @@ public class GameMenu : SingletonMonobehaviour<GameMenu>
         player.isSticked = false;
         player.tongueLength = 0;
         player.tongueLine.SetPosition(0, new Vector2(player.tongueLength, 0));
+        player.ToggleSprite(true);
     }
 
     IEnumerator ChangeToNight()

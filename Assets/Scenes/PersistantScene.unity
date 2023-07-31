@@ -331,7 +331,7 @@ Camera:
   m_GameObject: {fileID: 519420028}
   m_Enabled: 1
   serializedVersion: 2
-  m_ClearFlags: 2
+  m_ClearFlags: 4
   m_BackGroundColor: {r: 0.44678566, g: 0.4229263, b: 0.754717, a: 0}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
@@ -1032,23 +1032,35 @@ MonoBehaviour:
   fireflyPrefab: {fileID: 804656531701492233, guid: eb78d00f856b7944aa7eab19f3a15e6e, type: 3}
   playerPrefab: {fileID: 3733936120448204131, guid: f0884d350442150478f7b09df4c41971, type: 3}
   GekoSkins:
-  - {fileID: 21300000, guid: c664194afe033ac45bc19a71c518ff84, type: 3}
-  - {fileID: 21300000, guid: f55b574c04b56b24d890801a5a728ce1, type: 3}
-  - {fileID: 21300000, guid: e1e9a7d1859545f4bb5b5a16c750d70c, type: 3}
+  - {fileID: 21300000, guid: 1b3a6d3072948414693b862684ef63ab, type: 3}
+  - {fileID: 21300000, guid: 59f36609358991f4a91b98a661f308f1, type: 3}
+  - {fileID: 21300000, guid: 92b20e9fd64bef74f8e0904724770411, type: 3}
+  - {fileID: 21300000, guid: 105c339945f32a243bf3fd8612e3c9fb, type: 3}
+  - {fileID: 21300000, guid: 1b209252eb6c96646b43d2ee987da5a9, type: 3}
+  - {fileID: 21300000, guid: 9a66cf3107725794a8e96ad44188d4a9, type: 3}
   backgrounds:
-  - {fileID: 21300000, guid: a681ef5976a87b743b46b82016fe0229, type: 3}
-  - {fileID: 21300000, guid: 8cedfcd5f4f89eb44a00f1ffbb14045f, type: 3}
-  - {fileID: 21300000, guid: 67ef79939e04a8346bc59178835921fe, type: 3}
+  - {fileID: 21300000, guid: 59020768b03ca8348834dc04d36c611d, type: 3}
+  - {fileID: 21300000, guid: d638de54d93e28a4a9a392835657311d, type: 3}
+  - {fileID: 21300000, guid: 9da6748850ec82f4e9ff6c12aab6d258, type: 3}
+  - {fileID: 21300000, guid: af33cd5145e5d824290adcef5800b506, type: 3}
+  - {fileID: 21300000, guid: 11b33859d2e7ff74eb01b0d62c9c96f2, type: 3}
+  - {fileID: 21300000, guid: a9c012960f7067b4d8a391e93fe77601, type: 3}
   tongueColorsStart:
   - {r: 1, g: 0.8132642, b: 0.5226415, a: 1}
   - {r: 1, g: 0.5886792, b: 0.7328986, a: 1}
+  - {r: 0.6742939, g: 0.51975787, b: 0.9433962, a: 1}
+  - {r: 0.6742939, g: 0.51975787, b: 0.9433962, a: 1}
+  - {r: 0.6742939, g: 0.51975787, b: 0.9433962, a: 1}
   - {r: 0.6742939, g: 0.51975787, b: 0.9433962, a: 1}
   tongueColorsEnd:
   - {r: 1, g: 0.37169808, b: 0.37169808, a: 1}
   - {r: 1, g: 0.47547168, b: 0.80965304, a: 1}
   - {r: 0.6828525, g: 0.51320755, b: 1, a: 1}
-  skinsPrices: 000000000a0000001e000000
-  backgroundsPrices: 000000001e0000001e000000
+  - {r: 0.6828525, g: 0.51320755, b: 1, a: 1}
+  - {r: 0.6828525, g: 0.51320755, b: 1, a: 1}
+  - {r: 0.6828525, g: 0.51320755, b: 1, a: 1}
+  skinsPrices: 000000000a0000001e0000001e0000001e0000001e000000
+  backgroundsPrices: 000000001e0000001e0000001e0000001e0000001e000000
   enemySettingsAIList: []
   maxEnemies: 0
   isGameMenuOpen: 0

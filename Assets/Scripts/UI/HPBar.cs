@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class HPBar : SingletonMonobehaviour<HPBar>
 {
     [SerializeField] Image[] hpImages;
+    [SerializeField] Animator[] animators;
 
     Coroutine hunger;
 
@@ -16,7 +17,14 @@ public class HPBar : SingletonMonobehaviour<HPBar>
 
     public void SetHPImage(int index, bool val)
     {
-        hpImages[index].enabled = val;
+        if (val)
+        {
+            hpImages[index].enabled = true;
+        }
+        else
+        {
+            animators[index].Play("HeartPop");
+        }
     }
 
     public void ResetHPImages()

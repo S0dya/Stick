@@ -39,7 +39,6 @@ public class GameManager : SingletonMonobehaviour<GameManager>, ISaveable
     protected override void Awake()
     {
         base.Awake();
-
         Settings.Initialize();
         GameObjectSave = new GameObjectSave();
 
@@ -64,7 +63,7 @@ public class GameManager : SingletonMonobehaviour<GameManager>, ISaveable
         }
         if (Input.GetKeyDown(KeyCode.Q))
         {
-            //SaveManager.Instance.LoadDataFromFile();
+            //SaveManager.Instance.SaveDataFromFile();
             AudioManager.Instance.ChangeMusic();
         }
 
@@ -165,7 +164,6 @@ public class GameManager : SingletonMonobehaviour<GameManager>, ISaveable
         {
             comboTexts.Add(cto.GetComponent<ComboText>());
         }
-
 
         StopAllCoroutines();
         while (enemySettingsAIList.Count > 0)

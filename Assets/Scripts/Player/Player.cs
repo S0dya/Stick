@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
+using UnityEngine.UI;
 
 public class Player : SingletonMonobehaviour<Player>
 {
@@ -14,6 +15,7 @@ public class Player : SingletonMonobehaviour<Player>
     Rigidbody2D rigidbody;
     Rigidbody2D rigidbodyOfStickingObject;
     BoxCollider2D stickingPartCollider;
+    [SerializeField] Animator rageAnimator;
 
     Coroutine elongateCoroutine;
     Coroutine shortenCoroutine;
@@ -27,8 +29,10 @@ public class Player : SingletonMonobehaviour<Player>
     [HideInInspector] public float tongueLength;
     [HideInInspector] public int health;
 
-    [SerializeField] SpriteRenderer background;
+    Image background;
     SpriteRenderer playerSkin;
+
+    [SerializeField] Sprite deathSprite;
 
     bool touchEnded;
 
@@ -44,6 +48,8 @@ public class Player : SingletonMonobehaviour<Player>
         camera = Camera.main;
 
         tongueLine = tongueObject.GetComponent<LineRenderer>();
+
+        background = GameObject.FindGameObjectWithTag("Background").GetComponent<Image>();
 
         stickingPartCollider.enabled = false;
     }
@@ -159,9 +165,9 @@ public class Player : SingletonMonobehaviour<Player>
         canElongate = true;
     }
 
-
     public void MinusHp(bool minus)
     {
+        rageAnimator.Play("Rage");
         HPBar.Instance.StopHunger();
         if (minus)
         {
@@ -173,6 +179,7 @@ public class Player : SingletonMonobehaviour<Player>
 
                 if (health < 0)
                 {
+                    ToggleSprite(false);
                     GameMenu.Instance.GameOver();
                 }
             }
@@ -198,8 +205,6 @@ public class Player : SingletonMonobehaviour<Player>
     {
         background.sprite = GameManager.Instance.backgrounds[i];
         
-        float screenHeight = camera.orthographicSize * 1.58f;
-        background.transform.localScale = new Vector3(screenHeight * camera.aspect * 1.98f, screenHeight, 0);
     }
 
     public void SetColor(Color startColor, Color endColor)
@@ -210,8 +215,33 @@ public class Player : SingletonMonobehaviour<Player>
         lightForStickingPart.color = endColor;
     }
 
+    void OnEnable()
+    {
+        ToggleMoving(true);
+        ToggleSprite(true);
+    }
+
     void OnDisable()
     {
         StopAllCoroutines();
+        ToggleMoving(false);
+    }
+
+    void ToggleMoving(bool val)
+    {
+        rageAnimator.enabled = val;
+    }
+
+    public void ToggleSprite(bool val)
+    {
+        Debug.Log(Settings.SetGekoSkinIndex);
+        if (val)
+        {
+            playerSkin.sprite = GameManager.Instance.GekoSkins[Settings.SetGekoSkinIndex];
+        }
+        else
+        {
+            playerSkin.sprite = deathSprite;
+        }
     }
 }
