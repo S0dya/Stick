@@ -64,6 +64,7 @@ public class GameMenu : SingletonMonobehaviour<GameMenu>
     {
         ToggleButtonsBar(true);
         player.enabled = false;
+        HPBar.Instance.ToggleAnim(false);
         AudioManager.Instance.ChangeMusic();
 
         GameManager.Instance.OpenMenu();
@@ -73,6 +74,7 @@ public class GameMenu : SingletonMonobehaviour<GameMenu>
     {
         ToggleButtonsBar(false);
         player.enabled = true;
+        HPBar.Instance.ToggleAnim(true);
         inGameUI.SetActive(true);
         AudioManager.Instance.ChangeMusic();
 
@@ -99,6 +101,7 @@ public class GameMenu : SingletonMonobehaviour<GameMenu>
         SetPlayer();
         GameManager.Instance.StartGame();
         player.enabled = true;
+        HPBar.Instance.ToggleAnim(true);
         AudioManager.Instance.EventInstancesDict["Music"].start();
     }
 
@@ -133,10 +136,8 @@ public class GameMenu : SingletonMonobehaviour<GameMenu>
         ToggleInGameMenu(false);
 
         ShowScoreInGameMenu();
-        AudioManager.Instance.PlayOneShot("GameOverSound");
         AudioManager.Instance.ToggleMusic(false);
 
-        player.enabled = false;
         GameManager.Instance.OpenMenu();
     }
 

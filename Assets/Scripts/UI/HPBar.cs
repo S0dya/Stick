@@ -5,21 +5,19 @@ using UnityEngine.UI;
 
 public class HPBar : SingletonMonobehaviour<HPBar>
 {
-    [SerializeField] Image[] hpImages;
     [SerializeField] Animator[] animators;
-
-    Coroutine hunger;
 
     protected override void Awake()
     {
         base.Awake();
+
     }
 
-    public void SetHPImage(int index, bool val)
+    public void SetHP(int index, bool val)
     {
         if (val)
         {
-            hpImages[index].enabled = true;
+            animators[index].Play("HeartAppear");
         }
         else
         {
@@ -29,57 +27,35 @@ public class HPBar : SingletonMonobehaviour<HPBar>
 
     public void ResetHPImages()
     {
-        foreach (Image i in hpImages)
+        foreach (Animator a in animators)
         {
-            i.enabled = true;
+            a.Play("HeartAppear");
         }
     }
 
     public void StartHunger()
     {
         if (Player.Instance.health > -1)
-            hunger = StartCoroutine(Hunger(Player.Instance.health));
+        {
+            animators[Player.Instance.health].Play("HeartHunger");
+        }
     }
+
+    public void RestartHunger()
+    {
+        animators[Player.Instance.health].Play("HeartFullToHunger");
+    }
+
     public void StopHunger()
     {
-        if (hunger != null)
-        {
-            StopCoroutine(hunger);
-        }
-        hpImages[Player.Instance.health].enabled = true;
+        animators[Player.Instance.health].Play("HeartFull");
     }
 
-    IEnumerator Hunger(int index)
+    public void ToggleAnim(bool val) 
     {
-        yield return GameManager.Instance.StartCoroutine(GameManager.Instance.Timer(3f));
-        hpImages[index].enabled = false;
-
-        yield return GameManager.Instance.StartCoroutine(GameManager.Instance.Timer(0.3f));
-        hpImages[index].enabled = true;
-
-        for (int i = 0; i < 2; i++)
+        foreach (Animator a in animators) 
         {
-            yield return GameManager.Instance.StartCoroutine(GameManager.Instance.Timer(2f));
-        
-            hpImages[index].enabled = false;
-
-            yield return GameManager.Instance.StartCoroutine(GameManager.Instance.Timer(0.2f));
-            hpImages[index].enabled = true;
+            a.enabled = val;
         }
-        for (int i = 0; i < 3; i++)
-        {
-            yield return GameManager.Instance.StartCoroutine(GameManager.Instance.Timer(1f));
-
-            hpImages[index].enabled = false;
-
-            yield return GameManager.Instance.StartCoroutine(GameManager.Instance.Timer(0.1f));
-            hpImages[index].enabled = true;
-        }
-
-        yield return GameManager.Instance.StartCoroutine(GameManager.Instance.Timer(1f));
-
-        Player.Instance.MinusHp(true);
-        StartHunger();
-        yield return null;
     }
 }

@@ -173,14 +173,15 @@ public class Player : SingletonMonobehaviour<Player>
         {
             if (health >= 0)
             {
-                HPBar.Instance.SetHPImage(health, false);
+                HPBar.Instance.SetHP(health, false);
 
                 health--;
 
                 if (health < 0)
                 {
                     ToggleSprite(false);
-                    GameMenu.Instance.GameOver();
+                    this.enabled = false;
+                    AudioManager.Instance.PlayOneShot("GameOverSound");
                 }
             }
         }
@@ -190,7 +191,7 @@ public class Player : SingletonMonobehaviour<Player>
             {
                 health++;
 
-                HPBar.Instance.SetHPImage(health, true);
+                HPBar.Instance.SetHP(health, true);
             }
         }
         HPBar.Instance.StartHunger();

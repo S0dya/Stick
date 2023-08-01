@@ -96,8 +96,7 @@ public class StickingPart : SingletonMonobehaviour<StickingPart>
                 scoreMultiplayerCoroutine = StartCoroutine(ScoreMultiplayer());
                 isScoreMultiplaying = true;
 
-                HPBar.Instance.StopHunger();
-                HPBar.Instance.StartHunger();
+                HPBar.Instance.RestartHunger();
                 GameMenu.Instance.ChangeScore(settingsAi.score * curMultiplayer);
             }
             else
