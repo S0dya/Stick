@@ -5,9 +5,9 @@ using UnityEngine.UI;
 using TMPro;
 using System.Text;
 
-public class ComboText : MonoBehaviour
+public class Combo : MonoBehaviour
 {
-    TextMeshProUGUI comboText;
+    Image comboImage;
     float duration;
     Color origColor;
     Color targetColor;
@@ -15,9 +15,9 @@ public class ComboText : MonoBehaviour
 
     void Start()
     {
-        comboText = GetComponent<TextMeshProUGUI>();
+        comboImage = GetComponent<Image>();
         duration = 3f;
-        origColor = comboText.color;
+        origColor = comboImage.color;
         targetColor = new Color(origColor.r, origColor.g, origColor.b, 0f);
     }
 
@@ -27,7 +27,7 @@ public class ComboText : MonoBehaviour
             return;
 
         float normalizedTime = time / duration;
-        comboText.color = Color.Lerp(origColor, targetColor, normalizedTime);
+        comboImage.color = Color.Lerp(origColor, targetColor, normalizedTime);
         time += Time.deltaTime;
 
         if (time > duration)

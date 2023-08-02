@@ -353,13 +353,13 @@ Camera:
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 32311
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
   m_TargetEye: 0
   m_HDR: 1
-  m_AllowMSAA: 0
+  m_AllowMSAA: 1
   m_AllowDynamicResolution: 0
   m_ForceIntoRT: 0
   m_OcclusionCulling: 0
@@ -413,7 +413,7 @@ MonoBehaviour:
   m_RendererIndex: -1
   m_VolumeLayerMask:
     serializedVersion: 2
-    m_Bits: 1
+    m_Bits: 32311
   m_VolumeTrigger: {fileID: 0}
   m_VolumeFrameworkUpdateModeOption: 2
   m_RenderPostProcessing: 0
@@ -479,7 +479,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.4528302, g: 0.4528302, b: 0.4528302, a: 1}
+  m_Color: {r: 0.21960786, g: 0.21960786, b: 0.21960786, a: 1}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -595,8 +595,8 @@ RectTransform:
   m_Father: {fileID: 584583416}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.1862963, y: 0.10300001}
-  m_AnchorMax: {x: 0.81266654, y: 0.15664585}
+  m_AnchorMin: {x: 0.18537037, y: 0.13120833}
+  m_AnchorMax: {x: 0.81266654, y: 0.187}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -649,7 +649,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 71.3
+  m_fontSize: 72
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -835,10 +835,10 @@ RectTransform:
   m_Father: {fileID: 584583416}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.039703712, y: 0.053000003}
-  m_AnchorMax: {x: 0.96355563, y: 0.08458335}
+  m_AnchorMin: {x: 0.037, y: 0.047479168}
+  m_AnchorMax: {x: 0.96300006, y: 0.12652084}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_SizeDelta: {x: -0.000002115965, y: 0.000061035156}
   m_Pivot: {x: 0.5, y: 0.5000002}
 --- !u!114 &1319291202
 MonoBehaviour:
@@ -1033,34 +1033,29 @@ MonoBehaviour:
   playerPrefab: {fileID: 3733936120448204131, guid: f0884d350442150478f7b09df4c41971, type: 3}
   GekoSkins:
   - {fileID: 21300000, guid: 1b3a6d3072948414693b862684ef63ab, type: 3}
-  - {fileID: 21300000, guid: 59f36609358991f4a91b98a661f308f1, type: 3}
-  - {fileID: 21300000, guid: 92b20e9fd64bef74f8e0904724770411, type: 3}
-  - {fileID: 21300000, guid: 105c339945f32a243bf3fd8612e3c9fb, type: 3}
-  - {fileID: 21300000, guid: 1b209252eb6c96646b43d2ee987da5a9, type: 3}
   - {fileID: 21300000, guid: 9a66cf3107725794a8e96ad44188d4a9, type: 3}
+  - {fileID: 21300000, guid: 1b209252eb6c96646b43d2ee987da5a9, type: 3}
+  - {fileID: 21300000, guid: 105c339945f32a243bf3fd8612e3c9fb, type: 3}
+  - {fileID: 21300000, guid: 4a87d920cdfb989478f415b9db8c2b7d, type: 3}
   backgrounds:
   - {fileID: 21300000, guid: 59020768b03ca8348834dc04d36c611d, type: 3}
-  - {fileID: 21300000, guid: d638de54d93e28a4a9a392835657311d, type: 3}
   - {fileID: 21300000, guid: 9da6748850ec82f4e9ff6c12aab6d258, type: 3}
   - {fileID: 21300000, guid: af33cd5145e5d824290adcef5800b506, type: 3}
   - {fileID: 21300000, guid: 11b33859d2e7ff74eb01b0d62c9c96f2, type: 3}
-  - {fileID: 21300000, guid: a9c012960f7067b4d8a391e93fe77601, type: 3}
   tongueColorsStart:
-  - {r: 1, g: 0.8132642, b: 0.5226415, a: 1}
-  - {r: 1, g: 0.5886792, b: 0.7328986, a: 1}
-  - {r: 0.6742939, g: 0.51975787, b: 0.9433962, a: 1}
-  - {r: 0.6742939, g: 0.51975787, b: 0.9433962, a: 1}
-  - {r: 0.6742939, g: 0.51975787, b: 0.9433962, a: 1}
-  - {r: 0.6742939, g: 0.51975787, b: 0.9433962, a: 1}
+  - {r: 1, g: 0.4745098, b: 0.80784315, a: 1}
+  - {r: 0.8207547, g: 0.64487875, b: 0, a: 1}
+  - {r: 0.6666667, g: 0.24705882, b: 0.02745098, a: 1}
+  - {r: 0, g: 0.47822464, b: 0.49056602, a: 1}
+  - {r: 0.08469364, g: 0.4433962, b: 0, a: 1}
   tongueColorsEnd:
-  - {r: 1, g: 0.37169808, b: 0.37169808, a: 1}
-  - {r: 1, g: 0.47547168, b: 0.80965304, a: 1}
-  - {r: 0.6828525, g: 0.51320755, b: 1, a: 1}
-  - {r: 0.6828525, g: 0.51320755, b: 1, a: 1}
-  - {r: 0.6828525, g: 0.51320755, b: 1, a: 1}
-  - {r: 0.6828525, g: 0.51320755, b: 1, a: 1}
-  skinsPrices: 000000000a0000001e0000001e0000001e0000001e000000
-  backgroundsPrices: 000000001e0000001e0000001e0000001e0000001e000000
+  - {r: 1, g: 0.6264151, b: 0.86339056, a: 1}
+  - {r: 0.9882353, g: 0.87058824, b: 0.4392157, a: 1}
+  - {r: 0.9150943, g: 0.5033144, b: 0.288341, a: 1}
+  - {r: 0.15294118, g: 0.7607843, b: 0.7764706, a: 1}
+  - {r: 0.5294655, g: 0.9528302, b: 0.25528654, a: 1}
+  skinsPrices: 00000000640000002c010000e803000088130000
+  backgroundsPrices: 000000002c010000e803000088130000
   enemySettingsAIList: []
   maxEnemies: 0
   isGameMenuOpen: 0

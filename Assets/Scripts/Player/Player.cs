@@ -235,7 +235,6 @@ public class Player : SingletonMonobehaviour<Player>
 
     public void ToggleSprite(bool val)
     {
-        Debug.Log(Settings.SetGekoSkinIndex);
         if (val)
         {
             playerSkin.sprite = GameManager.Instance.GekoSkins[Settings.SetGekoSkinIndex];

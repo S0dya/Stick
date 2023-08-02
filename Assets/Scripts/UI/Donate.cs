@@ -6,20 +6,24 @@ using TMPro;
 
 public class Donate : SingletonMonobehaviour<Donate>
 {
+    [SerializeField] float rewardAdAmount;
     [SerializeField] float[] donatePrices;
     [SerializeField] float[] donateAmounts;
 
     [SerializeField] GameObject donate;
 
+    [SerializeField] TextMeshProUGUI rewardText;
     [SerializeField] TextMeshProUGUI[] donateTexts;
 
     protected override void Awake()
     {
         base.Awake();
 
+        rewardText.text = $"<color=yellow>{rewardAdAmount}</color> for watching <color=green>ad</color>";
+
         for (int i = 0; i < donateTexts.Length; i++)
         {
-            donateTexts[i].text = $"{donateAmounts[i]} for {donatePrices[i]}$";
+            donateTexts[i].text = $"<color=yellow>{donateAmounts[i]}</color> for <color=green>{donatePrices[i]}</color>$";
         }
     }
 

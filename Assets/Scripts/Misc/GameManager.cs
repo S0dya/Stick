@@ -59,7 +59,7 @@ public class GameManager : SingletonMonobehaviour<GameManager>, ISaveable
     {
         if (Input.GetKeyDown(KeyCode.R))
         {
-            Menu.Instance.CountMoney(20);
+            Menu.Instance.CountMoney(1000);
         }
         if (Input.GetKeyDown(KeyCode.Q))
         {
@@ -159,10 +159,10 @@ public class GameManager : SingletonMonobehaviour<GameManager>, ISaveable
     public void ClearGame()
     {
         GameObject[] comboTextObjs = GameObject.FindGameObjectsWithTag("ComboText");
-        List<ComboText> comboTexts = new List<ComboText>();
+        List<Combo> comboTexts = new List<Combo>();
         foreach (var cto in comboTextObjs)
         {
-            comboTexts.Add(cto.GetComponent<ComboText>());
+            comboTexts.Add(cto.GetComponent<Combo>());
         }
 
         StopAllCoroutines();
@@ -326,14 +326,14 @@ public class GameManager : SingletonMonobehaviour<GameManager>, ISaveable
             {
                 if (sceneSave.intArrayDictionary.TryGetValue("skinPrices", out int[] skinPrices))
                 {
-                    for (int i = 0; i < skinPrices.Length; i++)
+                    for (int i = 0; i < skinsPrices.Length; i++)
                     {
                         skinsPrices[i] = skinPrices[i];
                     }
                 }
                 if (sceneSave.intArrayDictionary.TryGetValue("backgroundPrices", out int[] backgroundPrices))
                 {
-                    for (int i = 0; i < backgroundPrices.Length; i++)
+                    for (int i = 0; i < backgroundsPrices.Length; i++)
                     {
                         backgroundsPrices[i] = backgroundPrices[i];
                     }
