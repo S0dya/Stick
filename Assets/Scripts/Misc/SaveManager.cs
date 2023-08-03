@@ -26,11 +26,6 @@ public class SaveManager : SingletonMonobehaviour<SaveManager>
             gameObjectSave = JsonConvert.DeserializeObject<GameObjectSave>(json);
             iSaveableObjectList[0].ISaveableLoad(gameObjectSave);
         }
-        else
-        {
-            SaveDataToFile();
-            LoadDataFromFile();
-        }
     }
 
     public void SaveDataToFile()

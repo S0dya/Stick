@@ -55,6 +55,7 @@ public class GameManager : SingletonMonobehaviour<GameManager>, ISaveable
         LoadingScene.Instance.StartCoroutine(LoadingScene.Instance.LoadSceneAsync(1, -1));
     }
 
+    /*
     void Update()//delLtaer
     {
         if (Input.GetKeyDown(KeyCode.R))
@@ -66,8 +67,8 @@ public class GameManager : SingletonMonobehaviour<GameManager>, ISaveable
             //SaveManager.Instance.SaveDataFromFile();
             AudioManager.Instance.ChangeMusic();
         }
-
     }
+    */
 
     public void StartGame()
     {
@@ -132,7 +133,6 @@ public class GameManager : SingletonMonobehaviour<GameManager>, ISaveable
                 Instantiate(fireflyPrefab, spawnPosition, Quaternion.identity, enemyParent);
                 break;
             default:
-                Debug.Log("switch at gm");
                 break;
         }
     }
@@ -248,6 +248,8 @@ public class GameManager : SingletonMonobehaviour<GameManager>, ISaveable
             ai.ToggleLight(var);
         }
     }
+
+    
 
 
 
