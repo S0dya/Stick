@@ -2616,8 +2616,8 @@ MonoBehaviour:
   skin: {fileID: 491927417}
   skinName: {fileID: 1837739522}
   backgroundName: {fileID: 169339281}
-  skinPriceObject: {fileID: 0}
-  backgroundPriceObject: {fileID: 0}
+  skinPriceObject: {fileID: 2038586306}
+  backgroundPriceObject: {fileID: 20762392}
 --- !u!224 &457431007
 RectTransform:
   m_ObjectHideFlags: 0
@@ -9860,7 +9860,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 
+  m_text: 123123
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 18b8c83eaa2ba70449004d4b889d6364, type: 2}
   m_sharedMaterial: {fileID: 6101446161973834492, guid: 18b8c83eaa2ba70449004d4b889d6364, type: 2}
@@ -9869,7 +9869,7 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294967295
+    rgba: 4278247935
   m_fontColor: {r: 1, g: 0.8806951, b: 0, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
@@ -9887,7 +9887,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 36
+  m_fontSize: 55.25
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
