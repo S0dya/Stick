@@ -53,7 +53,6 @@ public class Shop : SingletonMonobehaviour<Shop>
     public void Home()
     {
         CloseShop();
-        SaveManager.Instance.SaveDataToFile();
         Menu.Instance.OpenMenu();
     }
 

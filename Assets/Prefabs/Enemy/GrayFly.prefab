@@ -127,7 +127,7 @@ GameObject:
   - component: {fileID: 804656531701492239}
   - component: {fileID: 804656531701492238}
   m_Layer: 12
-  m_Name: GreenFly
+  m_Name: GrayFly
   m_TagString: Food
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -190,7 +190,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: df69ab5727f18ea4f80000de6727c951, type: 3}
+  m_Sprite: {fileID: 21300000, guid: c12acf7819a4d2d419480bc79de16551, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0

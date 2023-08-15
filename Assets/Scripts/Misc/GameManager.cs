@@ -12,7 +12,8 @@ public class GameManager : SingletonMonobehaviour<GameManager>, ISaveable
 
     [SerializeField] GameObject flyPrefab;
     [SerializeField] GameObject beePrefab;
-    [SerializeField] GameObject fireflyPrefab;
+    [SerializeField] GameObject fireflyPrefab; 
+    [SerializeField] GameObject grayflyPrefab; 
 
     [SerializeField] GameObject playerPrefab;
 
@@ -41,12 +42,6 @@ public class GameManager : SingletonMonobehaviour<GameManager>, ISaveable
         base.Awake();
         Settings.Initialize();
         GameObjectSave = new GameObjectSave();
-
-        float scaleFactor = Screen.width * 0.0012f;
-        flyPrefab.transform.localScale = new Vector2(scaleFactor, scaleFactor);
-        beePrefab.transform.localScale = new Vector2(scaleFactor, scaleFactor);
-        fireflyPrefab.transform.localScale = new Vector2(scaleFactor, scaleFactor);
-        playerPrefab.transform.localScale = new Vector2(scaleFactor, scaleFactor);
     }
 
     void Start()
@@ -65,6 +60,11 @@ public class GameManager : SingletonMonobehaviour<GameManager>, ISaveable
         {
             //SaveManager.Instance.SaveDataFromFile();
             AudioManager.Instance.ChangeMusic();
+        }
+
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            Debug.Log("Back button pressed!");
         }
     }
 
@@ -95,7 +95,7 @@ public class GameManager : SingletonMonobehaviour<GameManager>, ISaveable
 
     public IEnumerator Spawn()
     {
-        yield return StartCoroutine(Timer(Random.Range(0.1f, 1.5f)));
+        yield return new WaitForSeconds(Random.Range(0.1f, 1.5f));
 
         float randomX = Random.Range(0, 2) == 0 ? -Settings.ScreenWidth * 0.7f : Settings.ScreenWidth * 0.7f;
         float randomY = Random.Range(0f, Settings.maxY);
@@ -128,7 +128,15 @@ public class GameManager : SingletonMonobehaviour<GameManager>, ISaveable
                 Instantiate(beePrefab, spawnPosition, Quaternion.identity, enemyParent);
                 break;
             case 2:
-                Instantiate(fireflyPrefab, spawnPosition, Quaternion.identity, enemyParent);
+                int random = Random.Range(0, 2);
+                if (random == 0)
+                {
+                    Instantiate(fireflyPrefab, spawnPosition, Quaternion.identity, enemyParent);
+                }
+                else
+                {
+                    Instantiate(grayflyPrefab, spawnPosition, Quaternion.identity, enemyParent);
+                }
                 break;
             default:
                 break;
@@ -139,19 +147,10 @@ public class GameManager : SingletonMonobehaviour<GameManager>, ISaveable
     public void OpenMenu()
     {
         isGameMenuOpen = true;
-
-        foreach (SettingsAI ai in enemySettingsAIList)
-        {
-            ai.DisableMovement();
-        }
     }
     public void CloseMenu()
     {
         isGameMenuOpen = false;
-        foreach (SettingsAI ai in enemySettingsAIList)
-        {
-            ai.EnableMovement();
-        }
     }
 
     public void ClearGame()
@@ -196,22 +195,6 @@ public class GameManager : SingletonMonobehaviour<GameManager>, ISaveable
         }
     }
 
-    public IEnumerator Timer(float duration)
-    {
-        while (duration > 0)
-        {
-            if (isGameMenuOpen)
-            {
-                yield return null;
-            }
-            else
-            {
-                duration -= Time.deltaTime;
-                yield return null;
-            }
-        }
-    }   
-
     public IEnumerator MaxEnemiesIncrease()
     {
         while (true)
@@ -222,12 +205,12 @@ public class GameManager : SingletonMonobehaviour<GameManager>, ISaveable
             }
             if (maxEnemies < 17)
             {
-                yield return StartCoroutine(Timer(10f));
-                
+                yield return new WaitForSeconds(10f);
+
                 maxEnemies++;
             }
 
-            yield return StartCoroutine(Timer(7f));
+            yield return new WaitForSeconds(10f);
             if (beeSpawnChance > 50)
             {
                 break;
@@ -247,7 +230,29 @@ public class GameManager : SingletonMonobehaviour<GameManager>, ISaveable
         }
     }
 
-    
+    void OnApplicationPause(bool pauseStatus)
+    {
+        if (pauseStatus)
+        {
+            Debug.Log("ASDASD");
+            SaveManager.Instance.SaveDataToFile();
+        }
+    }
+
+    void OnApplicationFocus(bool hasFocus)
+    {
+        if (!hasFocus)
+        {
+            Debug.Log("ASDASD+++");
+            SaveManager.Instance.SaveDataToFile();
+        }
+    }
+
+    void OnApplicationQuit()
+    {
+        SaveManager.Instance.SaveDataToFile();
+    }
+
 
 
 

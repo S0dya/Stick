@@ -107,14 +107,13 @@ public class StickingPart : SingletonMonobehaviour<StickingPart>
             }
 
             EnemyAI enemyAi = collision.gameObject.GetComponent<EnemyAI>();
-            enemyAi.StopMoving();
             enemyAi.StartCoroutine(enemyAi.Attach());
         }
     }
 
     IEnumerator ScoreMultiplayer()
     {
-        yield return GameManager.Instance.StartCoroutine(GameManager.Instance.Timer(Settings.timeWhileScoreMultiplying));
+        yield return new WaitForSeconds(Settings.timeWhileScoreMultiplying);
 
         TurnOffMultyplaing();
     }

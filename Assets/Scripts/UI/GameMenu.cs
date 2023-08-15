@@ -42,6 +42,7 @@ public class GameMenu : SingletonMonobehaviour<GameMenu>
 
     void Start()
     {
+        Time.timeScale = 1;
         CheckSound();
         ToggleInGameMenu(true);
         ClearGame();
@@ -62,6 +63,7 @@ public class GameMenu : SingletonMonobehaviour<GameMenu>
     //buttonsMethods
     public void Stop()
     {
+        Time.timeScale = 0;
         ToggleButtonsBar(true);
         player.enabled = false;
         HPBar.Instance.ToggleAnim(false);
@@ -79,6 +81,7 @@ public class GameMenu : SingletonMonobehaviour<GameMenu>
         AudioManager.Instance.ChangeMusic();
 
         GameManager.Instance.CloseMenu();
+        Time.timeScale = 1;
     }
 
     public void Music()
@@ -91,7 +94,6 @@ public class GameMenu : SingletonMonobehaviour<GameMenu>
         LoadingScene.Instance.StartCoroutine(LoadingScene.Instance.LoadSceneAsync(1, 2));
         ClearGame();
         SetPlayer();
-        SaveManager.Instance.SaveDataToFile();
         AudioManager.Instance.ToggleMusic(false);
     }
 
@@ -132,6 +134,7 @@ public class GameMenu : SingletonMonobehaviour<GameMenu>
 
     public void GameOver()
     {
+        Time.timeScale = 0;
         ToggleGameOverBar(true);
         ToggleInGameMenu(false);
 
@@ -166,6 +169,7 @@ public class GameMenu : SingletonMonobehaviour<GameMenu>
 
         score = 0;
         ChangeScore(0);
+        Time.timeScale = 1;
     }
 
     //inGameMethods
@@ -265,7 +269,7 @@ public class GameMenu : SingletonMonobehaviour<GameMenu>
 
     IEnumerator ChangeToNight()
     {
-        yield return GameManager.Instance.StartCoroutine(GameManager.Instance.Timer(7f));
+        yield return new WaitForSeconds(7f);
         while (globalLight.intensity > 0.3f)
         {
             if (GameManager.Instance.isGameMenuOpen)
@@ -279,7 +283,7 @@ public class GameMenu : SingletonMonobehaviour<GameMenu>
     }
     IEnumerator ChangeToDay()
     {
-        yield return GameManager.Instance.StartCoroutine(GameManager.Instance.Timer(7f));
+        yield return new WaitForSeconds(7f);
         while (globalLight.intensity < 1)
         {
             if (GameManager.Instance.isGameMenuOpen)

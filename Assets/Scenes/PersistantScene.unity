@@ -1207,13 +1207,14 @@ MonoBehaviour:
   flyPrefab: {fileID: 804656531701492233, guid: 08a1bc9c90ea20940b499b4579935314, type: 3}
   beePrefab: {fileID: 804656531701492233, guid: 3765bbc3d1b92b74eaeca9646692aeb7, type: 3}
   fireflyPrefab: {fileID: 804656531701492233, guid: eb78d00f856b7944aa7eab19f3a15e6e, type: 3}
+  grayflyPrefab: {fileID: 804656531701492233, guid: f36bcd9af92475347843991fbffc2b5a, type: 3}
   playerPrefab: {fileID: 3733936120448204131, guid: f0884d350442150478f7b09df4c41971, type: 3}
   GekoSkins:
   - {fileID: 21300000, guid: 1b3a6d3072948414693b862684ef63ab, type: 3}
   - {fileID: 21300000, guid: 9a66cf3107725794a8e96ad44188d4a9, type: 3}
   - {fileID: 21300000, guid: 1b209252eb6c96646b43d2ee987da5a9, type: 3}
   - {fileID: 21300000, guid: 105c339945f32a243bf3fd8612e3c9fb, type: 3}
-  - {fileID: 21300000, guid: 4a87d920cdfb989478f415b9db8c2b7d, type: 3}
+  - {fileID: 21300000, guid: 20c17ad4c86d78b49a87f15b3599bcf2, type: 3}
   backgrounds:
   - {fileID: 21300000, guid: 59020768b03ca8348834dc04d36c611d, type: 3}
   - {fileID: 21300000, guid: 9da6748850ec82f4e9ff6c12aab6d258, type: 3}
@@ -1224,13 +1225,13 @@ MonoBehaviour:
   - {r: 0.8207547, g: 0.64487875, b: 0, a: 1}
   - {r: 0.6666667, g: 0.24705882, b: 0.02745098, a: 1}
   - {r: 0, g: 0.47822464, b: 0.49056602, a: 1}
-  - {r: 0.08469364, g: 0.4433962, b: 0, a: 1}
+  - {r: 0.2901961, g: 0.2901961, b: 0.2901961, a: 1}
   tongueColorsEnd:
   - {r: 1, g: 0.6264151, b: 0.86339056, a: 1}
   - {r: 0.9882353, g: 0.87058824, b: 0.4392157, a: 1}
   - {r: 0.9150943, g: 0.5033144, b: 0.288341, a: 1}
   - {r: 0.15294118, g: 0.7607843, b: 0.7764706, a: 1}
-  - {r: 0.5294655, g: 0.9528302, b: 0.25528654, a: 1}
+  - {r: 0.38679248, g: 0.38679248, b: 0.38679248, a: 1}
   skinsPrices: 00000000640000002c010000e803000088130000
   backgroundsPrices: 000000002c010000e803000088130000
   enemySettingsAIList: []

@@ -44,15 +44,6 @@ public class SettingsAI : MonoBehaviour
         amountOfPointsToVisit = Random.Range(minAOPTV, maxAOPTV);
     }
 
-    public void DisableMovement()
-    {
-        enemyAi.StopMoving();
-    }
-    public void EnableMovement()
-    {
-        enemyAi.StartMoving();
-    }
-
     public void ToggleLight(bool val)
     {
         light.enabled = val;

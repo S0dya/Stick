@@ -32,7 +32,7 @@ public class Player : SingletonMonobehaviour<Player>
     Image background;
     SpriteRenderer playerSkin;
 
-    [SerializeField] Sprite deathSprite;
+    [SerializeField] Sprite[] deathSprite;
 
     bool touchEnded;
 
@@ -52,6 +52,8 @@ public class Player : SingletonMonobehaviour<Player>
         background = GameObject.FindGameObjectWithTag("Background").GetComponent<Image>();
 
         stickingPartCollider.enabled = false;
+
+        
     }
 
     void Start()
@@ -110,11 +112,6 @@ public class Player : SingletonMonobehaviour<Player>
 
         while (!isOutOfTrigger && !isSticked && !touchEnded)
         {
-            if (GameManager.Instance.isGameMenuOpen)
-            {
-                yield return null;
-            }
-
             float lengthForStickingObject = tongueLength * 0.7f;
             Vector3 position = new Vector3(lengthForStickingObject, lengthForStickingObject, 0) * direction;
             tongueLine.SetPosition(0, new Vector2(tongueLength, 0));
@@ -146,11 +143,6 @@ public class Player : SingletonMonobehaviour<Player>
         
         while (tongueLength > 0.1f)
         {
-            if (GameManager.Instance.isGameMenuOpen)
-            {
-                yield return null;
-            }
-
             tongueLength -= Settings.tongueMultiplyer * 1.2f * Time.deltaTime;
             float lengthForStickingObject = tongueLength * 0.7f;
             Vector3 position = new Vector3(lengthForStickingObject, lengthForStickingObject, 0) * direction;
@@ -167,7 +159,6 @@ public class Player : SingletonMonobehaviour<Player>
 
     public void MinusHp(bool minus)
     {
-        rageAnimator.Play("Rage");
         HPBar.Instance.StopHunger();
         if (minus)
         {
@@ -182,6 +173,10 @@ public class Player : SingletonMonobehaviour<Player>
                     ToggleSprite(false);
                     this.enabled = false;
                     AudioManager.Instance.PlayOneShot("GameOverSound");
+                }
+                else
+                {
+                    rageAnimator.Play("Rage");
                 }
             }
         }
@@ -241,7 +236,7 @@ public class Player : SingletonMonobehaviour<Player>
         }
         else
         {
-            playerSkin.sprite = deathSprite;
+            playerSkin.sprite = deathSprite[Settings.SetGekoSkinIndex];
         }
     }
 }

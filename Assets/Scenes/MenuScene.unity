@@ -2597,11 +2597,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   skinNames:
-  - GECKO
-  - DESERT GECKO
-  - JUNGLE GECKO
-  - SEA GECKO
-  - FROG
+  - ROSY GECKO
+  - SUNSHINE GECKO
+  - EMERALD GECKO
+  - ELECTRIC GECKO
+  - CYBORG GECKO
   backgroundNames:
   - TREE
   - LEAFS
