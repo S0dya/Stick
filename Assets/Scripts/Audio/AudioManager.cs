@@ -160,8 +160,8 @@ public class AudioManager : SingletonMonobehaviour<AudioManager>
         {
             music.setVolume(timer * 4f);
             musicFadeIn.setVolume(timerFadeIn * 4f);
-            timer -= Time.deltaTime;
-            timerFadeIn += Time.deltaTime;
+            timer -= Time.unscaledDeltaTime;
+            timerFadeIn += Time.unscaledDeltaTime;
 
             if (!Settings.IsMusicEnabled)
             {

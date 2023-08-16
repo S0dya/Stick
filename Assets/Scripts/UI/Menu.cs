@@ -11,6 +11,10 @@ public class Menu : SingletonMonobehaviour<Menu>
     [SerializeField] Image cancelledMusicImage;
     public TextMeshProUGUI moneyAmount;
 
+    [HideInInspector] public bool inMenu;
+    [HideInInspector] public bool inShop;
+    [HideInInspector] public bool inDonate;
+
     protected override void Awake()
     {   
         base.Awake();
@@ -22,11 +26,11 @@ public class Menu : SingletonMonobehaviour<Menu>
     {
         CheckSound();
         OpenMenu();
-
     }
 
     public void OpenMenu()
     {
+        inMenu = true;
         menu.SetActive(true);
         Shop.Instance.CloseShop();
         Donate.Instance.CloseDonate();
@@ -35,6 +39,7 @@ public class Menu : SingletonMonobehaviour<Menu>
     //ButtonsMethods
     public void Play()
     {
+        inMenu = false;
         LoadingScene.Instance.StartCoroutine(LoadingScene.Instance.LoadSceneAsync(2, 1));
         AudioManager.Instance.PlayOneShot("PlaySound");
     }
@@ -87,6 +92,7 @@ public class Menu : SingletonMonobehaviour<Menu>
 
     void CloseMenu()
     {
+        inMenu = false;
         menu.SetActive(false);
     }
 }

@@ -64,6 +64,26 @@ public class GameManager : SingletonMonobehaviour<GameManager>, ISaveable
 
         if (Input.GetKeyDown(KeyCode.Escape))
         {
+            if (Menu.Instance.inMenu)
+            {
+                Menu.Instance.Exit();
+            }
+            else if (Menu.Instance.inShop)
+            {
+                Shop.Instance.Home();
+            }
+            else if (Menu.Instance.inDonate)
+            {
+                Donate.Instance.ShopButton();
+            }
+            else if (isGameMenuOpen)
+            {
+                GameMenu.Instance.Play();
+            }
+            else
+            {
+                GameMenu.Instance.Stop();
+            }
             Debug.Log("Back button pressed!");
         }
     }

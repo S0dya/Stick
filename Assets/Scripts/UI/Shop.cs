@@ -33,6 +33,7 @@ public class Shop : SingletonMonobehaviour<Shop>
 
     public void OpenShop()
     {
+        Menu.Instance.inShop = true;
         LockSkin(false);
         Settings.GekoSkinIndex = Settings.SetGekoSkinIndex;
         TestSkin(Settings.GekoSkinIndex);
@@ -46,6 +47,7 @@ public class Shop : SingletonMonobehaviour<Shop>
 
     public void CloseShop()
     {
+        Menu.Instance.inShop = false;
         shop.SetActive(false);
     }
 

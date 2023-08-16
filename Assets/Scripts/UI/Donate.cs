@@ -29,11 +29,13 @@ public class Donate : SingletonMonobehaviour<Donate>
 
     public void OpenDonate()
     {
+        Menu.Instance.inDonate = true;
         donate.SetActive(true);
     }
 
     public void CloseDonate()
     {
+        Menu.Instance.inDonate = false;
         donate.SetActive(false);
     }
     //Buttons
