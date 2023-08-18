@@ -95,7 +95,7 @@ public class GameManager : SingletonMonobehaviour<GameManager>, ISaveable
         DefineEdgesOfScreen();
         enemySettingsAIList = new List<SettingsAI>();
 
-        maxEnemies = 5;
+        maxEnemies = 6;
         for (int i = 0; i < maxEnemies; i++)
         {
             StartCoroutine(Spawn());
@@ -142,21 +142,22 @@ public class GameManager : SingletonMonobehaviour<GameManager>, ISaveable
         switch (val)
         {
             case 0:
+                int random = Random.Range(0, 2);
+                if (random == 0)
+                {
+                    Instantiate(flyPrefab, spawnPosition, Quaternion.identity, enemyParent);
+                }
+                else
+                {
+                    Instantiate(grayflyPrefab, spawnPosition, Quaternion.identity, enemyParent);
+                }
                 Instantiate(flyPrefab, spawnPosition, Quaternion.identity, enemyParent);
                 break;
             case 1:
                 Instantiate(beePrefab, spawnPosition, Quaternion.identity, enemyParent);
                 break;
             case 2:
-                int random = Random.Range(0, 2);
-                if (random == 0)
-                {
-                    Instantiate(fireflyPrefab, spawnPosition, Quaternion.identity, enemyParent);
-                }
-                else
-                {
-                    Instantiate(grayflyPrefab, spawnPosition, Quaternion.identity, enemyParent);
-                }
+                Instantiate(fireflyPrefab, spawnPosition, Quaternion.identity, enemyParent);
                 break;
             default:
                 break;
@@ -254,7 +255,6 @@ public class GameManager : SingletonMonobehaviour<GameManager>, ISaveable
     {
         if (pauseStatus)
         {
-            Debug.Log("ASDASD");
             SaveManager.Instance.SaveDataToFile();
         }
     }
@@ -263,7 +263,6 @@ public class GameManager : SingletonMonobehaviour<GameManager>, ISaveable
     {
         if (!hasFocus)
         {
-            Debug.Log("ASDASD+++");
             SaveManager.Instance.SaveDataToFile();
         }
     }

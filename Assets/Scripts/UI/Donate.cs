@@ -48,7 +48,7 @@ public class Donate : SingletonMonobehaviour<Donate>
 
     public void DonateButton(int i)
     {
-        Debug.Log("don " + i);
+        IAPManager.instance.OnBuyDonate(i);
     }
 
     public void ShopButton()
