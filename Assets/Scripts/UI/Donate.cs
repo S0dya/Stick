@@ -23,7 +23,7 @@ public class Donate : SingletonMonobehaviour<Donate>
 
         for (int i = 0; i < donateTexts.Length; i++)
         {
-            donateTexts[i].text = $"<color=yellow>{donateAmounts[i]}</color> for <color=green>{donatePrices[i]}</color>$";
+            donateTexts[i].text = $"<color=yellow>{donateAmounts[i]}</color>";
         }
     }
 

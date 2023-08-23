@@ -52,16 +52,6 @@ public class GameManager : SingletonMonobehaviour<GameManager>, ISaveable
 
     void Update()//delLtaer
     {
-        if (Input.GetKeyDown(KeyCode.R))
-        {
-            Menu.Instance.CountMoney(1000);
-        }
-        if (Input.GetKeyDown(KeyCode.Q))
-        {
-            //SaveManager.Instance.SaveDataFromFile();
-            AudioManager.Instance.ChangeMusic();
-        }
-
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             if (Menu.Instance.inMenu)
@@ -84,7 +74,6 @@ public class GameManager : SingletonMonobehaviour<GameManager>, ISaveable
             {
                 GameMenu.Instance.Stop();
             }
-            Debug.Log("Back button pressed!");
         }
     }
 
